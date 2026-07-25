@@ -202,6 +202,32 @@ await test('the header becomes opaque once scrolled', async () => {
   await page.close();
 });
 
+await test('no revealed element stays invisible after scrolling a page', async () => {
+  // A scroll reveal that never fires means content is simply missing for the
+  // visitor. Worth guarding: it has happened once already, to the hero stats.
+  for (const url of ['/', '/treatments/', '/about/', '/visit/']) {
+    const page = await desktop.newPage();
+    await page.goto(`${base}${url}`, { waitUntil: 'networkidle' });
+
+    const screens = await page.evaluate(() =>
+      Math.ceil(document.body.scrollHeight / window.innerHeight)
+    );
+    for (let i = 1; i <= screens; i += 1) {
+      await page.evaluate((n) => window.scrollTo(0, window.innerHeight * n), i);
+      await page.waitForTimeout(300);
+    }
+    await page.waitForTimeout(1200);
+
+    const hidden = await page.evaluate(() =>
+      Array.from(document.querySelectorAll('[data-reveal]'))
+        .filter((el) => parseFloat(getComputedStyle(el).opacity) < 0.99)
+        .map((el) => el.className)
+    );
+    assert(hidden.length === 0, `${url} left ${hidden.length} element(s) hidden: ${hidden.join(', ')}`);
+    await page.close();
+  }
+});
+
 await test('the 404 page offers a way back', async () => {
   const page = await desktop.newPage();
   await page.goto(`${base}/404.html`, { waitUntil: 'networkidle' });

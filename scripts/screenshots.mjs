@@ -97,11 +97,28 @@ for (const viewport of VIEWPORTS) {
 
     await page.goto(`http://127.0.0.1:${PORT}${target.url}`, { waitUntil: 'networkidle' });
 
-    // Let reveals fire before capturing.
-    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await page.waitForTimeout(700);
+    // The site scrolls smoothly, which means a scripted scrollTo animates and
+    // the capture can land mid-flight — putting the fixed header somewhere it
+    // never actually appears. Turn it off for the duration of the shot.
+    await page.addStyleTag({ content: 'html { scroll-behavior: auto !important; }' });
+
+    // Step down the page a screen at a time so every reveal fires. Jumping
+    // straight to the bottom skips the middle entirely — those elements never
+    // intersect the viewport, so they stay hidden and vanish from the capture.
+    const screens = await page.evaluate(
+      () => Math.ceil(document.body.scrollHeight / window.innerHeight)
+    );
+    for (let i = 1; i <= screens; i += 1) {
+      await page.evaluate((n) => window.scrollTo(0, window.innerHeight * n), i);
+      await page.waitForTimeout(300);
+    }
+    // Long enough for the last stagger to finish, or the final items in a list
+    // are still mid-fade when the shutter goes.
+    await page.waitForTimeout(1200);
+
     await page.evaluate(() => window.scrollTo(0, 0));
-    await page.waitForTimeout(500);
+    await page.waitForFunction(() => window.scrollY === 0, null, { timeout: 3000 });
+    await page.waitForTimeout(400);
 
     // Horizontal overflow is the classic responsive bug — catch it here.
     const overflow = await page.evaluate(
