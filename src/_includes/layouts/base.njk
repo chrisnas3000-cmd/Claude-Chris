@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="{{ site.seo.locale }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+{% set pageTitle = title if title else site.business.name %}
+{% set pageDesc = description if description else site.seo.defaultDescription %}
+{% set canonical = (page.url | absolute(site.seo.url)) %}
+
+<title>{% if title %}{{ title }} · {{ site.business.name }}{% else %}{{ site.business.name }} · {{ site.business.tagline }} in {{ site.contact.address.district }}, {{ site.contact.address.city }}{% endif %}</title>
+<meta name="description" content="{{ pageDesc }}">
+<meta name="keywords" content="{{ site.seo.keywords | join(', ') }}">
+<link rel="canonical" href="{{ canonical }}">
+<meta name="theme-color" content="{{ site.brand.colors.noir }}">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph / social previews -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ site.business.name }}">
+<meta property="og:title" content="{{ pageTitle }}">
+<meta property="og:description" content="{{ pageDesc }}">
+<meta property="og:url" content="{{ canonical }}">
+<meta property="og:locale" content="{{ site.seo.localeOg }}">
+<meta property="og:image" content="{{ site.images.share.src | absolute(site.seo.url) }}">
+<meta property="og:image:alt" content="{{ site.images.share.alt }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ pageTitle }}">
+<meta name="twitter:description" content="{{ pageDesc }}">
+<meta name="twitter:image" content="{{ site.images.share.src | absolute(site.seo.url) }}">
+
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+
+<!-- Brand tokens, generated from src/_data/site.js -->
+<style>
+:root {
+{%- for key, value in site.brand.colors %}
+  --{{ key | kebab }}: {{ value }};
+{%- endfor %}
+  --font-display: {{ site.brand.fonts.display | safe }};
+  --font-body: {{ site.brand.fonts.body | safe }};
+}
+</style>
+<link rel="preload" href="/assets/fonts/marcellus-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/jost-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/fonts.css">
+<link rel="stylesheet" href="/assets/css/style.css">
+
+<!-- Structured data: helps this business appear correctly in search and maps -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "{{ site.seo.schemaType }}",
+  "name": {{ site.business.name | jsonld | safe }},
+  "description": {{ site.business.summary | jsonld | safe }},
+  "url": {{ site.seo.url | jsonld | safe }},
+  "image": {{ (site.images.share.src | absolute(site.seo.url)) | jsonld | safe }},
+  "telephone": {{ site.contact.phone.display | jsonld | safe }},
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": {{ site.contact.address.street | jsonld | safe }},
+    "addressLocality": {{ site.contact.address.district | jsonld | safe }},
+    "addressRegion": {{ site.contact.address.city | jsonld | safe }},
+    "addressCountry": {{ site.contact.address.countryCode | jsonld | safe }}
+  },
+  "openingHoursSpecification": [
+{%- for group in site.hours.groups %}
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": {{ group.days | jsonld | safe }},
+      "opens": {{ group.opens | jsonld | safe }},
+      "closes": {{ group.closes | jsonld | safe }}
+    }{% if not loop.last %},{% endif %}
+{%- endfor %}
+  ],
+  "sameAs": [{{ site.contact.instagram.link | jsonld | safe }}],
+  {% if site.seo.priceRange %}"priceRange": {{ site.seo.priceRange | jsonld | safe }},{% endif %}
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Treatments",
+    "itemListElement": [
+{%- for category in site.serviceCategories %}
+      {
+        "@type": "OfferCatalog",
+        "name": {{ category.name | jsonld | safe }},
+        "itemListElement": [
+{%- for service in category.services %}
+          {
+            "@type": "Offer",
+            "itemOffered": { "@type": "Service", "name": {{ service.name | jsonld | safe }} }
+          }{% if not loop.last %},{% endif %}
+{%- endfor %}
+        ]
+      }{% if not loop.last %},{% endif %}
+{%- endfor %}
+    ]
+  }
+}
+</script>
+</head>
+
+<body class="no-js{% if bodyClass %} {{ bodyClass }}{% endif %}">
+<a class="skip-link" href="#main">Skip to content</a>
+
+{#
+  The arch. This is the site's signature shape — a Moorish pointed arch, drawn
+  once here in normalised coordinates and referenced from CSS via
+  `clip-path: url(#arch-clip)` so it scales to whatever it is applied to.
+#}
+<svg class="sr-only" aria-hidden="true" focusable="false" width="0" height="0">
+  <defs>
+    <clipPath id="arch-clip" clipPathUnits="objectBoundingBox">
+      <path d="M 0 1 L 0 0.52 C 0 0.177, 0.19 0, 0.5 0 C 0.81 0, 1 0.177, 1 0.52 L 1 1 Z"/>
+    </clipPath>
+  </defs>
+</svg>
+
+{% include "partials/header.njk" %}
+
+<main id="main">
+  {{ content | safe }}
+</main>
+
+{% include "partials/footer.njk" %}
+{% include "partials/booking-bar.njk" %}
+
+<script src="/assets/js/main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+---
+layout: layouts/base.njk
+permalink: /404.html
+title: Page not found
+bodyClass: page-404
+eleventyExcludeFromCollections: true
+---
+
+<section class="closing closing--tall" aria-labelledby="nf-title">
+  <div class="shell closing__inner">
+    <span class="closing__arch" aria-hidden="true"></span>
+    <p class="eyebrow">404</p>
+    <h1 class="closing__title" id="nf-title">{{ site.copy.notFound.title }}</h1>
+    <p class="closing__lead">{{ site.copy.notFound.lead }}</p>
+    <div class="closing__actions">
+      <a class="btn btn--brass btn--lg" href="/">Back to the front</a>
+      <a class="btn btn--ghost btn--lg" href="/treatments/">See treatments</a>
+    </div>
+  </div>
+</section>

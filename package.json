@@ -1,0 +1,29 @@
+{
+  "name": "teenaz-spa",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Website concept for Teena'z Spa — spa, massage and beauty in Sodeco, Achrafieh, Beirut.",
+  "scripts": {
+    "start": "npm run art && npm run raster && eleventy --serve",
+    "build": "npm run art && npm run raster && eleventy",
+    "art": "node scripts/generate-art.mjs",
+    "fonts": "node scripts/fetch-fonts.mjs",
+    "check": "node scripts/check.mjs",
+    "raster": "node scripts/rasterize.mjs",
+    "shots": "node scripts/screenshots.mjs",
+    "a11y": "node scripts/a11y.mjs",
+    "e2e": "node scripts/e2e.mjs",
+    "test": "npm run build && npm run check && npm run a11y && npm run e2e"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://local_proxy@127.0.0.1:41729/git/chrisnas3000-cmd/Claude-Chris"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.6",
+    "axe-core": "^4.12.1",
+    "playwright": "^1.62.0"
+  }
+}
