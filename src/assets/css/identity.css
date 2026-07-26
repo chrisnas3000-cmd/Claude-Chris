@@ -157,6 +157,8 @@
 
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --ease-soft: cubic-bezier(0.32, 0.24, 0.16, 1);
+  /* Long-tailed ease-out: moves decisively, then takes its time arriving. */
+  --ease-reveal: cubic-bezier(0.16, 0.84, 0.28, 1);
   --dur-fast: 220ms;
   --dur: 420ms;
   --dur-slow: 900ms;
@@ -1094,18 +1096,68 @@ select.field__control {
 /* 19. Motion ============================================================== */
 
 /*
-  One reveal, used everywhere: a short rise with a fade, slow enough to feel
-  unhurried and short enough never to hold up reading. Staggering is capped
-  so a long list cannot turn into a queue.
+  TWO reveals, and deliberately only two kinds of thing use them.
+
+  The default fade-and-rise is the single most recognisable tell of a template
+  build — every AOS-driven page on the web moves the same 20-odd pixels. So
+  nothing here fades up. Instead each reveal is drawn from something the brand
+  already does:
+
+    type   — the line rises out of a masked edge, the way a printed line
+             appears as paper feeds past a platen. The glyphs are never
+             semi-transparent; they are either clipped or fully inked, which
+             is what keeps it feeling typographic rather than generic.
+
+    media  — the picture resolves from soft to sharp. That is the shallow
+             depth of field the photography direction asks for, played as
+             a moment instead of a still property.
+
+  Body copy, list items and individual rows get NO reveal at all. Animating
+  every element is its own kind of cheapness, and a page where only the
+  structural beats move reads as more deliberate than one where everything does.
 */
-.reveal {
-  opacity: 0;
-  transform: translateY(22px);
-  transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease);
-  transition-delay: calc(var(--reveal-delay, 0) * 70ms);
+
+[data-reveal] { --reveal-delay: 0; }
+
+/* Type: a masked rise. Negative insets bleed past the box so ascenders,
+   descenders and italic overhangs are never shaved. */
+[data-reveal="type"] {
+  clip-path: inset(100% -0.2em -0.3em -0.2em);
+  transform: translateY(0.16em);
+  transition:
+    clip-path 1.05s var(--ease-reveal),
+    transform 1.05s var(--ease-reveal);
+  transition-delay: calc(var(--reveal-delay) * 80ms);
 }
-.reveal.is-in { opacity: 1; transform: none; }
-.no-js .reveal { opacity: 1; transform: none; }
+[data-reveal="type"].is-in {
+  clip-path: inset(-0.35em -0.2em -0.3em -0.2em);
+  transform: none;
+}
+
+/* Media: resolves from soft to sharp, settling rather than sliding. */
+[data-reveal="media"] {
+  opacity: 0;
+  filter: blur(16px);
+  transform: scale(1.025);
+  transition:
+    opacity 800ms var(--ease-reveal),
+    filter 1.15s var(--ease-reveal),
+    transform 1.5s var(--ease-soft);
+  transition-delay: calc(var(--reveal-delay) * 90ms);
+}
+[data-reveal="media"].is-in {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+}
+
+/* Nothing stays hidden if the script never runs. */
+.no-js [data-reveal] {
+  clip-path: none;
+  opacity: 1;
+  filter: none;
+  transform: none;
+}
 
 /* Slow scale-in for hero and band imagery, on load only. */
 .ken img, .ken canvas {
@@ -1124,7 +1176,7 @@ select.field__control {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .reveal { opacity: 1; transform: none; }
+  [data-reveal] { clip-path: none !important; opacity: 1 !important; filter: none !important; transform: none !important; }
   .btn:hover, .card--link:hover { transform: none; }
   .fab { opacity: 1; transform: none; }
 }

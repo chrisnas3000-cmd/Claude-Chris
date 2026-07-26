@@ -10,8 +10,8 @@ description: "Massage, body treatments and beauty services at Teena'z Spa in Ach
 
 <section class="page-head">
   <div class="shell">
-    <p class="eyebrow eyebrow-rule">{{ site.serviceCount }} treatments</p>
-    <h1 class="display-2 page-head__title">{{ site.copy.services.title }}</h1>
+    <p class="eyebrow eyebrow-rule" data-reveal="type">{{ site.serviceCount }} treatments</p>
+    <h1 class="display-2 page-head__title" data-reveal="type" data-reveal-delay="1">{{ site.copy.services.title }}</h1>
     <p class="lead">{{ site.copy.services.lead }}</p>
 
     <nav class="jump" aria-label="Treatment categories">
@@ -31,10 +31,10 @@ description: "Massage, body treatments and beauty services at Teena'z Spa in Ach
     <div class="split" style="align-items: center; margin-bottom: var(--s-7);">
       <div>
         <p class="eyebrow eyebrow-rule">{{ category.services | length }} treatments</p>
-        <h2 class="h1" style="margin-block: var(--s-4);" id="{{ category.id }}-title">{{ category.name }}</h2>
+        <h2 class="h1" style="margin-block: var(--s-4);" id="{{ category.id }}-title" data-reveal="type">{{ category.name }}</h2>
         <p class="body-text">{{ category.intro }}</p>
       </div>
-      <figure class="figure reveal" data-reveal>
+      <figure class="figure" data-reveal="media">
         <div class="figure__frame" style="aspect-ratio: 3 / 2;">
           {{ frame(img, category.id) }}
         </div>
@@ -43,7 +43,7 @@ description: "Massage, body treatments and beauty services at Teena'z Spa in Ach
 
     <ul class="services">
       {% for service in category.services %}
-      <li class="service reveal" data-reveal data-reveal-delay="{{ loop.index }}">
+      <li class="service"-delay="{{ loop.index }}">
         <div class="service__text">
           <h3 class="service__name">
             {{ service.name }}

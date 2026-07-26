@@ -8,9 +8,9 @@ description: The component library for the Teenaz Spa visual identity — button
 <section class="section">
   <div class="shell">
     <div class="stack--lg stack" style="max-width: 48rem;">
-      <p class="eyebrow eyebrow-rule reveal" data-reveal>Component library</p>
-      <h1 class="display-2 reveal" data-reveal data-reveal-delay="1">Every part, in one place</h1>
-      <p class="lead reveal" data-reveal data-reveal-delay="2">
+      <p class="eyebrow eyebrow-rule" data-reveal="type">Component library</p>
+      <h1 class="display-2" data-reveal="type" data-reveal-delay="1">Every part, in one place</h1>
+      <p class="lead"-delay="2">
         Each component is built only from the tokens on the foundations page. All labels
         and copy shown here are placeholder.
       </p>
@@ -98,7 +98,7 @@ description: The component library for the Teenaz Spa visual identity — button
 
     <div class="grid-3">
       {% for tone in ['warm', 'steam', 'bronze'] %}
-      <a class="card card--link reveal" href="#cards" data-reveal data-reveal-delay="{{ loop.index }}">
+      <a class="card card--link" href="#cards" data-reveal="media" data-reveal-delay="{{ loop.index }}">
         <span class="card__media">
           <canvas data-media="service-{{ tone }}" data-tone="{{ tone }}" aria-hidden="true"></canvas>
         </span>
@@ -154,7 +154,7 @@ description: The component library for the Teenaz Spa visual identity — button
 
     <div class="grid-3">
       {% for variant in ['', 'quote--sand', ''] %}
-      <figure class="quote {{ variant }} reveal" data-reveal data-reveal-delay="{{ loop.index }}">
+      <figure class="quote {{ variant }}" data-reveal="media" data-reveal-delay="{{ loop.index }}">
         <span class="quote__mark" aria-hidden="true">&ldquo;</span>
         <blockquote class="quote__text">Placeholder testimonial sentence that runs to roughly the length a real one would.</blockquote>
         <figcaption class="quote__by">
@@ -183,13 +183,13 @@ description: The component library for the Teenaz Spa visual identity — button
     </header>
 
     <div class="split split--offset" style="margin-bottom: var(--s-9);">
-      <div class="figure reveal" data-reveal>
+      <div class="figure" data-reveal="media">
         <div class="figure__frame" style="aspect-ratio: 4 / 5;">
           <canvas data-media="editorial-a" data-tone="warm" aria-hidden="true"></canvas>
         </div>
         <p class="figure__caption">Placeholder frame — see the imagery brief for the intended shot.</p>
       </div>
-      <div class="stack--lg stack reveal" data-reveal data-reveal-delay="1">
+      <div class="stack--lg stack"-delay="1">
         <p class="eyebrow">Placeholder label</p>
         <h3 class="display-2">{{ identity.placeholder.short }}</h3>
         <p class="body-text">{{ identity.placeholder.paragraph }}</p>
@@ -198,12 +198,12 @@ description: The component library for the Teenaz Spa visual identity — button
     </div>
 
     <div class="split split--reverse">
-      <div class="figure reveal" data-reveal>
+      <div class="figure" data-reveal="media">
         <div class="figure__frame" style="aspect-ratio: 3 / 2;">
           <canvas data-media="editorial-b" data-tone="stone" aria-hidden="true"></canvas>
         </div>
       </div>
-      <div class="stack--lg stack reveal" data-reveal data-reveal-delay="1">
+      <div class="stack--lg stack"-delay="1">
         <p class="eyebrow">Reversed</p>
         <h3 class="h1">{{ identity.placeholder.short }}</h3>
         <p class="body-text">{{ identity.placeholder.paragraph }}</p>
@@ -225,7 +225,7 @@ description: The component library for the Teenaz Spa visual identity — button
       </p>
     </header>
 
-    <div class="overlay-media reveal ken" data-reveal style="margin-bottom: var(--s-6);">
+    <div class="overlay-media ken" data-reveal="media" style="margin-bottom: var(--s-6);">
       <canvas data-media="band-overlay" data-tone="deep" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%;"></canvas>
       <span class="overlay-media__scrim"></span>
       <div class="overlay-media__content shell">
@@ -262,7 +262,7 @@ description: The component library for the Teenaz Spa visual identity — button
 
     <div class="gallery">
       {% for tone in ['warm', 'stone', 'sage', 'bronze', 'steam'] %}
-      <figure class="gallery__item reveal" data-reveal data-reveal-delay="{{ loop.index }}">
+      <figure class="gallery__item" data-reveal="media" data-reveal-delay="{{ loop.index }}">
         <canvas data-media="gallery-{{ loop.index }}" data-tone="{{ tone }}" aria-hidden="true"></canvas>
       </figure>
       {% endfor %}
@@ -390,7 +390,7 @@ description: The component library for the Teenaz Spa visual identity — button
       </p>
     </header>
 
-    <div class="map reveal" data-reveal>
+    <div class="map" data-reveal="media">
       <canvas data-media="map" data-tone="sage" aria-hidden="true"></canvas>
       <div class="map__card">
         <p class="eyebrow">Placeholder label</p>

@@ -16,21 +16,21 @@ description: The Teenaz Spa visual identity composed as a full page, using place
   <div class="shell">
     <div class="split" style="align-items: end;">
       <div class="stack--lg stack">
-        <p class="eyebrow eyebrow-rule reveal" data-reveal>Placeholder eyebrow</p>
-        <h1 class="display-1 reveal" data-reveal data-reveal-delay="1">
+        <p class="eyebrow eyebrow-rule" data-reveal="type">Placeholder eyebrow</p>
+        <h1 class="display-1" data-reveal="type" data-reveal-delay="1">
           A quiet hour,<br><em>kept for you</em>
         </h1>
-        <p class="lead reveal" data-reveal data-reveal-delay="2">
+        <p class="lead"-delay="2">
           Placeholder introductory sentence. Two lines at most, sitting under the
           statement without competing with it.
         </p>
-        <div class="reveal" data-reveal data-reveal-delay="3" style="display: flex; flex-wrap: wrap; gap: var(--s-3);">
+        <div-delay="3" style="display: flex; flex-wrap: wrap; gap: var(--s-3);">
           <a class="btn btn--primary btn--lg" href="#applied-form">Placeholder action</a>
           <a class="btn btn--secondary btn--lg" href="#applied-services">Placeholder action</a>
         </div>
       </div>
 
-      <figure class="figure ken reveal" data-reveal data-reveal-delay="2">
+      <figure class="figure ken" data-reveal="media" data-reveal-delay="2">
         <div class="figure__frame" style="aspect-ratio: 4 / 5;">
           <canvas data-media="applied-hero" data-tone="warm" aria-hidden="true"></canvas>
         </div>
@@ -43,11 +43,11 @@ description: The Teenaz Spa visual identity composed as a full page, using place
 <section class="section section--raised">
   <div class="shell shell--narrow">
     <div class="section-head section-head--centre" style="margin-bottom: 0;">
-      <p class="eyebrow reveal" data-reveal>Placeholder label</p>
-      <h2 class="display-2 reveal" data-reveal data-reveal-delay="1" style="max-width: 20ch;">
+      <p class="eyebrow" data-reveal="type">Placeholder label</p>
+      <h2 class="display-2" data-reveal="type" data-reveal-delay="1" style="max-width: 20ch;">
         Placeholder statement set across two lines
       </h2>
-      <p class="body-text reveal" data-reveal data-reveal-delay="2" style="margin-inline: auto;">
+      <p class="body-text"-delay="2" style="margin-inline: auto;">
         {{ identity.placeholder.paragraph }}
       </p>
     </div>
@@ -65,7 +65,7 @@ description: The Teenaz Spa visual identity composed as a full page, using place
 
     <div class="grid-3">
       {% for tone in ['warm', 'bronze', 'steam'] %}
-      <a class="card card--link reveal" href="#applied-services" data-reveal data-reveal-delay="{{ loop.index }}">
+      <a class="card card--link" href="#applied-services" data-reveal="media" data-reveal-delay="{{ loop.index }}">
         <span class="card__media">
           <canvas data-media="applied-svc-{{ loop.index }}" data-tone="{{ tone }}" aria-hidden="true"></canvas>
         </span>
@@ -85,12 +85,12 @@ description: The Teenaz Spa visual identity composed as a full page, using place
 <section class="section section--alt">
   <div class="shell">
     <div class="split split--reverse split--offset">
-      <figure class="figure reveal" data-reveal>
+      <figure class="figure" data-reveal="media">
         <div class="figure__frame" style="aspect-ratio: 3 / 4;">
           <canvas data-media="applied-editorial" data-tone="stone" aria-hidden="true"></canvas>
         </div>
       </figure>
-      <div class="stack--lg stack reveal" data-reveal data-reveal-delay="1">
+      <div class="stack--lg stack"-delay="1">
         <p class="eyebrow">Placeholder label</p>
         <h2 class="display-2">Placeholder heading</h2>
         <p class="body-text">{{ identity.placeholder.paragraph }}</p>
@@ -104,7 +104,7 @@ description: The Teenaz Spa visual identity composed as a full page, using place
 <!-- ── Full-width band ──────────────────────────────────────────────────── -->
 <section class="section">
   <div class="shell">
-    <div class="overlay-media reveal ken" data-reveal>
+    <div class="overlay-media ken" data-reveal="media">
       <canvas data-media="applied-band" data-tone="deep" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%;"></canvas>
       <span class="overlay-media__scrim"></span>
       <div class="overlay-media__content" style="min-height: 32rem; padding: var(--s-8) var(--s-7);">
@@ -127,7 +127,7 @@ description: The Teenaz Spa visual identity composed as a full page, using place
 
     <div class="grid-3">
       {% for i in [1, 2, 3] %}
-      <figure class="quote reveal" data-reveal data-reveal-delay="{{ i }}">
+      <figure class="quote" data-reveal="media" data-reveal-delay="{{ i }}">
         <span class="quote__mark" aria-hidden="true">&ldquo;</span>
         <blockquote class="quote__text">Placeholder testimonial running to about the length of a real one.</blockquote>
         <figcaption class="quote__by">
@@ -152,7 +152,7 @@ description: The Teenaz Spa visual identity composed as a full page, using place
     </header>
     <div class="gallery">
       {% for tone in ['bronze', 'steam', 'warm', 'stone', 'sage'] %}
-      <figure class="gallery__item reveal" data-reveal data-reveal-delay="{{ loop.index }}">
+      <figure class="gallery__item" data-reveal="media" data-reveal-delay="{{ loop.index }}">
         <canvas data-media="applied-gal-{{ loop.index }}" data-tone="{{ tone }}" aria-hidden="true"></canvas>
       </figure>
       {% endfor %}
@@ -198,7 +198,7 @@ description: The Teenaz Spa visual identity composed as a full page, using place
     </header>
 
     <div class="split" style="align-items: start;">
-      <div class="map reveal" data-reveal>
+      <div class="map" data-reveal="media">
         <canvas data-media="applied-map" data-tone="sage" aria-hidden="true"></canvas>
         <div class="map__card">
           <p class="eyebrow">Placeholder label</p>
@@ -208,7 +208,7 @@ description: The Teenaz Spa visual identity composed as a full page, using place
         </div>
       </div>
 
-      <form class="form reveal" data-reveal data-reveal-delay="1">
+      <form class="form"-delay="1">
         <div class="field">
           <label class="field__label" for="a-name">Placeholder label</label>
           <input class="field__control" id="a-name" type="text" placeholder="Placeholder text">

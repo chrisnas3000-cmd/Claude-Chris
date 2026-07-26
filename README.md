@@ -75,18 +75,22 @@ a contrast ratio of 4.5:1 or better; `npm run a11y` will tell you if you break i
 
 ## Images
 
-**Image areas are painted placeholder frames, not photographs.** Stock-photo
-hosts were unreachable in the environment this was built in, so rather than
-reference pictures that could not be verified, each slot renders a soft
-out-of-focus wash in the brand's warm grade. See `/identity/imagery/` for the
-photography brief these stand in for.
+**All imagery is AI-generated and does not show the real premises.** Stock-photo
+hosts were unreachable in the environment this was built in, and no photography
+of the actual spa was supplied, so the hero film, the three service clips and
+the interior stills were all generated. They are graded to one warm neutral so
+they read as a single shoot.
+
+This is stated plainly in the footer disclaimer, and it matters: the site should
+not imply these are photographs of the business. Replace them with real
+photography before this goes anywhere near a customer.
 
 To swap in a real photo, set `src` on the matching entry in `site.js`:
 
 ```js
 hero: {
   src: '/assets/img/hero.jpg',    // was ''
-  tone: 'warm',                   // ignored once src is set
+  tone: 'warm',                   // only used if src is empty
   alt: 'The treatment room at Teena\'z Spa, lit low in the evening',
 },
 ```
@@ -96,12 +100,10 @@ The template switches from a placeholder frame to a real `<img>` automatically
 
 | Slot | Shape | Suggested subject |
 | --- | --- | --- |
-| `hero` | portrait, 900×1200 | a treatment room, lit low and warm |
-| `hammam` | portrait, 900×1200 | steam, water, Moroccan bath detail |
-| `interior` | landscape, 1600×900 | the space itself, looking through it |
-| `massage` | portrait, 900×1200 | a massage table, oils, hands at work |
-| `body` | portrait, 900×1200 | the steam room or scrub preparation |
-| `beauty` | portrait, 900×1200 | facial, nails or the beauty area |
+| `hero` | poster for the hero film, 1600×894 | the room, lit low |
+| `hammam` | portrait, 1000×1250 | steam, water, Moroccan bath detail |
+| `interior` | landscape, 1600×1000 | a treatment room with detail in frame |
+| `room` | wide, 1800×900 | the space with open, uncluttered wall |
 | `share` | 1200×630 **PNG** | used for WhatsApp and social link previews |
 
 `share` must stay a PNG or JPG — WhatsApp will not render an SVG link preview,

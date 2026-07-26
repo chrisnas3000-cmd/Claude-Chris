@@ -37,12 +37,12 @@ description: "Teena'z Spa is a spa, massage and beauty centre in Sodeco, Achrafi
   </div>
 
   <div class="shell hero__inner">
-    <p class="eyebrow eyebrow--on-film reveal" data-reveal>{{ site.copy.home.heroEyebrow }}</p>
-    <h1 class="display-1 hero__title reveal" data-reveal data-reveal-delay="1">
+    <p class="eyebrow eyebrow--on-film" data-reveal="type">{{ site.copy.home.heroEyebrow }}</p>
+    <h1 class="display-1 hero__title" data-reveal="type" data-reveal-delay="1">
       {{ site.copy.home.heroTitle }}<br><em>{{ site.copy.home.heroTitleAccent }}</em>
     </h1>
-    <p class="lead hero__lead reveal" data-reveal data-reveal-delay="2">{{ site.copy.home.heroLead }}</p>
-    <div class="hero__actions reveal" data-reveal data-reveal-delay="3">
+    <p class="lead hero__lead"-delay="2">{{ site.copy.home.heroLead }}</p>
+    <div class="hero__actions"-delay="3">
       <a class="btn btn--on-deep btn--lg" href="{{ wa }}" target="_blank" rel="noopener">Book on WhatsApp</a>
       <a class="btn btn--outline-film btn--lg" href="/treatments/">See treatments</a>
     </div>
@@ -54,7 +54,7 @@ description: "Teena'z Spa is a spa, massage and beauty centre in Sodeco, Achrafi
   <div class="shell">
     <ul class="marks">
       {% for mark in site.copy.home.marks %}
-      <li class="marks__item reveal" data-reveal data-reveal-delay="{{ loop.index }}">
+      <li class="marks__item"-delay="{{ loop.index }}">
         <span class="marks__label">{{ mark.label }}</span>
         <span class="marks__value">{% if mark.value == 'auto' %}{{ site.serviceCount }}{% else %}{{ mark.value }}{% endif %}</span>
         <span class="marks__detail">{{ mark.detail }}</span>
@@ -69,15 +69,14 @@ description: "Teena'z Spa is a spa, massage and beauty centre in Sodeco, Achrafi
   <div class="shell">
     <header class="section-head">
       <p class="eyebrow eyebrow-rule">What we do</p>
-      <h2 class="h1" id="cats-title">Three ways to spend an evening</h2>
+      <h2 class="h1" id="cats-title" data-reveal="type">Three ways to spend an evening</h2>
     </header>
 
     <ul class="cats">
       {% for category in site.serviceCategories %}
       {% set img = site.images[category.image] %}
       <li>
-        <a class="card card--link reveal" href="/treatments/#{{ category.id }}"
-           data-reveal data-reveal-delay="{{ loop.index }}">
+        <a class="card card--link" href="/treatments/#{{ category.id }}" data-reveal="media" data-reveal-delay="{{ loop.index }}">
           <span class="card__media">{{ frame(img, category.id) }}</span>
           <span class="card__body">
             <span class="cat__count">{{ category.services | length }} treatments</span>
@@ -99,7 +98,7 @@ description: "Teena'z Spa is a spa, massage and beauty centre in Sodeco, Achrafi
   <div class="shell">
     <div class="split split--offset">
 
-      <figure class="figure reveal" data-reveal>
+      <figure class="figure" data-reveal="media">
         <div class="figure__frame" style="aspect-ratio: 4 / 5;">
           {{ frame(site.images.hammam, 'hammam') }}
         </div>
@@ -107,7 +106,7 @@ description: "Teena'z Spa is a spa, massage and beauty centre in Sodeco, Achrafi
 
       <div>
         <p class="eyebrow eyebrow-rule">The signature</p>
-        <h2 class="display-2" style="margin-block: var(--s-4);" id="ritual-title">{{ site.copy.home.ritualTitle }}</h2>
+        <h2 class="display-2" style="margin-block: var(--s-4);" id="ritual-title" data-reveal="type">{{ site.copy.home.ritualTitle }}</h2>
         <p class="body-text" style="margin-bottom: var(--s-6);">{{ site.copy.home.ritualLead }}</p>
 
         {#
@@ -116,7 +115,7 @@ description: "Teena'z Spa is a spa, massage and beauty centre in Sodeco, Achrafi
         #}
         <ol class="steps">
           {% for step in site.copy.home.ritualSteps %}
-          <li class="steps__item reveal" data-reveal data-reveal-delay="{{ loop.index }}">
+          <li class="steps__item"-delay="{{ loop.index }}">
             <span class="steps__num" aria-hidden="true">{{ loop.index }}</span>
             <h3 class="steps__name">{{ step.name }}</h3>
             <p class="steps__text">{{ step.text }}</p>
@@ -140,7 +139,7 @@ description: "Teena'z Spa is a spa, massage and beauty centre in Sodeco, Achrafi
   <div class="shell">
     <div class="split split--reverse">
 
-      <figure class="figure reveal" data-reveal>
+      <figure class="figure" data-reveal="media">
         <div class="figure__frame" style="aspect-ratio: 16 / 10;">
           {{ frame(site.images.interior, 'interior') }}
         </div>
@@ -148,7 +147,7 @@ description: "Teena'z Spa is a spa, massage and beauty centre in Sodeco, Achrafi
 
       <div>
         <p class="eyebrow eyebrow-rule">Visit</p>
-        <h2 class="h1" style="margin-block: var(--s-4);" id="visit-title">Open late, every day</h2>
+        <h2 class="h1" style="margin-block: var(--s-4);" id="visit-title" data-reveal="type">Open late, every day</h2>
 
         <dl class="hours hours--lg" style="max-width: 26rem; margin-bottom: var(--s-5);">
           {% for group in site.hours.groups %}
@@ -179,7 +178,7 @@ description: "Teena'z Spa is a spa, massage and beauty centre in Sodeco, Achrafi
   <div class="shell shell--narrow">
     <div class="section-head section-head--centre" style="margin-bottom: var(--s-6);">
       <p class="eyebrow eyebrow--on-deep">Booking</p>
-      <h2 class="display-2" style="color: var(--ivory);" id="closing-title">{{ site.copy.home.closingTitle }}</h2>
+      <h2 class="display-2" style="color: var(--ivory);" id="closing-title" data-reveal="type">{{ site.copy.home.closingTitle }}</h2>
       <p class="lead">{{ site.copy.home.closingLead }}</p>
     </div>
     <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-3);">

@@ -315,14 +315,21 @@ const images = {
     alt: 'A treatment room lit by candles, with warm towels, hot stones and steam',
   },
   hammam: {
-    src: '',
+    src: '/assets/img/hammam.jpg',
     tone: 'steam',
-    alt: 'Steam and water in the Moroccan bath',
+    alt: 'Steam rising from a stone basin of warm water, with a kessa glove resting on the marble edge',
   },
   interior: {
-    src: '',
+    src: '/assets/img/interior.jpg',
     tone: 'stone',
-    alt: 'The interior of the spa, looking through towards the treatment rooms',
+    alt: 'A treatment room lit by candles, with folded towels, hot stones and a brass bowl of oil',
+  },
+  // Wider and quieter than `interior` — used where a band of image sits behind
+  // or beside text and needs open space rather than detail.
+  room: {
+    src: '/assets/img/room.jpg',
+    tone: 'warm',
+    alt: 'A plaster wall and treatment table lit by a row of candles',
   },
   massage: {
     src: '',
@@ -454,7 +461,7 @@ const seo = {
 const disclaimer = {
   enabled: true,
   text:
-    'This is an independent website concept and not the official Teena’z Spa website. Imagery is placeholder artwork. Details shown here should be confirmed with the spa directly.',
+    'This is an independent website concept and not the official Teena’z Spa website. All imagery and film is AI-generated and does not show the actual premises. Details shown here should be confirmed with the spa directly.',
 };
 
 export default {

@@ -10,8 +10,8 @@ description: "Find Teena'z Spa in Sodeco, Achrafieh, Beirut. Open Monday to Satu
 
 <section class="page-head">
   <div class="shell">
-    <p class="eyebrow eyebrow-rule">Visit</p>
-    <h1 class="display-2 page-head__title">{{ site.copy.contact.title }}</h1>
+    <p class="eyebrow eyebrow-rule" data-reveal="type">Visit</p>
+    <h1 class="display-2 page-head__title" data-reveal="type" data-reveal-delay="1">{{ site.copy.contact.title }}</h1>
     <p class="lead">{{ site.copy.contact.lead }}</p>
   </div>
 </section>
@@ -20,7 +20,7 @@ description: "Find Teena'z Spa in Sodeco, Achrafieh, Beirut. Open Monday to Satu
   <div class="shell">
     <div class="grid-3" style="margin-bottom: var(--s-7);">
 
-      <article class="card card--deep reveal" data-reveal>
+      <article class="card card--deep" data-reveal="media">
         <div class="card__body">
           <h2 class="card__title">WhatsApp</h2>
           <p class="card__text">The fastest way to book. Tell us the treatment and roughly when suits you.</p>
@@ -32,7 +32,7 @@ description: "Find Teena'z Spa in Sodeco, Achrafieh, Beirut. Open Monday to Satu
         </div>
       </article>
 
-      <article class="card reveal" data-reveal data-reveal-delay="1">
+      <article class="card" data-reveal="media" data-reveal-delay="1">
         <div class="card__body">
           <h2 class="card__title">Telephone</h2>
           <p class="card__text">If you would rather talk it through, call during opening hours.</p>
@@ -44,7 +44,7 @@ description: "Find Teena'z Spa in Sodeco, Achrafieh, Beirut. Open Monday to Satu
         </div>
       </article>
 
-      <article class="card reveal" data-reveal data-reveal-delay="2">
+      <article class="card" data-reveal="media" data-reveal-delay="2">
         <div class="card__body">
           <h2 class="card__title">Instagram</h2>
           <p class="card__text">Recent work and the room itself.</p>
@@ -59,7 +59,7 @@ description: "Find Teena'z Spa in Sodeco, Achrafieh, Beirut. Open Monday to Satu
 
     <div class="split" style="align-items: start;">
 
-      <div class="map reveal" data-reveal>
+      <div class="map" data-reveal="media">
         {{ frame(site.images.hammam, 'visit-map') }}
         <div class="map__card">
           <p class="eyebrow">Where we are</p>
@@ -72,7 +72,7 @@ description: "Find Teena'z Spa in Sodeco, Achrafieh, Beirut. Open Monday to Satu
         </div>
       </div>
 
-      <div class="reveal" data-reveal data-reveal-delay="1">
+      <div-delay="1">
         <p class="eyebrow eyebrow-rule">Opening hours</p>
         <h2 class="h1" style="margin-block: var(--s-4);">Open late, every day</h2>
         <dl class="hours hours--lg" style="margin-bottom: var(--s-5);">

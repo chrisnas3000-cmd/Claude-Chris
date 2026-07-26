@@ -8,11 +8,11 @@ description: Photography, video and motion direction for the Teenaz Spa visual i
 <section class="section">
   <div class="shell">
     <div class="stack--lg stack" style="max-width: 48rem;">
-      <p class="eyebrow eyebrow-rule reveal" data-reveal>Imagery &amp; motion</p>
-      <h1 class="display-2 reveal" data-reveal data-reveal-delay="1">
+      <p class="eyebrow eyebrow-rule" data-reveal="type">Imagery &amp; motion</p>
+      <h1 class="display-2" data-reveal="type" data-reveal-delay="1">
         How it should <em>look and move</em>
       </h1>
-      <p class="lead reveal" data-reveal data-reveal-delay="2">
+      <p class="lead"-delay="2">
         Photography carries more of this identity than any other element. The brief below
         is written to be handed to a photographer as-is.
       </p>
@@ -61,7 +61,7 @@ description: Photography, video and motion direction for the Teenaz Spa visual i
         ['deep', 'Deep', 'Low-lit rooms. Only where type sits over the image.']
       ] %}
       {% for tone in tones %}
-      <figure class="figure reveal" data-reveal data-reveal-delay="{{ loop.index }}">
+      <figure class="figure" data-reveal="media" data-reveal-delay="{{ loop.index }}">
         <div class="figure__frame" style="aspect-ratio: 4 / 3;">
           <canvas data-media="tone-{{ tone[0] }}" data-tone="{{ tone[0] }}" aria-hidden="true"></canvas>
         </div>
@@ -84,7 +84,7 @@ description: Photography, video and motion direction for the Teenaz Spa visual i
 
     <div class="grid-3">
       {% for rule in identity.imagery.treatment %}
-      <div class="card card--sand reveal" data-reveal data-reveal-delay="{{ loop.index }}">
+      <div class="card card--sand" data-reveal="media" data-reveal-delay="{{ loop.index }}">
         <div class="card__body">
           <p class="h4">{{ rule.name }}</p>
           <p class="card__text">{{ rule.note }}</p>
@@ -109,13 +109,13 @@ description: Photography, video and motion direction for the Teenaz Spa visual i
     </header>
 
     <div class="do-dont">
-      <div class="do-dont__col do-dont__col--do reveal" data-reveal>
+      <div class="do-dont__col do-dont__col--do">
         <p class="do-dont__title">Shoot</p>
         <ul class="do-dont__list">
           {% for subject in identity.imagery.subjects %}<li>{{ subject }}</li>{% endfor %}
         </ul>
       </div>
-      <div class="do-dont__col do-dont__col--dont reveal" data-reveal data-reveal-delay="1">
+      <div class="do-dont__col do-dont__col--dont"-delay="1">
         <p class="do-dont__title">Never</p>
         <ul class="do-dont__list">
           {% for item in identity.imagery.avoid %}<li>{{ item }}</li>{% endfor %}
@@ -174,7 +174,7 @@ description: Photography, video and motion direction for the Teenaz Spa visual i
     </header>
 
     <div class="split" style="align-items: start;">
-      <div class="media-band reveal ken" data-reveal>
+      <div class="media-band ken">
         <div class="media-band__frame" style="border-radius: var(--r-lg); overflow: hidden;">
           <canvas data-media="video-frame" data-tone="steam" aria-hidden="true"></canvas>
         </div>

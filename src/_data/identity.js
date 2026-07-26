@@ -182,7 +182,9 @@ const spaceScale = [
 
 /* --- Motion --------------------------------------------------------------- */
 const motion = [
-  { name: 'Reveal on scroll', token: '--dur-slow', value: '900ms', curve: 'ease-out', note: 'Fade with a 22px rise. Staggered at 70ms, capped so a list never becomes a queue.' },
+  { name: 'Type reveal', token: '--ease-reveal', value: '1050ms', curve: 'ease-reveal', note: 'A masked rise: the line emerges from a clipped edge, the way a printed line appears as paper feeds past. Glyphs are never semi-transparent — clipped or fully inked.' },
+  { name: 'Media reveal', token: '--ease-reveal', value: '800–1500ms', curve: 'ease-reveal', note: 'The picture resolves from soft to sharp and settles. The shallow depth of field the photography asks for, played as a moment.' },
+  { name: 'Nothing else', token: '—', value: '—', curve: '—', note: 'Body copy, list items and rows carry no reveal at all. Animating every element is its own kind of cheapness; only the structural beats move.' },
   { name: 'Image scale-in', token: '--dur-image', value: '1200ms', curve: 'ease-soft', note: 'From 1.06 to 1. Hero and band imagery only, on load.' },
   { name: 'Hover transition', token: '--dur', value: '420ms', curve: 'ease-out', note: 'Colour and border changes on cards and buttons.' },
   { name: 'Control feedback', token: '--dur-fast', value: '220ms', curve: 'ease-out', note: 'Focus rings, field borders, nav underlines. Fast enough to feel immediate.' },

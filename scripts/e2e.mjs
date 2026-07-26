@@ -211,18 +211,20 @@ await test('no revealed element stays invisible after scrolling a page', async (
     await page.goto(`${base}${url}`, { waitUntil: 'networkidle' });
 
     const screens = await page.evaluate(() =>
-      Math.ceil(document.body.scrollHeight / window.innerHeight)
+      Math.ceil(document.body.scrollHeight / (window.innerHeight * 0.5))
     );
     for (let i = 1; i <= screens; i += 1) {
-      await page.evaluate((n) => window.scrollTo(0, window.innerHeight * n), i);
-      await page.waitForTimeout(300);
+      await page.evaluate((n) => window.scrollTo(0, window.innerHeight * 0.5 * n), i);
+      await page.waitForTimeout(220);
     }
-    await page.waitForTimeout(1200);
+    await page.waitForTimeout(1400);
 
+    // Checks the class rather than opacity: the type reveal animates clip-path
+    // and never drops opacity, so an opacity test would miss it entirely.
     const hidden = await page.evaluate(() =>
       Array.from(document.querySelectorAll('[data-reveal]'))
-        .filter((el) => parseFloat(getComputedStyle(el).opacity) < 0.99)
-        .map((el) => el.className)
+        .filter((el) => !el.classList.contains('is-in'))
+        .map((el) => `${el.getAttribute('data-reveal')}:${el.className}`)
     );
     assert(hidden.length === 0, `${url} left ${hidden.length} element(s) hidden: ${hidden.join(', ')}`);
     await page.close();

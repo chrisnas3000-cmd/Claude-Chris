@@ -10,8 +10,8 @@ description: "About Teena'z Spa — a spa, massage and beauty centre in Sodeco, 
 
 <section class="page-head">
   <div class="shell">
-    <p class="eyebrow eyebrow-rule">About</p>
-    <h1 class="display-2 page-head__title">{{ site.copy.about.title }}</h1>
+    <p class="eyebrow eyebrow-rule" data-reveal="type">About</p>
+    <h1 class="display-2 page-head__title" data-reveal="type" data-reveal-delay="1">{{ site.copy.about.title }}</h1>
     <p class="lead">{{ site.copy.about.lead }}</p>
   </div>
 </section>
@@ -22,11 +22,11 @@ description: "About Teena'z Spa — a spa, massage and beauty centre in Sodeco, 
 
       <div class="stack--lg stack">
         {% for paragraph in site.copy.about.body %}
-        <p class="body-text reveal" data-reveal data-reveal-delay="{{ loop.index }}">{{ paragraph }}</p>
+        <p class="body-text"-delay="{{ loop.index }}">{{ paragraph }}</p>
         {% endfor %}
       </div>
 
-      <aside class="card card--sand reveal" data-reveal>
+      <aside class="card card--sand" data-reveal="media">
         <div class="card__body">
           <h2 class="h4">In short</h2>
           <ul class="do-dont__list" style="font-size: var(--t-small);">
@@ -42,7 +42,7 @@ description: "About Teena'z Spa — a spa, massage and beauty centre in Sodeco, 
 
 <section class="section">
   <div class="shell">
-    <figure class="figure reveal ken" data-reveal>
+    <figure class="figure ken" data-reveal="media">
       <div class="figure__frame" style="aspect-ratio: 21 / 9;">
         {{ frame(site.images.interior, 'about-interior') }}
       </div>

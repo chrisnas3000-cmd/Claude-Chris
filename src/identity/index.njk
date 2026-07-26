@@ -8,11 +8,11 @@ description: Colour, typography, spacing and surface tokens for the Teenaz Spa v
 <section class="section section--lg">
   <div class="shell">
     <div class="stack--lg stack" style="max-width: 52rem;">
-      <p class="eyebrow eyebrow-rule reveal" data-reveal>Visual identity</p>
-      <h1 class="display-1 reveal" data-reveal data-reveal-delay="1">
+      <p class="eyebrow eyebrow-rule" data-reveal="type">Visual identity</p>
+      <h1 class="display-1" data-reveal="type" data-reveal-delay="1">
         A warm, intimate <em>urban sanctuary</em>
       </h1>
-      <p class="lead reveal" data-reveal data-reveal-delay="2" style="max-width: 52ch;">
+      <p class="lead"-delay="2" style="max-width: 52ch;">
         The system below defines how the brand looks and behaves — colour, type, spacing,
         components, imagery and motion. Every word on these pages is placeholder text.
         Content is decided separately.
@@ -47,13 +47,13 @@ description: Colour, typography, spacing and surface tokens for the Teenaz Spa v
     </header>
 
     <div class="do-dont">
-      <div class="do-dont__col do-dont__col--do reveal" data-reveal>
+      <div class="do-dont__col do-dont__col--do">
         <p class="do-dont__title">It should feel</p>
         <ul class="do-dont__list">
           {% for word in identity.atmosphere.is %}<li>{{ word }}</li>{% endfor %}
         </ul>
       </div>
-      <div class="do-dont__col do-dont__col--dont reveal" data-reveal data-reveal-delay="1">
+      <div class="do-dont__col do-dont__col--dont"-delay="1">
         <p class="do-dont__title">It must never feel like</p>
         <ul class="do-dont__list">
           {% for word in identity.atmosphere.isNot %}<li>{{ word }}</li>{% endfor %}
@@ -93,7 +93,7 @@ description: Colour, typography, spacing and surface tokens for the Teenaz Spa v
 
     <div class="grid-3">
       {% for colour in identity.palette %}
-      <div class="swatch reveal" data-reveal data-reveal-delay="{{ loop.index }}">
+      <div class="swatch"-delay="{{ loop.index }}">
         <div class="swatch__chip" style="background: {{ colour.hex }};"></div>
         <div class="stack--sm stack">
           <div class="spec__label" style="border: 0; padding: 0;">
@@ -124,7 +124,7 @@ description: Colour, typography, spacing and surface tokens for the Teenaz Spa v
 
     <div class="grid-2">
       {% for tint in identity.derived %}
-      <div class="card card--sand reveal" data-reveal data-reveal-delay="{{ loop.index }}">
+      <div class="card card--sand" data-reveal="media" data-reveal-delay="{{ loop.index }}">
         <div class="card__body">
           <div style="display: flex; align-items: center; gap: var(--s-4);">
             <span style="width: 3rem; height: 3rem; border-radius: var(--r-sm); background: {{ tint.hex }}; flex: none;"></span>
@@ -211,7 +211,7 @@ description: Colour, typography, spacing and surface tokens for the Teenaz Spa v
     </header>
 
     <div class="grid-2" style="margin-bottom: var(--s-9);">
-      <div class="card reveal" data-reveal>
+      <div class="card" data-reveal="media">
         <div class="card__body">
           <p class="eyebrow">Display face</p>
           <p style="font-family: var(--font-display); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 300; line-height: 1;">Aa</p>
@@ -220,7 +220,7 @@ description: Colour, typography, spacing and surface tokens for the Teenaz Spa v
           <p class="card__text">Headings and large editorial statements only. Never below about 20px, where its thin strokes lose definition.</p>
         </div>
       </div>
-      <div class="card reveal" data-reveal data-reveal-delay="1">
+      <div class="card" data-reveal="media" data-reveal-delay="1">
         <div class="card__body">
           <p class="eyebrow">Interface face</p>
           <p style="font-family: var(--font-ui); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 300; line-height: 1;">Aa</p>

@@ -91,10 +91,18 @@
       if (delay) el.style.setProperty('--reveal-delay', delay);
     });
 
+    var pending = [];
+
+    function reveal(el) {
+      el.classList.add('is-in');
+      var at = pending.indexOf(el);
+      if (at !== -1) pending.splice(at, 1);
+    }
+
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-in');
+        reveal(entry.target);
         observer.unobserve(entry.target);
       });
     }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
@@ -106,7 +114,25 @@
         el.classList.add('is-in');
         return;
       }
+      pending.push(el);
       observer.observe(el);
     });
+
+    /*
+      Safety net. The observer's negative bottom margin leaves a band near the
+      foot of the viewport that a fast or jumped scroll can cross without ever
+      producing an intersection. Anything scrolled past but still hidden is
+      caught here, so no heading is left invisible.
+    */
+    window.addEventListener('scroll', function () {
+      if (!pending.length) return;
+      for (var i = pending.length - 1; i >= 0; i -= 1) {
+        var el = pending[i];
+        if (el.getBoundingClientRect().top < window.innerHeight) {
+          observer.unobserve(el);
+          reveal(el);
+        }
+      }
+    }, { passive: true });
   }
 })();
