@@ -1,25 +1,36 @@
-<footer class="site-footer">
+<footer class="footer">
   <div class="shell">
 
-    <div class="site-footer__grid">
+    <div class="footer__grid">
 
-      <div class="site-footer__brand">
-        <p class="site-footer__name">{{ site.business.name }}</p>
-        <p class="site-footer__summary">{{ site.business.summary }}</p>
+      <div class="footer__brand">
+        <a class="logo" href="/">
+          <svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+            <circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1"/>
+            <path d="M16 6c4.4 3.2 6.6 6.6 6.6 10a6.6 6.6 0 0 1-13.2 0C9.4 12.6 11.6 9.2 16 6Z"
+                  fill="none" stroke="currentColor" stroke-width="1.2"/>
+            <path d="M16 12v9" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.55"/>
+          </svg>
+          <span class="logo__text">
+            <span class="logo__name">{{ site.business.name }}</span>
+            <span class="logo__sub">{{ site.business.tagline }}</span>
+          </span>
+        </a>
+        <p class="footer__summary">{{ site.business.summary }}</p>
       </div>
 
-      <div class="site-footer__col">
-        <h2 class="site-footer__heading">Visit</h2>
-        <address class="site-footer__address">
+      <div>
+        <h2 class="footer__heading">Visit</h2>
+        <address class="footer__address">
           {% for line in site.contact.address.lines %}<span>{{ line }}</span>{% endfor %}
         </address>
-        <a class="site-footer__link" href="{{ site.contact.address.mapsLink }}" target="_blank" rel="noopener">
+        <a class="link small" href="{{ site.contact.address.mapsLink }}" target="_blank" rel="noopener">
           Open in Maps
         </a>
       </div>
 
-      <div class="site-footer__col">
-        <h2 class="site-footer__heading">Hours</h2>
+      <div>
+        <h2 class="footer__heading">Hours</h2>
         <dl class="hours hours--stack">
           {% for group in site.hours.groups %}
           <div class="hours__row">
@@ -30,14 +41,12 @@
         </dl>
       </div>
 
-      <div class="site-footer__col">
-        <h2 class="site-footer__heading">Contact</h2>
-        <ul class="site-footer__contacts">
+      <div>
+        <h2 class="footer__heading">Contact</h2>
+        <ul class="footer__list">
           <li>
             <a href="{{ site.contact.whatsapp.link | whatsapp(site.contact.whatsapp.prefill) }}"
-               target="_blank" rel="noopener">
-              WhatsApp {{ site.contact.whatsapp.display }}
-            </a>
+               target="_blank" rel="noopener">WhatsApp {{ site.contact.whatsapp.display }}</a>
           </li>
           <li><a href="{{ site.contact.phone.link }}">Call {{ site.contact.phone.display }}</a></li>
           <li>
@@ -50,10 +59,10 @@
 
     </div>
 
-    <div class="site-footer__base">
-      <p class="site-footer__copy">© {{ site.year }} {{ site.business.name }}</p>
-      <nav class="site-footer__nav" aria-label="Footer">
-        <ul>
+    <div class="footer__base">
+      <p>© {{ site.year }} {{ site.business.name }}</p>
+      <nav aria-label="Footer">
+        <ul class="footer__nav">
           {% for item in site.nav %}
           <li><a href="{{ item.url }}">{{ item.label }}</a></li>
           {% endfor %}
@@ -62,7 +71,7 @@
     </div>
 
     {% if site.disclaimer.enabled %}
-    <p class="site-footer__disclaimer">{{ site.disclaimer.text }}</p>
+    <p class="footer__disclaimer">{{ site.disclaimer.text }}</p>
     {% endif %}
 
   </div>

@@ -12,7 +12,7 @@
 <meta name="description" content="{{ pageDesc }}">
 <meta name="keywords" content="{{ site.seo.keywords | join(', ') }}">
 <link rel="canonical" href="{{ canonical }}">
-<meta name="theme-color" content="{{ site.brand.colors.noir }}">
+<meta name="theme-color" content="{{ site.brand.colors.ivory }}">
 <meta name="robots" content="index, follow">
 
 <!-- Open Graph / social previews -->
@@ -34,20 +34,25 @@
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 
-<!-- Brand tokens, generated from src/_data/site.js -->
+<!--
+  Brand tokens from src/_data/site.js. These override the defaults in
+  identity.css, so that file stays the design system and site.js stays the
+  single place to change this site's colours and faces.
+-->
 <style>
 :root {
 {%- for key, value in site.brand.colors %}
   --{{ key | kebab }}: {{ value }};
 {%- endfor %}
   --font-display: {{ site.brand.fonts.display | safe }};
-  --font-body: {{ site.brand.fonts.body | safe }};
+  --font-ui: {{ site.brand.fonts.body | safe }};
 }
 </style>
-<link rel="preload" href="/assets/fonts/marcellus-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/assets/fonts/jost-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/fonts.css">
-<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="preload" href="/assets/fonts/cormorant-garamond-300-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/manrope-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/fonts-identity.css">
+<link rel="stylesheet" href="/assets/css/identity.css">
+<link rel="stylesheet" href="/assets/css/site.css">
 
 <!-- Structured data: helps this business appear correctly in search and maps -->
 <script type="application/ld+json">
@@ -105,19 +110,6 @@
 <body class="no-js{% if bodyClass %} {{ bodyClass }}{% endif %}">
 <a class="skip-link" href="#main">Skip to content</a>
 
-{#
-  The arch. This is the site's signature shape — a Moorish pointed arch, drawn
-  once here in normalised coordinates and referenced from CSS via
-  `clip-path: url(#arch-clip)` so it scales to whatever it is applied to.
-#}
-<svg class="sr-only" aria-hidden="true" focusable="false" width="0" height="0">
-  <defs>
-    <clipPath id="arch-clip" clipPathUnits="objectBoundingBox">
-      <path d="M 0 1 L 0 0.52 C 0 0.177, 0.19 0, 0.5 0 C 0.81 0, 1 0.177, 1 0.52 L 1 1 Z"/>
-    </clipPath>
-  </defs>
-</svg>
-
 {% include "partials/header.njk" %}
 
 <main id="main">
@@ -127,6 +119,7 @@
 {% include "partials/footer.njk" %}
 {% include "partials/booking-bar.njk" %}
 
+<script src="/assets/js/placeholder-media.js" defer></script>
 <script src="/assets/js/main.js" defer></script>
 </body>
 </html>

@@ -1,38 +1,62 @@
-<header class="site-header" data-header>
-  <div class="shell site-header__inner">
+<header class="header" data-header>
+  <div class="shell header__inner">
 
-    <a class="wordmark" href="/" aria-label="{{ site.business.name }} — home">
-      <svg class="wordmark__mark" viewBox="0 0 34 42" aria-hidden="true" focusable="false">
-        <path d="M 0 42 L 0 21.8 C 0 7.4 6.5 0 17 0 C 27.5 0 34 7.4 34 21.8 L 34 42"
-              fill="none" stroke="currentColor" stroke-width="2.4"/>
-        <circle cx="17" cy="26" r="2.6" fill="currentColor"/>
+    <a class="logo" href="/" aria-label="{{ site.business.name }} — home">
+      <svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1"/>
+        <path d="M16 6c4.4 3.2 6.6 6.6 6.6 10a6.6 6.6 0 0 1-13.2 0C9.4 12.6 11.6 9.2 16 6Z"
+              fill="none" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M16 12v9" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.55"/>
       </svg>
-      <span class="wordmark__text">
-        <span class="wordmark__name">{{ site.business.name }}</span>
-        <span class="wordmark__tag">{{ site.contact.address.district }} · {{ site.contact.address.city }}</span>
+      <span class="logo__text">
+        <span class="logo__name">{{ site.business.name }}</span>
+        <span class="logo__sub">{{ site.contact.address.district }} · {{ site.contact.address.city }}</span>
       </span>
     </a>
 
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
-      <span class="nav-toggle__bars" aria-hidden="true"><i></i><i></i></span>
-      <span class="nav-toggle__label">Menu</span>
-    </button>
-
-    <nav class="site-nav" id="site-nav" aria-label="Main">
-      <ul class="site-nav__list">
+    <nav class="nav" aria-label="Main">
+      <ul class="nav__list">
         {% for item in site.nav %}
         <li>
-          <a href="{{ item.url }}"
+          <a class="nav__link" href="{{ item.url }}"
              {% if page.url == item.url %}aria-current="page"{% endif %}>{{ item.label }}</a>
         </li>
         {% endfor %}
       </ul>
-      <a class="btn btn--brass site-nav__cta"
+      <a class="btn btn--primary btn--sm"
          href="{{ site.contact.whatsapp.link | whatsapp(site.contact.whatsapp.prefill) }}"
-         target="_blank" rel="noopener">
-        Book on WhatsApp
-      </a>
+         target="_blank" rel="noopener">Book on WhatsApp</a>
     </nav>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="drawer"
+            aria-label="Open menu" data-nav-toggle>
+      <span class="nav-toggle__bars" aria-hidden="true"><i></i><i></i></span>
+    </button>
 
   </div>
 </header>
+
+<div class="drawer" id="drawer" data-drawer>
+  <div class="drawer__head">
+    <span class="logo__name">{{ site.business.name }}</span>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="drawer"
+            aria-label="Close menu" data-nav-toggle>
+      <span class="nav-toggle__bars" aria-hidden="true"><i></i><i></i></span>
+    </button>
+  </div>
+
+  <nav class="drawer__list" aria-label="Main, mobile">
+    {% for item in site.nav %}
+    <a class="drawer__link" href="{{ item.url }}">{{ item.label }}</a>
+    {% endfor %}
+  </nav>
+
+  <div class="drawer__foot">
+    <a class="btn btn--primary btn--block btn--lg"
+       href="{{ site.contact.whatsapp.link | whatsapp(site.contact.whatsapp.prefill) }}"
+       target="_blank" rel="noopener">Book on WhatsApp</a>
+    <a class="btn btn--secondary btn--block" href="{{ site.contact.phone.link }}">
+      Call {{ site.contact.phone.display }}
+    </a>
+  </div>
+</div>

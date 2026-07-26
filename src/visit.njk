@@ -6,71 +6,86 @@ bodyClass: page-visit
 description: "Find Teena'z Spa in Sodeco, Achrafieh, Beirut. Open Monday to Saturday 11 AM–11 PM and Sunday 2 PM–11 PM. Book on WhatsApp or call."
 ---
 
+{% from "partials/media.njk" import frame %}
+
 <section class="page-head">
   <div class="shell">
-    <p class="eyebrow">Visit</p>
-    <h1 class="page-head__title">{{ site.copy.contact.title }}</h1>
-    <p class="page-head__lead">{{ site.copy.contact.lead }}</p>
+    <p class="eyebrow eyebrow-rule">Visit</p>
+    <h1 class="display-2 page-head__title">{{ site.copy.contact.title }}</h1>
+    <p class="lead">{{ site.copy.contact.lead }}</p>
   </div>
 </section>
 
-<section class="section section--plaster">
-  <div class="shell contact-grid">
+<section class="section section--raised">
+  <div class="shell">
+    <div class="grid-3" style="margin-bottom: var(--s-7);">
 
-    <!-- Primary: WhatsApp -->
-    <article class="card card--accent reveal" data-reveal>
-      <h2 class="card__title">WhatsApp</h2>
-      <p class="card__text">The fastest way to book. Tell us the treatment and roughly when suits you.</p>
-      <a class="btn btn--brass btn--block"
-         href="{{ site.contact.whatsapp.link | whatsapp(site.contact.whatsapp.prefill) }}"
-         target="_blank" rel="noopener">{{ site.contact.whatsapp.display }}</a>
-    </article>
-
-    <article class="card reveal" data-reveal data-reveal-delay="1">
-      <h2 class="card__title">Telephone</h2>
-      <p class="card__text">If you would rather talk it through, call during opening hours.</p>
-      <a class="btn btn--outline btn--block" href="{{ site.contact.phone.link }}">
-        {{ site.contact.phone.display }}
-      </a>
-    </article>
-
-    <article class="card reveal" data-reveal data-reveal-delay="2">
-      <h2 class="card__title">Instagram</h2>
-      <p class="card__text">Recent work and the room itself.</p>
-      <a class="btn btn--outline btn--block" href="{{ site.contact.instagram.link }}"
-         target="_blank" rel="noopener">{{ site.contact.instagram.handle }}</a>
-    </article>
-
-    <article class="card card--wide reveal" data-reveal data-reveal-delay="3">
-      <h2 class="card__title">Where we are</h2>
-      <address class="card__address">
-        {% for line in site.contact.address.lines %}<span>{{ line }}</span>{% endfor %}
-      </address>
-      <a class="link-arrow link-arrow--dark" href="{{ site.contact.address.mapsLink }}"
-         target="_blank" rel="noopener">
-        Open in Maps<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M4 12h15m0 0-6-6m6 6-6 6"/></svg>
-      </a>
-    </article>
-
-    <article class="card card--wide reveal" data-reveal data-reveal-delay="4">
-      <h2 class="card__title">Opening hours</h2>
-      <dl class="hours hours--lg">
-        {% for group in site.hours.groups %}
-        <div class="hours__row">
-          <dt>{{ group.label }}</dt>
-          <dd>{{ group.time }}</dd>
+      <article class="card card--deep reveal" data-reveal>
+        <div class="card__body">
+          <h2 class="card__title">WhatsApp</h2>
+          <p class="card__text">The fastest way to book. Tell us the treatment and roughly when suits you.</p>
+          <div class="card__foot">
+            <a class="btn btn--on-deep btn--block"
+               href="{{ site.contact.whatsapp.link | whatsapp(site.contact.whatsapp.prefill) }}"
+               target="_blank" rel="noopener">{{ site.contact.whatsapp.display }}</a>
+          </div>
         </div>
-        {% endfor %}
-      </dl>
-      {% if site.hours.note %}<p class="card__note">{{ site.hours.note }}</p>{% endif %}
-    </article>
+      </article>
 
+      <article class="card reveal" data-reveal data-reveal-delay="1">
+        <div class="card__body">
+          <h2 class="card__title">Telephone</h2>
+          <p class="card__text">If you would rather talk it through, call during opening hours.</p>
+          <div class="card__foot">
+            <a class="btn btn--secondary btn--block" href="{{ site.contact.phone.link }}">
+              {{ site.contact.phone.display }}
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-reveal data-reveal-delay="2">
+        <div class="card__body">
+          <h2 class="card__title">Instagram</h2>
+          <p class="card__text">Recent work and the room itself.</p>
+          <div class="card__foot">
+            <a class="btn btn--secondary btn--block" href="{{ site.contact.instagram.link }}"
+               target="_blank" rel="noopener">{{ site.contact.instagram.handle }}</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="split" style="align-items: start;">
+
+      <div class="map reveal" data-reveal>
+        {{ frame(site.images.hammam, 'visit-map') }}
+        <div class="map__card">
+          <p class="eyebrow">Where we are</p>
+          <p class="h4">{{ site.business.name }}</p>
+          <address style="display: grid; gap: 0.1rem;" class="small muted">
+            {% for line in site.contact.address.lines %}<span>{{ line }}</span>{% endfor %}
+          </address>
+          <a class="link small" href="{{ site.contact.address.mapsLink }}"
+             target="_blank" rel="noopener">Open in Maps</a>
+        </div>
+      </div>
+
+      <div class="reveal" data-reveal data-reveal-delay="1">
+        <p class="eyebrow eyebrow-rule">Opening hours</p>
+        <h2 class="h1" style="margin-block: var(--s-4);">Open late, every day</h2>
+        <dl class="hours hours--lg" style="margin-bottom: var(--s-5);">
+          {% for group in site.hours.groups %}
+          <div class="hours__row">
+            <dt>{{ group.label }}</dt>
+            <dd>{{ group.time }}</dd>
+          </div>
+          {% endfor %}
+        </dl>
+        {% if site.hours.note %}<p class="small muted">{{ site.hours.note }}</p>{% endif %}
+      </div>
+
+    </div>
   </div>
-</section>
-
-<section class="band">
-  <figure class="band__figure">
-    <img src="{{ site.images.hammam.src }}" alt="{{ site.images.hammam.alt }}"
-         width="1200" height="1200" loading="lazy" decoding="async">
-  </figure>
 </section>

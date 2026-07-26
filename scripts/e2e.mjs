@@ -77,11 +77,11 @@ await test('mobile menu opens, navigates and closes', async () => {
   const page = await phone.newPage();
   await page.goto(base, { waitUntil: 'networkidle' });
 
-  const toggle = page.locator('[data-nav-toggle]');
+  const toggle = page.locator('[data-nav-toggle]').first();
   assert(await toggle.isVisible(), 'menu button not visible on phone');
   assert(
-    (await page.locator('#site-nav').evaluate((el) => getComputedStyle(el).visibility)) === 'hidden',
-    'nav should start hidden'
+    (await page.locator('#drawer').evaluate((el) => getComputedStyle(el).visibility)) === 'hidden',
+    'drawer should start hidden'
   );
 
   await toggle.click();
@@ -91,8 +91,8 @@ await test('mobile menu opens, navigates and closes', async () => {
     'aria-expanded not set to true after opening'
   );
   assert(
-    (await page.locator('#site-nav').evaluate((el) => getComputedStyle(el).visibility)) === 'visible',
-    'nav did not become visible'
+    (await page.locator('#drawer').evaluate((el) => getComputedStyle(el).visibility)) === 'visible',
+    'drawer did not become visible'
   );
 
   // Escape should close it and return focus to the button.
@@ -105,7 +105,7 @@ await test('mobile menu opens, navigates and closes', async () => {
 
   await toggle.click();
   await page.waitForTimeout(450);
-  await page.locator('#site-nav a[href="/treatments/"]').click();
+  await page.locator('#drawer a[href="/treatments/"]').click();
   await page.waitForURL('**/treatments/');
   assert(page.url().endsWith('/treatments/'), 'menu link did not navigate');
   await page.close();
@@ -114,7 +114,7 @@ await test('mobile menu opens, navigates and closes', async () => {
 await test('body scroll is locked while the menu is open', async () => {
   const page = await phone.newPage();
   await page.goto(base, { waitUntil: 'networkidle' });
-  await page.locator('[data-nav-toggle]').click();
+  await page.locator('[data-nav-toggle]').first().click();
   await page.waitForTimeout(400);
   const overflow = await page.evaluate(() => document.body.style.overflow);
   assert(overflow === 'hidden', `expected body overflow hidden, got "${overflow}"`);
@@ -150,7 +150,7 @@ const phoneCtx = await browser.newContext({ viewport: { width: 390, height: 844 
 await test('category cards link to their section on the treatments page', async () => {
   const page = await desktop.newPage();
   await page.goto(base, { waitUntil: 'networkidle' });
-  await page.locator('.cat__link').first().click();
+  await page.locator('.cats .card--link').first().click();
   await page.waitForURL('**/treatments/**');
   assert(page.url().includes('#massage'), `expected #massage anchor, got ${page.url()}`);
 

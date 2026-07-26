@@ -307,33 +307,43 @@ const nav = [
  * ------------------------------------------------------------------------ */
 const images = {
   hero: {
-    src: '/assets/img/hero.svg',
-    alt: 'A lit archway leading into a steam room, with steam drifting through the light',
+    // Leave `src` empty to use the generated placeholder frame; set it to a
+    // file in src/assets/img/ to use a real photograph instead. Nothing else
+    // needs to change — the template switches automatically.
+    src: '',
+    tone: 'warm',
+    alt: 'A treatment room at Teena\u2019z Spa, lit low and warm',
   },
   hammam: {
-    src: '/assets/img/hammam.svg',
-    alt: 'Detail of geometric zellige tilework in brass and deep green',
+    src: '',
+    tone: 'steam',
+    alt: 'Steam and water in the Moroccan bath',
   },
   interior: {
-    src: '/assets/img/interior.svg',
-    alt: 'A colonnade of arches receding into low, warm light',
+    src: '',
+    tone: 'stone',
+    alt: 'The interior of the spa, looking through towards the treatment rooms',
   },
   massage: {
-    src: '/assets/img/massage.svg',
-    alt: 'Warm oil pooling in soft concentric rings',
+    src: '',
+    tone: 'warm',
+    alt: 'Warm towels and oils laid out beside a massage table',
   },
   body: {
-    src: '/assets/img/body.svg',
-    alt: 'Steam rising in layered bands of light',
+    src: '',
+    tone: 'steam',
+    alt: 'The steam room, prepared for a Moroccan bath',
   },
   beauty: {
-    src: '/assets/img/beauty.svg',
-    alt: 'A polished brass bowl catching the light',
+    src: '',
+    tone: 'bronze',
+    alt: 'Candlelight and glassware in the beauty area',
   },
   // Used for link previews on WhatsApp, Instagram and search results.
+  // This one must stay a real image file — WhatsApp will not render an SVG.
   share: {
     src: '/assets/img/share.png',
-    alt: "Teena'z Spa — spa, massage and beauty in Sodeco, Achrafieh",
+    alt: "Teena'z Spa \u2014 spa, massage and beauty in Sodeco, Achrafieh",
   },
 };
 
@@ -347,33 +357,31 @@ const images = {
  *    text on its background should stay at 4.5:1 or better.
  * ------------------------------------------------------------------------ */
 const brand = {
+  /*
+    The visual identity palette. These are injected as CSS custom properties
+    and override the defaults in identity.css, so this stays the single place
+    to change the site's colours.
+
+    Two of the six brand colours cannot carry small text — bronze and sage
+    measure 3.41:1 and 3.28:1 against ivory, where AA asks 4.5:1. The `*Ink`
+    values are their accessible counterparts, tuned against sand (the darkest
+    light ground). If you change a colour here, run `npm run a11y` afterwards.
+    See /identity/ for the full system.
+  */
   colors: {
-    // Dark surfaces — the "steam room" sections.
-    noir: '#0B1614',
-    stone: '#12211D',
-    jade: '#1B3229',
-    // Light surfaces — the "tadelakt plaster" sections.
-    tadelakt: '#E6E1D5',
-    tadelaktHi: '#F1EDE4',
-    marble: '#FBF9F5',
-    // Accents. `brass` is for dark backgrounds, `brassDeep` for light ones —
-    // the deep variant keeps text contrast legal on plaster.
-    brass: '#B8934F',
-    brassHi: '#DCBE86',
-    brassDeep: '#7A5F2A',
-    clay: '#A8695B',
-    verdigris: '#4E7A6A',
-    // Text.
-    ink: '#101A17',
-    inkSoft: '#3F4E48',
-    steam: '#E8E3D8',
-    steamSoft: '#A2AEA7',
+    ivory: '#F7F2EA',       // 60% — primary ground
+    white: '#FFFDFC',       // 60% — raised surfaces
+    sand: '#DDD0BE',        // 10% — alternate sections, quiet dividers
+    espresso: '#29211D',    // 20% — type, footer, primary buttons
+    sage: '#7F8977',        //  5% — wellness accent
+    bronze: '#A87955',      //  5% — premium detail, hairlines, icons
+    bronzeInk: '#75502F',   // accessible bronze for text and filled buttons
+    sageInk: '#4E5748',     // accessible sage for text
+    espressoSoft: '#5A524C',// secondary body copy
   },
   fonts: {
-    // Display face — headings. Self-hosted, see scripts/fetch-fonts.mjs.
-    display: "'Marcellus', 'Cormorant Garamond', Georgia, 'Times New Roman', serif",
-    // Body face — everything else.
-    body: "'Jost', 'Century Gothic', 'Futura', system-ui, -apple-system, sans-serif",
+    display: "'Cormorant Garamond', Cormorant, Georgia, 'Times New Roman', serif",
+    body: "'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif",
   },
 };
 

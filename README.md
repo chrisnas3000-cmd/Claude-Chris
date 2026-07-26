@@ -75,31 +75,29 @@ a contrast ratio of 4.5:1 or better; `npm run a11y` will tell you if you break i
 
 ## Images
 
-**The site currently ships with generated SVG artwork rather than photography.**
-The environment this was built in blocked every stock-photo host, so rather than
-reference photos that could not be verified — and would have shown as broken
-images — the artwork is drawn from the brand palette by
-[`scripts/generate-art.mjs`](scripts/generate-art.mjs): the lit archway, the
-zellige tilework, the colonnade and the three category tiles.
+**Image areas are painted placeholder frames, not photographs.** Stock-photo
+hosts were unreachable in the environment this was built in, so rather than
+reference pictures that could not be verified, each slot renders a soft
+out-of-focus wash in the brand's warm grade. See `/identity/imagery/` for the
+photography brief these stand in for.
 
-It is intended to be replaced. To swap in a real photo:
-
-1. Drop the file into `src/assets/img/`
-2. Point the matching entry in `site.js` at it and update the `alt` text:
+To swap in a real photo, set `src` on the matching entry in `site.js`:
 
 ```js
 hero: {
-  src: '/assets/img/hero.jpg',
+  src: '/assets/img/hero.jpg',    // was ''
+  tone: 'warm',                   // ignored once src is set
   alt: 'The treatment room at Teena\'z Spa, lit low in the evening',
 },
 ```
 
-That is the entire process. Recommended crops:
+The template switches from a placeholder frame to a real `<img>` automatically
+— sized identically, so nothing about the layout moves. Recommended crops:
 
 | Slot | Shape | Suggested subject |
 | --- | --- | --- |
-| `hero` | landscape, 1600×1100 or wider | the entrance or a treatment room, lit low |
-| `hammam` | square, 1200×1200 | tilework, textures, the steam room |
+| `hero` | portrait, 900×1200 | a treatment room, lit low and warm |
+| `hammam` | portrait, 900×1200 | steam, water, Moroccan bath detail |
 | `interior` | landscape, 1600×900 | the space itself, looking through it |
 | `massage` | portrait, 900×1200 | a massage table, oils, hands at work |
 | `body` | portrait, 900×1200 | the steam room or scrub preparation |
@@ -121,9 +119,10 @@ search engines read.
 | **The content site** | A working website with the real business details, built to drive WhatsApp bookings. | `/`, `/treatments/`, `/about/`, `/visit/` |
 | **The visual identity system** | A design system — palette, type, spacing, components, imagery and motion — using placeholder copy only. | `/identity/*` |
 
-They are deliberately independent. The identity system carries no business
-content and the content site is not styled by it. Applying one to the other is
-a separate piece of work; see *Applying the identity* below.
+The identity system is the visual authority; the content site is built on it.
+`identity.css` owns the tokens and shared components, and `site.css` adds only
+what is specific to this site — the hero, the treatment list, the opening
+hours, the booking bar. No colour or size is hard-coded in either.
 
 ---
 
@@ -177,12 +176,16 @@ without asserting photographs that have not been taken. Each is sized and toned
 to be swapped one-for-one with a real shot. The `/identity/imagery/` page is
 written to be handed to a photographer as-is.
 
-### Applying the identity
+### The identity is applied
 
-The identity is not yet applied to the content site — that was out of scope for
-the brief, which asked for the visual system with placeholder content. Applying
-it means pointing the content templates at `identity.css` instead of
-`style.css` and remapping the component classes. Ask if you want that done.
+The content site runs on this system. Changing a token in `identity.css` — or
+overriding it from `site.js` — restyles both the identity pages and the live
+site at once.
+
+The palette in `site.js` overrides the defaults in `identity.css`, so `site.js`
+remains the single place to change this site's colours and faces. Run
+`npm run a11y` after any colour change; it is what caught the sand failure
+described above.
 
 ---
 

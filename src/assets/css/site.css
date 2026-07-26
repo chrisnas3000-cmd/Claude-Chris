@@ -1,0 +1,341 @@
+/* ==========================================================================
+   TEENA'Z SPA — CONTENT SITE
+   --------------------------------------------------------------------------
+   A thin layer on top of the visual identity system.
+
+   identity.css owns the tokens and the shared components. Everything here is
+   specific to this site's content — the hero, the treatment list, the opening
+   hours, the booking bar — and is built only from identity tokens. No colour,
+   size or duration is hard-coded.
+
+     1.  Hero
+     2.  Marks (the three proof points)
+     3.  Treatment list
+     4.  Jump navigation
+     5.  Ritual steps
+     6.  Opening hours
+     7.  Category cards
+     8.  Page head
+     9.  Booking bar
+    10.  Footer additions
+   ========================================================================== */
+
+/* 1. Hero ================================================================= */
+
+.hero { padding-block: var(--s-7) var(--section-y); }
+
+.hero__grid { display: grid; gap: var(--s-7); align-items: center; }
+@media (min-width: 60rem) {
+  /* Asymmetric: type takes the wider column, the image the narrower one. */
+  .hero__grid { grid-template-columns: 6fr 5fr; gap: var(--s-9); }
+}
+
+.hero__title { margin-block: var(--s-4) var(--s-5); }
+.hero__lead { margin-bottom: var(--s-6); }
+.hero__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+
+.hero__figure {
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  background: var(--sand);
+}
+.hero__figure img,
+.hero__figure canvas { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+@media (max-width: 59.99rem) {
+  .hero__figure img, .hero__figure canvas { aspect-ratio: 3 / 2; }
+}
+
+/* 2. Marks ================================================================ */
+
+.marks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: var(--s-8);
+  border-top: 1px solid var(--line-quiet);
+}
+.marks__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding-block: var(--s-5);
+  min-width: 0;
+}
+.marks__item + .marks__item {
+  padding-left: var(--s-4);
+  border-left: 1px solid var(--line-quiet);
+}
+.marks__label {
+  color: var(--text-accent);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+}
+.marks__value {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 2.6rem);
+  font-weight: 400;
+  line-height: 1.15;
+  overflow-wrap: break-word;
+}
+.marks__detail { color: var(--text-muted); font-size: var(--t-small); line-height: 1.4; }
+
+@media (min-width: 48rem) {
+  .marks__item + .marks__item { padding-left: var(--s-6); }
+  .marks__label { font-size: var(--t-label); }
+}
+
+/* 3. Treatment list ======================================================= */
+
+.services { display: grid; border-top: 1px solid var(--line-quiet); }
+
+.service {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s-5);
+  padding-block: var(--s-6);
+  border-bottom: 1px solid var(--line-quiet);
+}
+.service__text { max-width: 58ch; }
+.service__name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3);
+  margin-bottom: var(--s-2);
+  font-family: var(--font-display);
+  font-size: var(--t-h3);
+  font-weight: 500;
+  line-height: var(--lh-heading);
+}
+.service__flag {
+  padding: 0.2rem 0.65rem;
+  border: 1px solid currentColor;
+  border-radius: var(--r-xs);
+  color: var(--text-accent);
+  font-family: var(--font-ui);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+}
+.service__meta {
+  margin-bottom: var(--s-2);
+  color: var(--text-muted);
+  font-size: var(--t-small);
+  letter-spacing: 0.02em;
+}
+.service__meta span + span::before { content: " · "; }
+.service__blurb { color: var(--text-muted); font-size: 0.96rem; }
+
+.service__book {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 2.75rem;
+  padding: 0.6rem 1.15rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  font-size: var(--t-small);
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease);
+}
+.service__book svg { width: 1em; height: 1em; transition: transform var(--dur) var(--ease); }
+.service__book:hover {
+  background: var(--espresso);
+  border-color: var(--espresso);
+  color: var(--ivory);
+}
+.service__book:hover svg { transform: translateX(3px); }
+
+@media (max-width: 40rem) {
+  /* The booking control drops below the text rather than squeezing beside it. */
+  .service { flex-direction: column; gap: var(--s-4); }
+}
+
+/* 4. Jump navigation ====================================================== */
+
+.jump { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-6); }
+.jump__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  padding: 0.5rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  font-size: var(--t-small);
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.jump__link:hover { border-color: var(--bronze-ink); color: var(--text-accent); }
+
+/* 5. Ritual steps =========================================================
+   Numbered because a hammam genuinely is a sequence — the order is the
+   treatment. Do not reuse this pattern for lists that are not ordered. */
+
+.steps { display: grid; gap: var(--s-5); }
+.steps__item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--s-2) var(--s-5);
+  padding-bottom: var(--s-5);
+  border-bottom: 1px solid var(--line-quiet);
+}
+.steps__item:last-child { border-bottom: 0; padding-bottom: 0; }
+.steps__num {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 2.75rem; height: 2.75rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-full);
+  color: var(--text-accent);
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+.steps__name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: var(--lh-heading);
+}
+.steps__text { color: var(--text-muted); font-size: var(--t-small); }
+
+/* 6. Opening hours ======================================================== */
+
+.hours { display: grid; gap: var(--s-3); }
+.hours__row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding-bottom: var(--s-3);
+  border-bottom: 1px solid var(--line-quiet);
+}
+.hours__row:last-child { border-bottom: 0; padding-bottom: 0; }
+.hours dt { font-size: var(--t-small); }
+.hours dd { margin: 0; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.hours--lg dt, .hours--lg dd { font-size: 1.0625rem; }
+
+/* Stacked variant for narrow columns. Side by side, a label like
+   "Monday — Saturday" breaks at the dash and reads as two separate days. */
+.hours--stack .hours__row { display: block; }
+.hours--stack dd { color: inherit; }
+
+/* 7. Category cards ======================================================= */
+
+.cats { display: grid; gap: var(--s-6); }
+@media (min-width: 48rem) { .cats { grid-template-columns: repeat(3, 1fr); } }
+
+.cat__count {
+  color: var(--text-accent);
+  font-size: var(--t-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+}
+.cat__more {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  color: var(--text-accent);
+  font-size: var(--t-small);
+  font-weight: 500;
+}
+.cat__more svg { width: 1.05em; height: 1.05em; transition: transform var(--dur) var(--ease); }
+.card--link:hover .cat__more svg { transform: translateX(4px); }
+
+/* 8. Page head ============================================================ */
+
+.page-head { padding-block: var(--s-8) var(--s-7); }
+.page-head__title { margin-block: var(--s-4) var(--s-4); }
+
+/* 9. Booking bar ==========================================================
+   The one component that overrides an identity default: it uses the full pill
+   radius on wide screens, the same exception the floating action button takes. */
+
+.booking-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 90;
+  display: flex;
+  gap: 1px;
+  background: var(--line-quiet);
+  transform: translateY(110%);
+  transition: transform var(--dur) var(--ease);
+}
+.booking-bar.is-visible { transform: none; }
+
+.booking-bar__action {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  min-height: 3.5rem;
+  padding: var(--s-4) var(--s-3);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color var(--dur) var(--ease);
+}
+.booking-bar__icon { width: 1.25rem; height: 1.25rem; flex: none; }
+.booking-bar__action--wa { flex: 2; background: var(--espresso); color: var(--ivory); }
+.booking-bar__action--wa:hover { background: #3A302A; }
+.booking-bar__action--call { background: var(--white); color: var(--text); }
+.booking-bar__action--call:hover { background: var(--sand); }
+
+@media (min-width: 48rem) {
+  .booking-bar {
+    left: auto;
+    right: var(--s-5);
+    bottom: var(--s-5);
+    gap: var(--s-3);
+    background: none;
+    transform: translateY(150%);
+  }
+  .booking-bar__action {
+    flex: none;
+    min-height: 3.25rem;
+    padding: 0.875rem 1.5rem;
+    border-radius: var(--r-full);
+    box-shadow: var(--shadow-md);
+  }
+  .booking-bar__action--call { padding-inline: 1.05rem; border: 1px solid var(--line-quiet); }
+  .booking-bar__label { display: none; }
+}
+
+/* Keeps the fixed bar from covering the last of the footer on phones. */
+@media (max-width: 47.99rem) {
+  .footer { padding-bottom: 6rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .booking-bar { transform: none; }
+}
+
+/* 10. Footer additions ==================================================== */
+
+.footer__summary { max-width: 34ch; margin-top: var(--s-4); font-size: var(--t-small); }
+.footer__address { display: grid; gap: 0.15rem; margin-bottom: var(--s-3); font-size: var(--t-small); }
+.footer__nav { display: flex; flex-wrap: wrap; gap: var(--s-4); }
+.footer__nav a { text-decoration: none; }
+.footer__nav a:hover { color: var(--ivory); }
+
+.footer__disclaimer {
+  max-width: 74ch;
+  margin-top: var(--s-6);
+  padding-top: var(--s-4);
+  border-top: 1px solid rgba(221, 208, 190, 0.18);
+  font-size: 0.76rem;
+  line-height: 1.65;
+  opacity: 0.85;
+}
+
+@media print {
+  .booking-bar { display: none !important; }
+}

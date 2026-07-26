@@ -1,0 +1,29 @@
+{#
+  Renders an image slot.
+
+  If the entry in site.js has a `src`, a real <img> is rendered. If it does
+  not, a painted placeholder frame stands in — sized identically, so dropping
+  a photograph in later changes nothing about the layout.
+
+  Usage:
+    {% from "partials/media.njk" import frame %}
+    {{ frame(site.images.hero, 'hero', '4 / 5') }}
+#}
+
+{% macro frame(image, id, ratio, eager) %}
+  {%- if image.src -%}
+    <img src="{{ image.src }}" alt="{{ image.alt }}"
+         {% if ratio %}style="aspect-ratio: {{ ratio }};"{% endif %}
+         {% if eager %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+         decoding="async">
+  {%- else -%}
+    {#
+      The frame is decorative in the placeholder state — it depicts nothing,
+      so announcing the intended photograph's alt text would describe an image
+      that is not there. The surrounding copy carries the meaning instead.
+    #}
+    <canvas data-media="{{ id }}" data-tone="{{ image.tone | default('warm') }}"
+            {% if ratio %}style="aspect-ratio: {{ ratio }};"{% endif %}
+            role="presentation" aria-hidden="true"></canvas>
+  {%- endif -%}
+{% endmacro %}

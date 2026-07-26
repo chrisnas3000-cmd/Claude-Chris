@@ -456,6 +456,10 @@ address { font-style: normal; }
   transition: box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease),
               transform var(--dur) var(--ease);
 }
+/* A card is often an anchor wrapping the whole block. Without this the
+   browser underlines every piece of text inside it. */
+a.card { text-decoration: none; color: inherit; }
+
 .card--link:hover {
   box-shadow: var(--shadow-sm);
   border-color: var(--line);
@@ -912,6 +916,14 @@ select.field__control {
 .footer__list { display: grid; gap: var(--s-3); }
 .footer__list a { text-decoration: none; transition: color var(--dur-fast) var(--ease); }
 .footer__list a:hover { color: var(--ivory); }
+
+/*
+  Accent tokens are tuned for the light grounds. Dropped straight onto the
+  espresso footer, --text-accent is far too dark to read, so links inside the
+  footer switch to sand (10.41:1) instead.
+*/
+.footer .link { color: var(--sand); }
+.footer .link:hover { color: var(--ivory); }
 .footer__base {
   display: flex;
   flex-wrap: wrap;

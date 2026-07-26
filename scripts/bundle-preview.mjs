@@ -29,7 +29,7 @@ const ROUTES = [
 
 /* Only the latin subset is bundled — the copy is English, and carrying every
    subset would roughly triple the font payload for no visible benefit. */
-const FONT_SUBSET = /-latin\.woff2$/;
+const FONT_FILES = /^(cormorant-garamond|manrope)-.*-latin\.woff2$/;
 
 const read = (p) => readFile(p, 'utf8');
 const slice = (html, tag) => {
@@ -42,13 +42,13 @@ const slice = (html, tag) => {
 
 /* --- fonts ---------------------------------------------------------------- */
 const fontDir = join(SRC, 'assets', 'fonts');
-const fontFiles = (await readdir(fontDir)).filter((f) => FONT_SUBSET.test(f));
+const fontFiles = (await readdir(fontDir)).filter((f) => FONT_FILES.test(f));
 const fontData = new Map();
 for (const file of fontFiles) {
   fontData.set(file, (await readFile(join(fontDir, file))).toString('base64'));
 }
 
-let fontCss = await read(join(SRC, 'assets', 'css', 'fonts.css'));
+let fontCss = await read(join(SRC, 'assets', 'css', 'fonts-identity.css'));
 // Drop the @font-face blocks for subsets we are not bundling, then swap the
 // remaining file references for inline data URIs.
 fontCss = fontCss
@@ -83,10 +83,12 @@ const inlineAssets = (html) => {
 
 /* --- shared chrome, taken from the built home page ------------------------- */
 const home = await read(join(OUT, 'index.html'));
-const archDefs = home.slice(home.indexOf('<svg class="sr-only"'), home.indexOf('</svg>') + 6);
 const brandTokens = slice(home.slice(home.indexOf('<style>')), 'style');
 const header = inlineAssets(
   home.slice(home.indexOf('<header'), home.indexOf('</header>') + 9)
+);
+const drawer = inlineAssets(
+  home.slice(home.indexOf('<div class="drawer"'), home.indexOf('</div>\n\n<main') + 6)
 );
 const footer = inlineAssets(
   home.slice(home.indexOf('<footer'), home.indexOf('</footer>') + 9)
@@ -133,22 +135,24 @@ const routeLinks = (html) =>
     .replace(/href="\/([a-z0-9-]*\/)"/gi, 'href="#/$1"')
     .replace(/href="\/"/g, 'href="#/"');
 
-const css = await read(join(SRC, 'assets', 'css', 'style.css'));
+const identityCss = await read(join(SRC, 'assets', 'css', 'identity.css'));
+const siteCss = await read(join(SRC, 'assets', 'css', 'site.css'));
+const mediaJs = await read(join(SRC, 'assets', 'js', 'placeholder-media.js'));
 const js = await read(join(SRC, 'assets', 'js', 'main.js'));
 
 const page = `<title>Teena'z Spa — website concept</title>
 <style>
-${brandTokens}
 ${fontCss}
-${css}
+${identityCss}
+${siteCss}
+${brandTokens}
 
 /* --- preview-only: route switching ------------------------------------- */
 .route[hidden] { display: none; }
 </style>
 
-${archDefs}
-
 ${routeLinks(header)}
+${routeLinks(drawer)}
 
 <main id="main">
 ${sections.join('\n')}
@@ -157,6 +161,9 @@ ${sections.join('\n')}
 ${routeLinks(footer)}
 ${routeLinks(bookingBar)}
 
+<script>
+${mediaJs}
+</script>
 <script>
 ${js}
 </script>
@@ -167,7 +174,7 @@ ${js}
 (function () {
   var routes = Array.prototype.slice.call(document.querySelectorAll('.route'));
   var navLinks = Array.prototype.slice.call(
-    document.querySelectorAll('.site-nav__list a, .site-footer__nav a')
+    document.querySelectorAll('.nav__link, .drawer__link, .footer__nav a')
   );
 
   function parse(hash) {
@@ -246,6 +253,9 @@ ${js}
           watcher.observe(el);
         }
       });
+      // Placeholder frames size themselves from layout, so they can only be
+      // painted once their route is actually visible.
+      if (window.paintPlaceholderMedia) window.paintPlaceholderMedia();
       window.dispatchEvent(new Event('scroll'));
     });
   }

@@ -6,55 +6,63 @@ bodyClass: page-about
 description: "About Teena'z Spa — a spa, massage and beauty centre in Sodeco, Achrafieh, Beirut, open until 11 PM seven days a week."
 ---
 
+{% from "partials/media.njk" import frame %}
+
 <section class="page-head">
   <div class="shell">
-    <p class="eyebrow">About</p>
-    <h1 class="page-head__title">{{ site.copy.about.title }}</h1>
-    <p class="page-head__lead">{{ site.copy.about.lead }}</p>
+    <p class="eyebrow eyebrow-rule">About</p>
+    <h1 class="display-2 page-head__title">{{ site.copy.about.title }}</h1>
+    <p class="lead">{{ site.copy.about.lead }}</p>
   </div>
 </section>
 
-<section class="section section--plaster">
-  <div class="shell prose-grid">
+<section class="section section--raised">
+  <div class="shell">
+    <div class="split" style="align-items: start;">
 
-    <div class="prose">
-      {% for paragraph in site.copy.about.body %}
-      <p class="reveal" data-reveal data-reveal-delay="{{ loop.index }}">{{ paragraph }}</p>
-      {% endfor %}
-    </div>
-
-    <aside class="facts reveal" data-reveal>
-      <h2 class="facts__title">In short</h2>
-      <ul class="facts__list">
-        {% for point in site.copy.about.points %}
-        <li>{{ point }}</li>
+      <div class="stack--lg stack">
+        {% for paragraph in site.copy.about.body %}
+        <p class="body-text reveal" data-reveal data-reveal-delay="{{ loop.index }}">{{ paragraph }}</p>
         {% endfor %}
-      </ul>
-      <a class="link-arrow link-arrow--dark" href="/treatments/">
-        See the treatment list<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M4 12h15m0 0-6-6m6 6-6 6"/></svg>
-      </a>
-    </aside>
+      </div>
 
+      <aside class="card card--sand reveal" data-reveal>
+        <div class="card__body">
+          <h2 class="h4">In short</h2>
+          <ul class="do-dont__list" style="font-size: var(--t-small);">
+            {% for point in site.copy.about.points %}<li>{{ point }}</li>{% endfor %}
+          </ul>
+          <div class="card__foot"><a class="link small" href="/treatments/">See the treatment list</a></div>
+        </div>
+      </aside>
+
+    </div>
   </div>
 </section>
 
-<section class="band">
-  <figure class="band__figure">
-    <img src="{{ site.images.interior.src }}" alt="{{ site.images.interior.alt }}"
-         width="1600" height="900" loading="lazy" decoding="async">
-  </figure>
+<section class="section">
+  <div class="shell">
+    <figure class="figure reveal ken" data-reveal>
+      <div class="figure__frame" style="aspect-ratio: 21 / 9;">
+        {{ frame(site.images.interior, 'about-interior') }}
+      </div>
+    </figure>
+  </div>
 </section>
 
-<section class="closing" aria-labelledby="a-closing">
-  <div class="shell closing__inner">
-    <span class="closing__arch" aria-hidden="true"></span>
-    <h2 class="closing__title" id="a-closing">Come by this evening</h2>
-    <p class="closing__lead">Open until 11 PM, seven days a week. Message us and we will find you a time.</p>
-    <div class="closing__actions">
-      <a class="btn btn--brass btn--lg"
+<section class="section section--deep" aria-labelledby="a-closing">
+  <div class="shell shell--narrow">
+    <div class="section-head section-head--centre" style="margin-bottom: var(--s-6);">
+      <p class="eyebrow eyebrow--on-deep">Booking</p>
+      <h2 class="display-2" style="color: var(--ivory);" id="a-closing">Come by this evening</h2>
+      <p class="lead">Open until 11 PM, seven days a week. Message us and we will find you a time.</p>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-3);">
+      <a class="btn btn--on-deep btn--lg"
          href="{{ site.contact.whatsapp.link | whatsapp(site.contact.whatsapp.prefill) }}"
          target="_blank" rel="noopener">Book on WhatsApp</a>
-      <a class="btn btn--ghost btn--lg" href="/visit/">Find us</a>
+      <a class="btn btn--secondary btn--lg" href="/visit/"
+         style="border-color: var(--sand); color: var(--sand);">Find us</a>
     </div>
   </div>
 </section>

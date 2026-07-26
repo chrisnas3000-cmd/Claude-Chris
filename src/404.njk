@@ -4,17 +4,19 @@ permalink: /404.html
 title: Page not found
 bodyClass: page-404
 eleventyExcludeFromCollections: true
+description: "The page you were looking for is not here. Everything else still is."
 ---
 
-<section class="closing closing--tall" aria-labelledby="nf-title">
-  <div class="shell closing__inner">
-    <span class="closing__arch" aria-hidden="true"></span>
-    <p class="eyebrow">404</p>
-    <h1 class="closing__title" id="nf-title">{{ site.copy.notFound.title }}</h1>
-    <p class="closing__lead">{{ site.copy.notFound.lead }}</p>
-    <div class="closing__actions">
-      <a class="btn btn--brass btn--lg" href="/">Back to the front</a>
-      <a class="btn btn--ghost btn--lg" href="/treatments/">See treatments</a>
+<section class="section section--lg">
+  <div class="shell shell--narrow">
+    <div class="section-head section-head--centre" style="margin-bottom: var(--s-6);">
+      <p class="eyebrow">404</p>
+      <h1 class="display-2">{{ site.copy.notFound.title }}</h1>
+      <p class="lead">{{ site.copy.notFound.lead }}</p>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-3);">
+      <a class="btn btn--primary btn--lg" href="/">Back to the front</a>
+      <a class="btn btn--secondary btn--lg" href="/treatments/">See treatments</a>
     </div>
   </div>
 </section>
