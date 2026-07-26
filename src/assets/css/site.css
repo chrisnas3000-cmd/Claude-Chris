@@ -361,6 +361,35 @@
 .cat__more svg { width: 1.05em; height: 1.05em; transition: transform var(--dur) var(--ease); }
 .card--link:hover .cat__more svg { transform: translateX(4px); }
 
+/* 7b. Card video =========================================================
+   The still sits underneath and the clip fades in over it, same pattern as
+   the hero. Both fill the card's existing 4:3 frame, so a square source is
+   centre-cropped and the layout does not move whether the video plays or not. */
+
+.card__still,
+.card__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.card__video {
+  opacity: 0;
+  transition: opacity 900ms var(--ease-soft);
+}
+.card__video.is-playing { opacity: 1; }
+
+/* The card's hover scale applies to whichever layer is showing. */
+.card--link:hover .card__still,
+.card--link:hover .card__video { transform: scale(1.04); }
+.card__still { transition: transform var(--dur-image) var(--ease-soft); }
+
+@media (prefers-reduced-motion: reduce) {
+  .card--link:hover .card__still,
+  .card--link:hover .card__video { transform: none; }
+}
+
 /* 8. Page head ============================================================ */
 
 .page-head { padding-block: var(--s-8) var(--s-7); }

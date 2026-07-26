@@ -99,6 +99,11 @@ const files = { 'favicon.svg': favicon(), 'share.svg': share() };
 const referenced = [
   ...Object.values(site.images).map((image) => image.src),
   site.heroVideo?.poster,
+  // Card posters are built from a naming convention rather than a `src`, so
+  // they have to be named here explicitly or the sweep below removes them.
+  ...Object.entries(site.images)
+    .filter(([, image]) => image.video)
+    .map(([key]) => `/assets/img/service-${key}-poster.jpg`),
 ]
   .filter(Boolean)
   .map((path) => path.split('/').pop());

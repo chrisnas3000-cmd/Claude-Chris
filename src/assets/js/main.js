@@ -131,6 +131,69 @@
     });
   })();
 
+  /* --- Service card videos ------------------------------------------------
+     Same gates as the hero, plus one more: nothing is fetched until the card
+     is actually near the viewport. Three clips below the fold should not cost
+     anything to a visitor who never scrolls that far.
+  */
+  (function cardVideos() {
+    var cards = document.querySelectorAll('[data-card-video]');
+    if (!cards.length) return;
+
+    var connection = navigator.connection || {};
+    var slow = /(^|-)2g$/.test(connection.effectiveType || '');
+    if (reduced || connection.saveData === true || slow) return;
+
+    function start(video) {
+      if (video.dataset.started) return;
+      video.dataset.started = '1';
+
+      [
+        { src: video.getAttribute('data-webm'), type: 'video/webm' },
+        { src: video.getAttribute('data-mp4'), type: 'video/mp4' },
+      ].forEach(function (item) {
+        if (!item.src) return;
+        var source = document.createElement('source');
+        source.src = item.src;
+        source.type = item.type;
+        video.appendChild(source);
+      });
+
+      video.addEventListener('playing', function () {
+        video.classList.add('is-playing');
+      }, { once: true });
+
+      video.load();
+      var attempt = video.play();
+      if (attempt && typeof attempt.catch === 'function') attempt.catch(function () {});
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      Array.prototype.forEach.call(cards, start);
+      return;
+    }
+
+    // A generous margin so the clip is already running by the time the card is
+    // properly on screen, rather than visibly starting under the visitor.
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var video = entry.target;
+        if (entry.isIntersecting) {
+          start(video);
+          if (video.paused && video.dataset.started) {
+            var resume = video.play();
+            if (resume && typeof resume.catch === 'function') resume.catch(function () {});
+          }
+        } else if (!video.paused) {
+          // Off screen: stop decoding frames nobody can see.
+          video.pause();
+        }
+      });
+    }, { rootMargin: '300px 0px' });
+
+    Array.prototype.forEach.call(cards, function (video) { observer.observe(video); });
+  })();
+
   /* --- Scroll reveals ----------------------------------------------------- */
   var revealables = document.querySelectorAll('[data-reveal]');
 

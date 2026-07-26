@@ -184,6 +184,53 @@ and a brighter one will need a stronger one.
 
 ---
 
+## Service card videos
+
+The three category cards on the home page can each play a clip instead of a
+placeholder frame. The pipeline is built and tested; it is **switched off**
+until the source files are in place.
+
+### Turning them on
+
+1. Put the three source videos somewhere on disk.
+2. Encode them — order matters, it is massage, body, beauty:
+
+```bash
+node scripts/encode-service-videos.mjs massage.mp4 body.mp4 beauty.mp4
+```
+
+That writes `service-<name>.mp4`, `service-<name>.webm` and
+`service-<name>-poster.jpg` for each. Roughly 300 KB, 180 KB and 33 KB
+respectively from an 8-second 1080×1080 source.
+
+3. Set `video: true` on `massage`, `body` and `beauty` in the `images` block of
+   `src/_data/site.js`.
+4. `npm test`.
+
+### How they behave
+
+Nothing is downloaded until a card scrolls near the viewport, so a visitor who
+never reaches that section pays nothing for three videos. Playback pauses when
+a card scrolls back off screen. The same gates as the hero apply — reduced
+motion, `Save-Data` and 2G all skip the video entirely and leave the poster.
+
+### Why a crossfade rather than a boomerang
+
+The hero loops by playing forward then reversed, which is invisible on a slow
+camera pan. That would be wrong here: these clips contain hands moving in one
+direction, and a massage stroke played backwards reads as obviously fake. The
+card encoder instead dissolves the tail back over the head, so the clip loops
+seamlessly with every frame still moving forwards. It costs one second of
+duration.
+
+### Framing
+
+The card frame is **4:3** and uses `object-fit: cover`, so a 1:1 source is
+centre-cropped top and bottom — about 12% off each edge. Keep the subject
+centred. Export at 1280×960 if you want to fill the frame exactly.
+
+---
+
 ## Two separate things in this repository
 
 | | What it is | Where |
@@ -318,6 +365,7 @@ scripts/                 ← build and test tooling
 | `npm run build` | Generate artwork, then build to `_site/` |
 | `npm test` | Build and run every check below |
 | `npm run check` | Broken links, missing assets, JSON-LD, meta tags, headings |
+| `node scripts/encode-service-videos.mjs a b c` | Encode the three service card clips |
 | `npm run check:video` | Contrast of hero type against the moving video, across the loop |
 | `npm run a11y` | axe-core WCAG 2.1 AA audit plus keyboard checks |
 | `npm run e2e` | Menu, booking bar, jump links, service booking links |
