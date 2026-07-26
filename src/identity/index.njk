@@ -1,0 +1,351 @@
+---
+layout: layouts/identity.njk
+permalink: /identity/
+title: Foundations
+description: Colour, typography, spacing and surface tokens for the Teenaz Spa visual identity.
+---
+
+<section class="section section--lg">
+  <div class="shell">
+    <div class="stack--lg stack" style="max-width: 52rem;">
+      <p class="eyebrow eyebrow-rule reveal" data-reveal>Visual identity</p>
+      <h1 class="display-1 reveal" data-reveal data-reveal-delay="1">
+        A warm, intimate <em>urban sanctuary</em>
+      </h1>
+      <p class="lead reveal" data-reveal data-reveal-delay="2" style="max-width: 52ch;">
+        The system below defines how the brand looks and behaves — colour, type, spacing,
+        components, imagery and motion. Every word on these pages is placeholder text.
+        Content is decided separately.
+      </p>
+    </div>
+  </div>
+</section>
+
+<nav class="subnav" aria-label="On this page">
+  <div class="shell">
+    <ul class="subnav__list">
+      <li><a class="subnav__link" href="#atmosphere">Atmosphere</a></li>
+      <li><a class="subnav__link" href="#colour">Colour</a></li>
+      <li><a class="subnav__link" href="#contrast">Contrast</a></li>
+      <li><a class="subnav__link" href="#type">Typography</a></li>
+      <li><a class="subnav__link" href="#space">Spacing</a></li>
+      <li><a class="subnav__link" href="#surface">Surfaces</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── Atmosphere ───────────────────────────────────────────────────────── -->
+<section class="section" id="atmosphere" aria-labelledby="atmosphere-t">
+  <div class="shell">
+    <header class="section-head">
+      <p class="eyebrow eyebrow-rule">01 — Atmosphere</p>
+      <h2 class="h1" id="atmosphere-t">What the brand feels like</h2>
+      <p class="body-text">
+        Every decision in this system is measured against these two lists. When a choice
+        could go either way, the one that reads calmer and quieter wins.
+      </p>
+    </header>
+
+    <div class="do-dont">
+      <div class="do-dont__col do-dont__col--do reveal" data-reveal>
+        <p class="do-dont__title">It should feel</p>
+        <ul class="do-dont__list">
+          {% for word in identity.atmosphere.is %}<li>{{ word }}</li>{% endfor %}
+        </ul>
+      </div>
+      <div class="do-dont__col do-dont__col--dont reveal" data-reveal data-reveal-delay="1">
+        <p class="do-dont__title">It must never feel like</p>
+        <ul class="do-dont__list">
+          {% for word in identity.atmosphere.isNot %}<li>{{ word }}</li>{% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Colour ───────────────────────────────────────────────────────────── -->
+<section class="section section--raised" id="colour" aria-labelledby="colour-t">
+  <div class="shell">
+    <header class="section-head">
+      <p class="eyebrow eyebrow-rule">02 — Colour</p>
+      <h2 class="h1" id="colour-t">Six colours, held in proportion</h2>
+      <p class="body-text">
+        The ratio matters more than the colours themselves. Ivory and soft white carry the
+        page; espresso carries the type; sand, sage and bronze appear in small, deliberate
+        amounts. Bronze is a detail colour — warm and understated, never metallic or glossy.
+      </p>
+    </header>
+
+    <!-- Proportion bar: the 60/20/10/5/5 split, drawn to scale. -->
+    <div class="spec" style="margin-bottom: var(--s-8);">
+      <p class="spec__label">Distribution across a page</p>
+      <div style="display: flex; height: 3.5rem; border-radius: var(--r-sm); overflow: hidden; border: 1px solid var(--line-quiet);">
+        <div style="flex: 60; background: {{ identity.core.ivory }};"></div>
+        <div style="flex: 20; background: {{ identity.core.espresso }};"></div>
+        <div style="flex: 10; background: {{ identity.core.sand }};"></div>
+        <div style="flex: 5; background: {{ identity.core.sage }};"></div>
+        <div style="flex: 5; background: {{ identity.core.bronze }};"></div>
+      </div>
+      <p class="spec__note">
+        60% ivory and soft white · 20% espresso · 10% sand · 5% sage · 5% bronze
+      </p>
+    </div>
+
+    <div class="grid-3">
+      {% for colour in identity.palette %}
+      <div class="swatch reveal" data-reveal data-reveal-delay="{{ loop.index }}">
+        <div class="swatch__chip" style="background: {{ colour.hex }};"></div>
+        <div class="stack--sm stack">
+          <div class="spec__label" style="border: 0; padding: 0;">
+            <span class="swatch__name">{{ colour.name }}</span>
+            <span class="ratio ratio--{{ colour.onIvoryGrade.level }}">{{ colour.share }}</span>
+          </div>
+          <p class="swatch__meta">{{ colour.hex }} · <code>{{ colour.token }}</code></p>
+          <p class="swatch__role">{{ colour.role }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── Derived tints ────────────────────────────────────────────────────── -->
+<section class="section" aria-labelledby="derived-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">02b — Derived tints</p>
+      <h2 class="h2" id="derived-t">Four extensions, each earning its place</h2>
+      <p class="body-text">
+        The six brand colours are the identity. These four are working tints derived from
+        them, added because two of the brand colours cannot legally carry small text. They
+        never appear as large fields of colour — only as type and borders.
+      </p>
+    </header>
+
+    <div class="grid-2">
+      {% for tint in identity.derived %}
+      <div class="card card--sand reveal" data-reveal data-reveal-delay="{{ loop.index }}">
+        <div class="card__body">
+          <div style="display: flex; align-items: center; gap: var(--s-4);">
+            <span style="width: 3rem; height: 3rem; border-radius: var(--r-sm); background: {{ tint.hex }}; flex: none;"></span>
+            <div>
+              <p class="h4">{{ tint.name }}</p>
+              <p class="swatch__meta">{{ tint.hex }} · <code>{{ tint.token }}</code> · from {{ tint.from }}</p>
+            </div>
+          </div>
+          <p class="card__text">{{ tint.why }}</p>
+          <p><span class="ratio ratio--{{ tint.onIvoryGrade.level }}">{{ tint.onIvory }}:1 on ivory — {{ tint.onIvoryGrade.label }}</span></p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── Contrast ─────────────────────────────────────────────────────────── -->
+<section class="section section--alt" id="contrast" aria-labelledby="contrast-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">03 — Contrast</p>
+      <h2 class="h1" id="contrast-t">Which pairings are allowed</h2>
+      <p class="body-text">
+        Measured, not estimated. Every ratio below is calculated from the hex values at
+        build time, so this table cannot drift from the palette. AA is the minimum for any
+        text a visitor has to read.
+      </p>
+    </header>
+
+    {#
+      tabindex makes the scroll container reachable by keyboard — without it,
+      someone navigating without a mouse cannot scroll the table sideways.
+
+      data-axe-ignore marks this block as exempt from the automated contrast
+      audit, and only this block. The samples below deliberately render failing
+      combinations so the rule can be seen rather than just described; flagging
+      them would be the checker doing its job on content that exists to fail.
+    #}
+    <div style="overflow-x: auto;" tabindex="0" role="region"
+         aria-label="Colour pairing contrast table" data-axe-ignore>
+      <table style="width: 100%; border-collapse: collapse; min-width: 40rem;">
+        <thead>
+          <tr>
+            <th scope="col" style="text-align: left; padding: var(--s-3) var(--s-4) var(--s-3) 0; border-bottom: 1px solid var(--line); font-size: var(--t-label); letter-spacing: var(--ls-label); text-transform: uppercase; font-weight: 600;">Sample</th>
+            <th scope="col" style="text-align: left; padding: var(--s-3) var(--s-4) var(--s-3) 0; border-bottom: 1px solid var(--line); font-size: var(--t-label); letter-spacing: var(--ls-label); text-transform: uppercase; font-weight: 600;">Ratio</th>
+            <th scope="col" style="text-align: left; padding: var(--s-3) 0; border-bottom: 1px solid var(--line); font-size: var(--t-label); letter-spacing: var(--ls-label); text-transform: uppercase; font-weight: 600;">Where it may be used</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pair in identity.pairings %}
+          <tr>
+            <td style="padding: var(--s-4) var(--s-4) var(--s-4) 0; border-bottom: 1px solid var(--line-quiet);">
+              <span style="display: inline-block; padding: var(--s-2) var(--s-4); border-radius: var(--r-xs); background: {{ pair.bgHex }}; color: {{ pair.fgHex }}; white-space: nowrap;">
+                {{ pair.fg }}
+              </span>
+            </td>
+            <td style="padding: var(--s-4) var(--s-4) var(--s-4) 0; border-bottom: 1px solid var(--line-quiet); font-variant-numeric: tabular-nums;">
+              <span class="ratio ratio--{{ pair.grade.level }}">{{ pair.ratio }}:1 · {{ pair.grade.label }}</span>
+            </td>
+            <td style="padding: var(--s-4) 0; border-bottom: 1px solid var(--line-quiet); font-size: var(--t-small); color: var(--text-muted);">
+              {{ pair.use }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── Typography ───────────────────────────────────────────────────────── -->
+<section class="section" id="type" aria-labelledby="type-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">04 — Typography</p>
+      <h2 class="h1" id="type-t">Cormorant Garamond and Manrope</h2>
+      <p class="body-text">
+        Cormorant Garamond sets every editorial statement, at light weights and large
+        sizes where its high contrast reads as composure rather than decoration. Manrope
+        handles everything a visitor operates — navigation, buttons, labels, running copy.
+        Nothing else is introduced.
+      </p>
+    </header>
+
+    <div class="grid-2" style="margin-bottom: var(--s-9);">
+      <div class="card reveal" data-reveal>
+        <div class="card__body">
+          <p class="eyebrow">Display face</p>
+          <p style="font-family: var(--font-display); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 300; line-height: 1;">Aa</p>
+          <p class="h4">Cormorant Garamond</p>
+          <p class="card__text">Light 300 · Regular 400 · Medium 500 · Semibold 600 · Italic</p>
+          <p class="card__text">Headings and large editorial statements only. Never below about 20px, where its thin strokes lose definition.</p>
+        </div>
+      </div>
+      <div class="card reveal" data-reveal data-reveal-delay="1">
+        <div class="card__body">
+          <p class="eyebrow">Interface face</p>
+          <p style="font-family: var(--font-ui); font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 300; line-height: 1;">Aa</p>
+          <p class="h4">Manrope</p>
+          <p class="card__text">Light 300 · Regular 400 · Medium 500 · Semibold 600 · Bold 700</p>
+          <p class="card__text">Body copy, navigation, buttons, form labels and any small heading inside an interface block.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <p class="spec__label">
+        The scale
+        <span class="spec__note">Display sizes are fluid between mobile and desktop; interface sizes are fixed so controls stay predictable.</span>
+      </p>
+      {% for step in identity.typeScale %}
+      <div class="scale-row">
+        <p class="{{ step.cls }}" style="margin: 0;">{{ step.sample }}</p>
+        <div class="scale-row__meta">
+          <span><strong>{{ step.name }}</strong></span>
+          <span><code>{{ step.token }}</code></span>
+          <span>{{ step.size }}</span>
+          <span>{{ step.face }}</span>
+        </div>
+        <p class="spec__note">{{ step.use }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── Spacing ──────────────────────────────────────────────────────────── -->
+<section class="section section--raised" id="space" aria-labelledby="space-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">05 — Spacing</p>
+      <h2 class="h1" id="space-t">Space is the luxury</h2>
+      <p class="body-text">
+        More than any single colour or typeface, the generosity of the spacing is what
+        makes this feel premium. Sections breathe at
+        <code>clamp(4.5rem, 10vw, 9rem)</code>, and no viewport should carry more than one
+        idea. If a screen feels busy, remove something rather than tightening the gaps.
+      </p>
+    </header>
+
+    <div class="spec" style="margin-bottom: var(--s-8);">
+      <p class="spec__label">Scale</p>
+      {% for step in identity.spaceScale %}
+      <div class="space-row">
+        <code class="small">{{ step.token }}</code>
+        <span class="swatch__meta">{{ step.px }}px</span>
+        <div class="space-row__bar">
+          <span class="space-bar" style="width: {{ step.px }}px;"></span>
+          <span class="small muted space-row__use">{{ step.use }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="grid-2">
+      <div class="card card--sand">
+        <div class="card__body">
+          <p class="h4">Container</p>
+          <p class="card__text">
+            Content is capped at <code>1280px</code> with a fluid gutter of
+            <code>clamp(1.25rem, 5vw, 3.5rem)</code>. A narrow variant at <code>940px</code>
+            is used for long-form reading.
+          </p>
+        </div>
+      </div>
+      <div class="card card--sand">
+        <div class="card__body">
+          <p class="h4">Measure</p>
+          <p class="card__text">
+            Running copy is capped at 62 characters, leads at 46. Short lines are part of
+            the editorial feel and the main reason the pages read calmly on mobile.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Surfaces ─────────────────────────────────────────────────────────── -->
+<section class="section" id="surface" aria-labelledby="surface-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">06 — Surfaces</p>
+      <h2 class="h1" id="surface-t">Corners, edges and depth</h2>
+      <p class="body-text">
+        Rounding is restrained and shadows are almost absent. Elevation is communicated by
+        a change of surface colour and a hairline border, not by float.
+      </p>
+    </header>
+
+    <div class="grid-2">
+      <div class="spec">
+        <p class="spec__label">Corner radius</p>
+        <div class="stack">
+          {% for r in identity.radii %}
+          <div style="display: flex; align-items: center; gap: var(--s-4);">
+            <span style="width: 4rem; height: 3rem; background: var(--sand); border-radius: {{ r.value }}; flex: none;"></span>
+            <div>
+              <p class="small"><code>{{ r.token }}</code> · {{ r.value }}</p>
+              <p class="small muted">{{ r.use }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="spec">
+        <p class="spec__label">Elevation</p>
+        <div class="stack">
+          {% for s in identity.shadows %}
+          <div style="display: flex; align-items: center; gap: var(--s-4);">
+            <span style="width: 4rem; height: 3rem; background: var(--white); border: 1px solid var(--line-quiet); border-radius: var(--r-md); box-shadow: {{ s.value }}; flex: none;"></span>
+            <div>
+              <p class="small"><code>{{ s.token }}</code></p>
+              <p class="small muted">{{ s.use }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

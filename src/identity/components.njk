@@ -1,0 +1,446 @@
+---
+layout: layouts/identity.njk
+permalink: /identity/components/
+title: Components
+description: The component library for the Teenaz Spa visual identity — buttons, cards, forms, navigation, accordion, gallery and footer.
+---
+
+<section class="section">
+  <div class="shell">
+    <div class="stack--lg stack" style="max-width: 48rem;">
+      <p class="eyebrow eyebrow-rule reveal" data-reveal>Component library</p>
+      <h1 class="display-2 reveal" data-reveal data-reveal-delay="1">Every part, in one place</h1>
+      <p class="lead reveal" data-reveal data-reveal-delay="2">
+        Each component is built only from the tokens on the foundations page. All labels
+        and copy shown here are placeholder.
+      </p>
+    </div>
+  </div>
+</section>
+
+<nav class="subnav" aria-label="On this page">
+  <div class="shell">
+    <ul class="subnav__list">
+      <li><a class="subnav__link" href="#buttons">Buttons</a></li>
+      <li><a class="subnav__link" href="#cards">Cards</a></li>
+      <li><a class="subnav__link" href="#testimonial">Testimonials</a></li>
+      <li><a class="subnav__link" href="#editorial">Editorial</a></li>
+      <li><a class="subnav__link" href="#gallery">Gallery</a></li>
+      <li><a class="subnav__link" href="#accordion">Accordion</a></li>
+      <li><a class="subnav__link" href="#forms">Forms</a></li>
+      <li><a class="subnav__link" href="#map">Location</a></li>
+      <li><a class="subnav__link" href="#nav">Navigation</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── Buttons ──────────────────────────────────────────────────────────── -->
+<section class="section" id="buttons" aria-labelledby="buttons-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">Buttons</p>
+      <h2 class="h1" id="buttons-t">Three levels, one gesture</h2>
+      <p class="body-text">
+        Primary is espresso rather than bronze. A bronze fill cannot carry white text
+        accessibly — it reaches 3.74:1 where 4.5:1 is needed — and the brief asks for
+        strong contrast. Bronze leads the secondary tier instead, which also keeps it
+        feeling scarce. Corners are 6px: refined, never pill.
+      </p>
+    </header>
+
+    <div class="stack--lg stack">
+      <div class="spec">
+        <p class="spec__label">Levels <span class="spec__note">Hover lifts by 1px. Nothing bounces.</span></p>
+        <div class="spec__demo">
+          <a class="btn btn--primary" href="#buttons">Primary action</a>
+          <a class="btn btn--bronze" href="#buttons">Bronze fill</a>
+          <a class="btn btn--secondary" href="#buttons">Secondary action</a>
+          <button class="btn btn--ghost" type="button">Tertiary</button>
+          <button class="btn btn--primary" type="button" disabled>Disabled</button>
+        </div>
+      </div>
+
+      <div class="spec">
+        <p class="spec__label">Sizes <span class="spec__note">Minimum height 48px; large 56px. All clear the 44px touch target.</span></p>
+        <div class="spec__demo">
+          <a class="btn btn--primary btn--lg" href="#buttons">Large</a>
+          <a class="btn btn--primary" href="#buttons">Default</a>
+          <a class="btn btn--primary btn--sm" href="#buttons">Small</a>
+          <a class="btn btn--secondary" href="#buttons">
+            With icon
+            <svg class="btn__icon btn__icon--arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.5" d="M4 12h15m0 0-6-6m6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="spec">
+        <p class="spec__label">On espresso</p>
+        <div class="spec__demo spec__demo--deep">
+          <a class="btn btn--on-deep" href="#buttons">Primary on deep</a>
+          <a class="btn btn--secondary" href="#buttons" style="border-color: var(--sand); color: var(--sand);">Secondary on deep</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Cards ────────────────────────────────────────────────────────────── -->
+<section class="section section--raised" id="cards" aria-labelledby="cards-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">Cards</p>
+      <h2 class="h1" id="cards-t">Service-style cards</h2>
+      <p class="body-text">
+        A large image area, a thin warm border, almost no shadow, and generous internal
+        padding. The image is what carries the card; the type stays quiet beneath it.
+      </p>
+    </header>
+
+    <div class="grid-3">
+      {% for tone in ['warm', 'steam', 'bronze'] %}
+      <a class="card card--link reveal" href="#cards" data-reveal data-reveal-delay="{{ loop.index }}">
+        <span class="card__media">
+          <canvas data-media="service-{{ tone }}" data-tone="{{ tone }}" aria-hidden="true"></canvas>
+        </span>
+        <span class="card__body">
+          <span class="eyebrow">Placeholder label</span>
+          <span class="card__title">{{ identity.placeholder.cardTitle }}</span>
+          <span class="card__text">{{ identity.placeholder.cardText }}</span>
+          <span class="card__foot">
+            <span class="link">Placeholder link</span>
+          </span>
+        </span>
+      </a>
+      {% endfor %}
+    </div>
+
+    <div class="grid-3" style="margin-top: var(--s-7);">
+      <div class="card card--sand">
+        <div class="card__body">
+          <p class="eyebrow">Variant</p>
+          <p class="card__title">Sand card</p>
+          <p class="card__text">For alternate sections where a white card would disappear into the ground.</p>
+        </div>
+      </div>
+      <div class="card card--deep">
+        <div class="card__body">
+          <p class="eyebrow eyebrow--on-deep">Variant</p>
+          <p class="card__title">Espresso card</p>
+          <p class="card__text">Used once per page at most, to anchor a section.</p>
+        </div>
+      </div>
+      <div class="card card--plain">
+        <div class="card__body" style="padding-inline: 0;">
+          <p class="eyebrow">Variant</p>
+          <p class="card__title">Plain</p>
+          <p class="card__text">No border or background. For lists of items that do not need to look like objects.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Testimonials ─────────────────────────────────────────────────────── -->
+<section class="section" id="testimonial" aria-labelledby="testimonial-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">Testimonials</p>
+      <h2 class="h1" id="testimonial-t">Quotes set in the display face</h2>
+      <p class="body-text">
+        The quotation mark is typography, not an icon. Quotes are set in Cormorant at
+        heading size so they read as a voice rather than as a card of text.
+      </p>
+    </header>
+
+    <div class="grid-3">
+      {% for variant in ['', 'quote--sand', ''] %}
+      <figure class="quote {{ variant }} reveal" data-reveal data-reveal-delay="{{ loop.index }}">
+        <span class="quote__mark" aria-hidden="true">&ldquo;</span>
+        <blockquote class="quote__text">Placeholder testimonial sentence that runs to roughly the length a real one would.</blockquote>
+        <figcaption class="quote__by">
+          <span class="quote__avatar"><canvas data-media="avatar-{{ loop.index }}" data-tone="sage" aria-hidden="true"></canvas></span>
+          <span>
+            <span class="quote__name">Placeholder name</span><br>
+            <span class="quote__role">Placeholder detail</span>
+          </span>
+        </figcaption>
+      </figure>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── Editorial sections ───────────────────────────────────────────────── -->
+<section class="section section--alt" id="editorial" aria-labelledby="editorial-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">Editorial</p>
+      <h2 class="h1" id="editorial-t">Asymmetric text and image</h2>
+      <p class="body-text">
+        The split is 7:5, not 50/50, and the shorter column is offset vertically. Balance
+        without symmetry is what keeps these sections from reading as a template.
+      </p>
+    </header>
+
+    <div class="split split--offset" style="margin-bottom: var(--s-9);">
+      <div class="figure reveal" data-reveal>
+        <div class="figure__frame" style="aspect-ratio: 4 / 5;">
+          <canvas data-media="editorial-a" data-tone="warm" aria-hidden="true"></canvas>
+        </div>
+        <p class="figure__caption">Placeholder frame — see the imagery brief for the intended shot.</p>
+      </div>
+      <div class="stack--lg stack reveal" data-reveal data-reveal-delay="1">
+        <p class="eyebrow">Placeholder label</p>
+        <h3 class="display-2">{{ identity.placeholder.short }}</h3>
+        <p class="body-text">{{ identity.placeholder.paragraph }}</p>
+        <div><a class="btn btn--secondary" href="#editorial">Placeholder action</a></div>
+      </div>
+    </div>
+
+    <div class="split split--reverse">
+      <div class="figure reveal" data-reveal>
+        <div class="figure__frame" style="aspect-ratio: 3 / 2;">
+          <canvas data-media="editorial-b" data-tone="stone" aria-hidden="true"></canvas>
+        </div>
+      </div>
+      <div class="stack--lg stack reveal" data-reveal data-reveal-delay="1">
+        <p class="eyebrow">Reversed</p>
+        <h3 class="h1">{{ identity.placeholder.short }}</h3>
+        <p class="body-text">{{ identity.placeholder.paragraph }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Media band and overlay ───────────────────────────────────────────── -->
+<section class="section" aria-labelledby="media-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">Image &amp; video</p>
+      <h2 class="h1" id="media-t">Full-width bands and overlays</h2>
+      <p class="body-text">
+        Text placed over an image always sits on a scrim — never on the photograph alone.
+        The gradient runs from 10% to 72% espresso, which holds ivory type at AA over any
+        frame in the library.
+      </p>
+    </header>
+
+    <div class="overlay-media reveal ken" data-reveal style="margin-bottom: var(--s-6);">
+      <canvas data-media="band-overlay" data-tone="deep" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%;"></canvas>
+      <span class="overlay-media__scrim"></span>
+      <div class="overlay-media__content shell">
+        <p class="eyebrow eyebrow--on-deep">Placeholder label</p>
+        <h3 class="display-2" style="color: var(--ivory); max-width: 18ch;">{{ identity.placeholder.short }}</h3>
+        <p class="lead">{{ identity.placeholder.sentence }}</p>
+        <div><a class="btn btn--on-deep" href="#media-t">Placeholder action</a></div>
+      </div>
+    </div>
+
+    <div class="media-band">
+      <div class="media-band__frame">
+        <canvas data-media="band-wide" data-tone="steam" aria-hidden="true"></canvas>
+      </div>
+    </div>
+    <p class="figure__caption" style="margin-top: var(--s-3);">
+      Video bands use the same frame. Muted, looping, seamless, with a poster from the same
+      grade. Under reduced-motion the poster is shown and the video does not play.
+    </p>
+  </div>
+</section>
+
+<!-- ── Gallery ──────────────────────────────────────────────────────────── -->
+<section class="section section--raised" id="gallery" aria-labelledby="gallery-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">Gallery</p>
+      <h2 class="h1" id="gallery-t">One frame leads</h2>
+      <p class="body-text">
+        The first frame takes a double square and the rest fall around it, so a gallery
+        never reads as an even grid of equal thumbnails. Images scale slowly on hover.
+      </p>
+    </header>
+
+    <div class="gallery">
+      {% for tone in ['warm', 'stone', 'sage', 'bronze', 'steam'] %}
+      <figure class="gallery__item reveal" data-reveal data-reveal-delay="{{ loop.index }}">
+        <canvas data-media="gallery-{{ loop.index }}" data-tone="{{ tone }}" aria-hidden="true"></canvas>
+      </figure>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── Accordion ────────────────────────────────────────────────────────── -->
+<section class="section" id="accordion" aria-labelledby="accordion-t">
+  <div class="shell shell--narrow">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">Accordion</p>
+      <h2 class="h1" id="accordion-t">Quiet disclosure</h2>
+      <p class="body-text">
+        Hairline rules, a bronze plus-to-minus mark, and a height transition on the panel.
+        No chevrons, no filled backgrounds, nothing that snaps.
+      </p>
+    </header>
+
+    <div class="accordion">
+      {% for i in [1, 2, 3, 4] %}
+      <div class="accordion__item">
+        <h3>
+          <button class="accordion__trigger" type="button"
+                  aria-expanded="{% if i == 1 %}true{% else %}false{% endif %}"
+                  aria-controls="panel-{{ i }}" data-accordion-trigger>
+            <span>Placeholder question {{ i }}</span>
+            <span class="accordion__sign" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="accordion__panel" id="panel-{{ i }}" data-open="{% if i == 1 %}true{% else %}false{% endif %}">
+          <div>
+            <p class="accordion__body">{{ identity.placeholder.paragraph }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── Forms ────────────────────────────────────────────────────────────── -->
+<section class="section section--alt" id="forms" aria-labelledby="forms-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">Forms</p>
+      <h2 class="h1" id="forms-t">Controls that are easy to find</h2>
+      <p class="body-text">
+        Field borders use the functional line at 3:1 rather than the decorative sand
+        hairline, which would be invisible. Focus adds a bronze ring on top of the border,
+        never in place of it. Labels sit above their field, always visible.
+      </p>
+    </header>
+
+    <div class="split" style="align-items: start;">
+      <form class="form" novalidate>
+        <div class="grid-2">
+          <div class="field">
+            <label class="field__label" for="f-name">Placeholder label</label>
+            <input class="field__control" id="f-name" type="text" placeholder="Placeholder text">
+          </div>
+          <div class="field">
+            <label class="field__label" for="f-phone">Placeholder label</label>
+            <input class="field__control" id="f-phone" type="tel" placeholder="Placeholder text">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-select">Placeholder select</label>
+          <select class="field__control" id="f-select">
+            <option>Placeholder option one</option>
+            <option>Placeholder option two</option>
+            <option>Placeholder option three</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-note">Placeholder textarea</label>
+          <textarea class="field__control" id="f-note" placeholder="Placeholder text"></textarea>
+          <p class="field__hint">Placeholder helper text sits here.</p>
+        </div>
+
+        <div class="field field--error">
+          <label class="field__label" for="f-error">Error state</label>
+          <input class="field__control" id="f-error" type="text" value="Placeholder value"
+                 aria-describedby="f-error-msg" aria-invalid="true">
+          <p class="field__error" id="f-error-msg">Placeholder message explaining what to change.</p>
+        </div>
+
+        <label class="check">
+          <input type="checkbox">
+          <span class="check__text">Placeholder checkbox label, which may run to two lines.</span>
+        </label>
+
+        <div><button class="btn btn--primary btn--lg" type="button">Placeholder submit</button></div>
+      </form>
+
+      <aside class="card card--sand">
+        <div class="card__body">
+          <p class="h4">Form rules</p>
+          <ul class="do-dont__list" style="font-size: var(--t-small);">
+            <li>Labels above fields, never inside them as placeholders</li>
+            <li>Placeholder text is an example, never the label</li>
+            <li>Minimum control height 48px</li>
+            <li>Errors name the fix, not just the failure</li>
+            <li>Focus ring is additive — the border stays</li>
+            <li>One column on mobile, always</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ── Map / location ───────────────────────────────────────────────────── -->
+<section class="section" id="map" aria-labelledby="map-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">Location</p>
+      <h2 class="h1" id="map-t">The map is a surface, not a widget</h2>
+      <p class="body-text">
+        The container carries the identity's rounding and border, and the address rests on
+        it as a card rather than inside a pin balloon. On mobile the card spans the full
+        width at the base and the frame turns portrait.
+      </p>
+    </header>
+
+    <div class="map reveal" data-reveal>
+      <canvas data-media="map" data-tone="sage" aria-hidden="true"></canvas>
+      <div class="map__card">
+        <p class="eyebrow">Placeholder label</p>
+        <p class="h4">Placeholder location name</p>
+        <p class="small muted">Placeholder address line<br>Placeholder address line</p>
+        <a class="link small" href="#map">Placeholder link</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Navigation ───────────────────────────────────────────────────────── -->
+<section class="section section--raised" id="nav" aria-labelledby="nav-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">Navigation</p>
+      <h2 class="h1" id="nav-t">Header, drawer, footer and the floating button</h2>
+      <p class="body-text">
+        All four are live on this page. The header is transparent over the top of the page
+        and gains a translucent ivory background once scrolled. Below 62rem the links
+        collapse into a full-screen drawer. The floating button appears only after the
+        first screen, so it never competes with the opening call to action.
+      </p>
+    </header>
+
+    <div class="grid-2">
+      <div class="card card--sand">
+        <div class="card__body">
+          <p class="h4">Header</p>
+          <p class="card__text">Sticky. Transparent at rest, then <code>rgba(255,253,252,0.92)</code> with a blur and a hairline. Active link carries a bronze underline.</p>
+        </div>
+      </div>
+      <div class="card card--sand">
+        <div class="card__body">
+          <p class="h4">Mobile drawer</p>
+          <p class="card__text">Full-screen ivory. Links set in Cormorant at 1.85rem with hairline separators. Escape closes it and returns focus to the button.</p>
+        </div>
+      </div>
+      <div class="card card--sand">
+        <div class="card__body">
+          <p class="h4">Floating action button</p>
+          <p class="card__text">The one place a full pill radius is correct. Collapses to a circle below 30rem so it never crowds the content.</p>
+        </div>
+      </div>
+      <div class="card card--sand">
+        <div class="card__body">
+          <p class="h4">Footer</p>
+          <p class="card__text">The single largest espresso field on any page — it closes the document and carries the 20% dark share of the palette.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

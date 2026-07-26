@@ -55,7 +55,10 @@ function findChromium() {
   ].filter(Boolean).find((p) => existsSync(p));
 }
 
-const PAGES = ['/', '/treatments/', '/about/', '/visit/', '/404.html'];
+const PAGES = [
+  '/', '/treatments/', '/about/', '/visit/', '/404.html',
+  '/identity/', '/identity/components/', '/identity/imagery/', '/identity/applied/',
+];
 const VIEWPORTS = [
   { name: 'phone', width: 390, height: 844 },
   { name: 'desktop', width: 1440, height: 900 },
@@ -78,9 +81,15 @@ for (const viewport of VIEWPORTS) {
     await page.addScriptTag({ content: axeSource });
     const results = await page.evaluate(async () =>
       // eslint-disable-next-line no-undef
-      await axe.run(document, {
-        runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] },
-      })
+      await axe.run(
+        {
+          include: [['body']],
+          // Design-system specimens that intentionally render failing colour
+          // pairings, so the rule can be seen rather than only described.
+          exclude: [['[data-axe-ignore]']],
+        },
+        { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] } }
+      )
     );
 
     for (const violation of results.violations) {

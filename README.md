@@ -114,7 +114,79 @@ search engines read.
 
 ---
 
-## Design
+## Two separate things in this repository
+
+| | What it is | Where |
+| --- | --- | --- |
+| **The content site** | A working website with the real business details, built to drive WhatsApp bookings. | `/`, `/treatments/`, `/about/`, `/visit/` |
+| **The visual identity system** | A design system — palette, type, spacing, components, imagery and motion — using placeholder copy only. | `/identity/*` |
+
+They are deliberately independent. The identity system carries no business
+content and the content site is not styled by it. Applying one to the other is
+a separate piece of work; see *Applying the identity* below.
+
+---
+
+## The visual identity system
+
+Four pages under `/identity/`, built from `src/assets/css/identity.css` and
+`src/_data/identity.js`:
+
+- **Foundations** — atmosphere, palette, derived tints, a measured contrast
+  table, the type scale, spacing, radius and elevation.
+- **Components** — buttons, cards, testimonials, editorial sections, media
+  bands, gallery, accordion, forms, location container and all four navigation
+  surfaces.
+- **Imagery & motion** — the photography brief, the tonal range, rules for type
+  over pictures, video handling, motion durations and the quality floor.
+- **Applied page** — the whole system composed as a homepage, so the atmosphere
+  can be judged in context.
+
+**Every word on those pages is placeholder.** The identity is the deliverable;
+the copy is not.
+
+### The palette, and why there are ten colours instead of six
+
+The six brand colours are used exactly as specified. Four additional tints
+exist because two of the six cannot legally carry small text — bronze measures
+3.41:1 against ivory and sage 3.28:1, where WCAG AA asks 4.5:1. Each has a
+deepened counterpart for type and filled buttons, while the originals stay for
+headings, icons, borders and decoration, where the bar is 3:1.
+
+Those tints are tuned against **sand**, not ivory. Sand is the darkest of the
+three light grounds and is itself a section background — a tint tuned only to
+ivory passes on the page you tested and then fails the moment it lands on a
+sand section. That mistake was made and caught here by `npm run a11y`.
+
+Every ratio shown on the foundations page is calculated from the hex values at
+build time, so the documentation cannot drift from the palette.
+
+### Single theme, deliberately
+
+The system commits to one warm, light world rather than shipping a dark
+variant. That is the brief: ivory-led, never dim. The dark register is
+expressed as espresso blocks inside a light page. A night theme would read as
+the "dark massage parlour" the direction explicitly rules out.
+
+### Imagery
+
+Image areas are painted `<canvas>` fields, not photographs — soft, out-of-focus
+washes in the brand's warm grade. They show how the palette behaves at image
+scale, how type sits on a scrim and how a grid of pictures reads together,
+without asserting photographs that have not been taken. Each is sized and toned
+to be swapped one-for-one with a real shot. The `/identity/imagery/` page is
+written to be handed to a photographer as-is.
+
+### Applying the identity
+
+The identity is not yet applied to the content site — that was out of scope for
+the brief, which asked for the visual system with placeholder content. Applying
+it means pointing the content templates at `identity.css` instead of
+`style.css` and remapping the component classes. Ask if you want that done.
+
+---
+
+## Design (content site)
 
 The direction is built on two facts about this business: it runs a Moroccan
 bath, and it stays open until 11 PM every night. So the site is set in the
@@ -174,6 +246,8 @@ scripts/                 ← build and test tooling
 | `npm run a11y` | axe-core WCAG 2.1 AA audit plus keyboard checks |
 | `npm run e2e` | Menu, booking bar, jump links, service booking links |
 | `npm run shots` | Screenshots at 3 widths into `.screenshots/` |
+| `npm run preview` | Pack the content site into a single `preview.html` |
+| `npm run preview:identity` | Pack the identity system into a single `identity.html` |
 | `npm run art` | Regenerate SVG artwork from the brand palette |
 | `npm run raster` | Regenerate `share.png` and the touch icon |
 | `npm run fonts` | Re-download and self-host the web fonts |

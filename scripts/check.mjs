@@ -58,6 +58,14 @@ for (const file of pages) {
   const rel = file.replace(`${OUT}/`, '');
   const html = await readFile(file, 'utf8');
 
+  /*
+    The identity pages are an internal design-system document, not part of the
+    public site: they are noindex, carry no canonical URL and are absent from
+    the sitemap. Structural and link checks still apply to them; the SEO ones
+    do not.
+  */
+  const isPublic = !rel.startsWith('identity/');
+
   /* --- template leakage ------------------------------------------------- */
   if (/\{\{|\{%/.test(html)) fail(rel, 'unrendered template syntax found');
   if (/undefined|\[object Object\]/.test(html)) {
@@ -70,7 +78,7 @@ for (const file of pages) {
   if (!/<meta name="description" content="[^"]+"/.test(html)) {
     fail(rel, 'missing meta description');
   }
-  if (!/<link rel="canonical"/.test(html)) fail(rel, 'missing canonical link');
+  if (isPublic && !/<link rel="canonical"/.test(html)) fail(rel, 'missing canonical link');
 
   const h1s = html.match(/<h1[\s>]/g) || [];
   if (h1s.length === 0) fail(rel, 'no <h1>');

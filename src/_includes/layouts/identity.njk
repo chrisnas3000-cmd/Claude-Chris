@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }} · Teenaz Spa — Visual Identity</title>
+<meta name="description" content="{{ description }}">
+<meta name="theme-color" content="{{ identity.core.ivory }}">
+<meta name="robots" content="noindex">
+
+{# The identity mark, inline so the page makes no extra request for it. #}
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23F7F2EA'/%3E%3Cpath d='M16 7c4.2 3 6.3 6.3 6.3 9.5a6.3 6.3 0 0 1-12.6 0C9.7 13.3 11.8 10 16 7Z' fill='none' stroke='%23A87955' stroke-width='1.4'/%3E%3Cpath d='M16 13v8' stroke='%23A87955' stroke-width='1.4' opacity='.55'/%3E%3C/svg%3E">
+
+<link rel="preload" href="/assets/fonts/cormorant-garamond-300-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/manrope-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/fonts-identity.css">
+<link rel="stylesheet" href="/assets/css/identity.css">
+</head>
+
+<body class="no-js">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="header" data-header>
+  <div class="shell header__inner">
+    <a class="logo" href="/identity/">
+      <svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1"/>
+        <path d="M16 6c4.4 3.2 6.6 6.6 6.6 10a6.6 6.6 0 0 1-13.2 0C9.4 12.6 11.6 9.2 16 6Z"
+              fill="none" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M16 12v9" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.55"/>
+      </svg>
+      <span class="logo__text">
+        <span class="logo__name">Teenaz Spa</span>
+        <span class="logo__sub">Visual identity</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Identity sections">
+      <ul class="nav__list">
+        {% for item in identity.nav %}
+        <li>
+          <a class="nav__link" href="{{ item.url }}"
+             {% if page.url == item.url %}aria-current="page"{% endif %}>{{ item.label }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="drawer"
+            aria-label="Open menu" data-nav-toggle>
+      <span class="nav-toggle__bars" aria-hidden="true"><i></i><i></i></span>
+    </button>
+  </div>
+</header>
+
+<div class="drawer" id="drawer" data-drawer>
+  <div class="drawer__head">
+    <span class="logo__name">Teenaz Spa</span>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="drawer"
+            aria-label="Close menu" data-nav-toggle>
+      <span class="nav-toggle__bars" aria-hidden="true"><i></i><i></i></span>
+    </button>
+  </div>
+  <nav class="drawer__list" aria-label="Identity sections, mobile">
+    {% for item in identity.nav %}
+    <a class="drawer__link" href="{{ item.url }}">{{ item.label }}</a>
+    {% endfor %}
+  </nav>
+  <div class="drawer__foot">
+    <span class="placeholder-note">Placeholder action</span>
+    <a class="btn btn--primary btn--block" href="#">{{ identity.placeholder.label }} button</a>
+  </div>
+</div>
+
+<main id="main">
+  {{ content | safe }}
+</main>
+
+<footer class="footer">
+  <div class="shell">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <a class="logo" href="/identity/">
+          <svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+            <circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1"/>
+            <path d="M16 6c4.4 3.2 6.6 6.6 6.6 10a6.6 6.6 0 0 1-13.2 0C9.4 12.6 11.6 9.2 16 6Z"
+                  fill="none" stroke="currentColor" stroke-width="1.2"/>
+            <path d="M16 12v9" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.55"/>
+          </svg>
+          <span class="logo__text">
+            <span class="logo__name">Teenaz Spa</span>
+            <span class="logo__sub">Visual identity</span>
+          </span>
+        </a>
+        <p class="small" style="margin-top: var(--s-4); max-width: 30ch;">
+          Placeholder descriptive line. Footer copy is written separately.
+        </p>
+      </div>
+
+      {% for column in ['Placeholder column', 'Placeholder column', 'Placeholder column'] %}
+      <div>
+        <h2 class="footer__heading">{{ column }}</h2>
+        <ul class="footer__list">
+          <li><a href="#">Placeholder link</a></li>
+          <li><a href="#">Placeholder link</a></li>
+          <li><a href="#">Placeholder link</a></li>
+        </ul>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="footer__base">
+      <span>Placeholder legal line</span>
+      <span class="placeholder-note">Content to be supplied</span>
+    </div>
+  </div>
+</footer>
+
+{# The label is hidden below 30rem where this collapses to a circle, so the
+   accessible name has to come from aria-label rather than the text. #}
+<a class="fab" href="#main" data-fab aria-label="Back to top">
+  <svg class="fab__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+          d="M12 19V5m0 0-6 6m6-6 6 6"/>
+  </svg>
+  <span class="fab__label">Back to top</span>
+</a>
+
+<script src="/assets/js/placeholder-media.js" defer></script>
+<script src="/assets/js/identity.js" defer></script>
+</body>
+</html>

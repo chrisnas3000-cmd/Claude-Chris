@@ -1,0 +1,296 @@
+---
+layout: layouts/identity.njk
+permalink: /identity/imagery/
+title: Imagery & motion
+description: Photography, video and motion direction for the Teenaz Spa visual identity.
+---
+
+<section class="section">
+  <div class="shell">
+    <div class="stack--lg stack" style="max-width: 48rem;">
+      <p class="eyebrow eyebrow-rule reveal" data-reveal>Imagery &amp; motion</p>
+      <h1 class="display-2 reveal" data-reveal data-reveal-delay="1">
+        How it should <em>look and move</em>
+      </h1>
+      <p class="lead reveal" data-reveal data-reveal-delay="2">
+        Photography carries more of this identity than any other element. The brief below
+        is written to be handed to a photographer as-is.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── A note on the frames ─────────────────────────────────────────────── -->
+<section class="section section--alt">
+  <div class="shell shell--narrow">
+    <div class="card">
+      <div class="card__body">
+        <p class="eyebrow">About the frames on these pages</p>
+        <p class="card__text">
+          Every image area in this system is currently a painted field, not a photograph.
+          Each one is a soft, out-of-focus wash in the brand's warm grade — enough to show
+          how the palette behaves at image scale, how type sits on a scrim and how a grid
+          of pictures reads together, without asserting a photograph that has not been
+          taken. They are sized and toned to be swapped one-for-one with the real shots.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Tonal range ──────────────────────────────────────────────────────── -->
+<section class="section" aria-labelledby="tone-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">01 — Grade</p>
+      <h2 class="h1" id="tone-t">One warm grade, six registers</h2>
+      <p class="body-text">
+        Every photograph is graded to the same warm neutral. Highlights lean ivory,
+        shadows lean espresso, and nothing in the library is allowed to go cool. Within
+        that single grade, six registers give a gallery variety without breaking the set.
+      </p>
+    </header>
+
+    <div class="grid-3">
+      {% set tones = [
+        ['warm', 'Warm', 'Towels, fabric, skin. The default register.'],
+        ['bronze', 'Bronze', 'Oils, brass, candlelight. The warmest end.'],
+        ['steam', 'Steam', 'Water, steam, wet stone. The lightest register.'],
+        ['stone', 'Stone', 'Marble, plaster, rough surfaces.'],
+        ['sage', 'Sage', 'Plants and the few cooler moments allowed.'],
+        ['deep', 'Deep', 'Low-lit rooms. Only where type sits over the image.']
+      ] %}
+      {% for tone in tones %}
+      <figure class="figure reveal" data-reveal data-reveal-delay="{{ loop.index }}">
+        <div class="figure__frame" style="aspect-ratio: 4 / 3;">
+          <canvas data-media="tone-{{ tone[0] }}" data-tone="{{ tone[0] }}" aria-hidden="true"></canvas>
+        </div>
+        <figcaption class="figure__caption">
+          <strong style="color: var(--text);">{{ tone[1] }}</strong> — {{ tone[2] }}
+        </figcaption>
+      </figure>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── Treatment ────────────────────────────────────────────────────────── -->
+<section class="section section--raised" aria-labelledby="treat-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">02 — Treatment</p>
+      <h2 class="h1" id="treat-t">Six rules that make the set cohere</h2>
+    </header>
+
+    <div class="grid-3">
+      {% for rule in identity.imagery.treatment %}
+      <div class="card card--sand reveal" data-reveal data-reveal-delay="{{ loop.index }}">
+        <div class="card__body">
+          <p class="h4">{{ rule.name }}</p>
+          <p class="card__text">{{ rule.note }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── Subjects ─────────────────────────────────────────────────────────── -->
+<section class="section" aria-labelledby="subject-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">03 — Subjects</p>
+      <h2 class="h1" id="subject-t">What to photograph, and what to refuse</h2>
+      <p class="body-text">
+        The subject list leans towards sensory detail rather than people looking at the
+        camera. Close, quiet, specific. When a person appears they are mid-gesture and
+        respectfully covered.
+      </p>
+    </header>
+
+    <div class="do-dont">
+      <div class="do-dont__col do-dont__col--do reveal" data-reveal>
+        <p class="do-dont__title">Shoot</p>
+        <ul class="do-dont__list">
+          {% for subject in identity.imagery.subjects %}<li>{{ subject }}</li>{% endfor %}
+        </ul>
+      </div>
+      <div class="do-dont__col do-dont__col--dont reveal" data-reveal data-reveal-delay="1">
+        <p class="do-dont__title">Never</p>
+        <ul class="do-dont__list">
+          {% for item in identity.imagery.avoid %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Text over image ──────────────────────────────────────────────────── -->
+<section class="section section--alt" aria-labelledby="scrim-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">04 — Type over photography</p>
+      <h2 class="h1" id="scrim-t">Never trust the picture alone</h2>
+      <p class="body-text">
+        A photograph that is dark enough for white type today will be replaced by one that
+        is not. Text over an image always sits on a scrim, so legibility is a property of
+        the system rather than of the particular shot.
+      </p>
+    </header>
+
+    <div class="grid-2">
+      <figure class="figure">
+        <div class="overlay-media" style="border-radius: var(--r-lg);">
+          <canvas data-media="scrim-with" data-tone="warm" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%;"></canvas>
+          <span class="overlay-media__scrim"></span>
+          <div class="overlay-media__content" style="min-height: 20rem; padding: var(--s-6);">
+            <p class="eyebrow eyebrow--on-deep">With scrim</p>
+            <p class="h2" style="color: var(--ivory);">{{ identity.placeholder.short }}</p>
+          </div>
+        </div>
+        <figcaption class="figure__caption">Correct. Ivory type holds at AA over any frame in the library.</figcaption>
+      </figure>
+
+      <figure class="figure">
+        <div class="overlay-media" style="border-radius: var(--r-lg);">
+          <canvas data-media="scrim-with" data-tone="warm" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%;"></canvas>
+          <div class="overlay-media__content" style="min-height: 20rem; padding: var(--s-6);">
+            <p class="eyebrow" style="color: rgba(247,242,234,0.8);">No scrim</p>
+            <p class="h2" style="color: var(--ivory);">{{ identity.placeholder.short }}</p>
+          </div>
+        </div>
+        <figcaption class="figure__caption">Wrong. The same type on the same frame, now unreadable in the light areas.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ── Video ────────────────────────────────────────────────────────────── -->
+<section class="section" aria-labelledby="video-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">05 — Video</p>
+      <h2 class="h1" id="video-t">Background video, held still</h2>
+    </header>
+
+    <div class="split" style="align-items: start;">
+      <div class="media-band reveal ken" data-reveal>
+        <div class="media-band__frame" style="border-radius: var(--r-lg); overflow: hidden;">
+          <canvas data-media="video-frame" data-tone="steam" aria-hidden="true"></canvas>
+        </div>
+      </div>
+      <ul class="do-dont__list" style="font-size: var(--t-body);">
+        {% for rule in identity.imagery.video %}<li>{{ rule }}</li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── Motion ───────────────────────────────────────────────────────────── -->
+<section class="section section--raised" id="motion" aria-labelledby="motion-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">06 — Motion</p>
+      <h2 class="h1" id="motion-t">Slow enough to be calming</h2>
+      <p class="body-text">
+        Four durations, one easing curve. Everything on these pages already uses them —
+        the sections you have scrolled past rose into place at 900ms. Motion supports the
+        atmosphere and never asks for attention.
+      </p>
+    </header>
+
+    <div class="spec" style="margin-bottom: var(--s-8);">
+      {% for m in identity.motion %}
+      <div style="display: grid; gap: var(--s-2); padding-block: var(--s-4); border-bottom: 1px solid var(--line-quiet);">
+        <div class="scale-row__meta">
+          <span><strong style="color: var(--text);">{{ m.name }}</strong></span>
+          <span><code>{{ m.token }}</code></span>
+          <span>{{ m.value }}</span>
+          <span>{{ m.curve }}</span>
+        </div>
+        <p class="spec__note">{{ m.note }}</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="do-dont">
+      <div class="do-dont__col do-dont__col--do">
+        <p class="do-dont__title">Use</p>
+        <ul class="do-dont__list">
+          <li>Gentle fade with an upward rise</li>
+          <li>Slow image scaling on load</li>
+          <li>Soft parallax, small displacement only</li>
+          <li>Smooth colour transitions on hover</li>
+          <li>Slow gallery cross-fades</li>
+          <li>Seamless, muted background video</li>
+        </ul>
+      </div>
+      <div class="do-dont__col do-dont__col--dont">
+        <p class="do-dont__title">Never</p>
+        <ul class="do-dont__list">
+          <li>Fast or snapping animation</li>
+          <li>Bouncing or elastic easing</li>
+          <li>Scroll-jacking or pinned sections</li>
+          <li>Cursor followers and custom cursors</li>
+          <li>Flashing or high-contrast transitions</li>
+          <li>Large rotating carousels</li>
+          <li>Autoplay audio, ever</li>
+          <li>Animating every element on a page</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card card--sand" style="margin-top: var(--s-7);">
+      <div class="card__body">
+        <p class="h4">Reduced motion</p>
+        <p class="card__text">
+          Under <code>prefers-reduced-motion: reduce</code> every transition and animation
+          collapses to 0.01ms, reveals start visible, the floating button is shown without
+          sliding, and background video is replaced by its poster frame. Nothing becomes
+          unreachable and no content depends on motion to appear.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Responsive & accessibility ───────────────────────────────────────── -->
+<section class="section" id="quality" aria-labelledby="quality-t">
+  <div class="shell">
+    <header class="section-head section-head--wide">
+      <p class="eyebrow eyebrow-rule">07 — Quality floor</p>
+      <h2 class="h1" id="quality-t">What every page must clear</h2>
+    </header>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card__body">
+          <p class="h4">Responsive</p>
+          <ul class="do-dont__list" style="font-size: var(--t-small);">
+            <li>Spacing stays generous on mobile — the scale shrinks, the rhythm does not</li>
+            <li>Body text never below 16px; small text never below 14px</li>
+            <li>Touch targets at least 44px, buttons 48px</li>
+            <li>Sections stack in reading order</li>
+            <li>No horizontal overflow at any width</li>
+            <li>Images re-crop rather than letterbox</li>
+            <li>One idea per viewport, on every screen size</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card__body">
+          <p class="h4">Accessible</p>
+          <ul class="do-dont__list" style="font-size: var(--t-small);">
+            <li>Body text at AA or better against its background</li>
+            <li>Bronze and sage restricted to large text, icons and borders</li>
+            <li>Focus is always visible, and additive to the resting border</li>
+            <li>Text over photography always on a scrim</li>
+            <li>Form labels visible, never placeholder-only</li>
+            <li>Reduced motion fully honoured</li>
+            <li>Every image carries alt text written for its content</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

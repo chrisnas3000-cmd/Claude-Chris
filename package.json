@@ -15,7 +15,8 @@
     "a11y": "node scripts/a11y.mjs",
     "e2e": "node scripts/e2e.mjs",
     "test": "npm run build && npm run check && npm run a11y && npm run e2e",
-    "preview": "npm run build && node scripts/bundle-preview.mjs"
+    "preview": "npm run build && node scripts/bundle-preview.mjs",
+    "preview:identity": "npm run build && node scripts/bundle-identity.mjs"
   },
   "repository": {
     "type": "git",
