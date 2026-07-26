@@ -73,6 +73,64 @@
     else desktop.addListener(onBreak);
   }
 
+  /* --- Hero video ---------------------------------------------------------
+     The markup ships with no <source> and preload="none", so nothing is
+     downloaded until this decides the video is worth fetching. If it never
+     runs — no JavaScript, an old browser, a refused autoplay — the poster
+     image underneath is already a finished hero.
+  */
+  (function heroVideo() {
+    var video = document.querySelector('[data-hero-video]');
+    if (!video) return;
+
+    // Reasons not to spend the visitor's bandwidth or override their settings.
+    var connection = navigator.connection || {};
+    var slow = /(^|-)2g$/.test(connection.effectiveType || '');
+    if (reduced || connection.saveData === true || slow) return;
+
+    function attach() {
+      [
+        { src: video.getAttribute('data-webm'), type: 'video/webm' },
+        { src: video.getAttribute('data-mp4'), type: 'video/mp4' },
+      ].forEach(function (item) {
+        if (!item.src) return;
+        var source = document.createElement('source');
+        source.src = item.src;
+        source.type = item.type;
+        video.appendChild(source);
+      });
+
+      // Only reveal the video once frames are genuinely rendering. Fading in
+      // on `canplay` alone can show a black box for a beat on slower devices.
+      video.addEventListener('playing', function () {
+        video.classList.add('is-playing');
+      }, { once: true });
+
+      video.load();
+      var attempt = video.play();
+      // Autoplay can still be refused; the poster simply stays.
+      if (attempt && typeof attempt.catch === 'function') attempt.catch(function () {});
+    }
+
+    // Wait until the browser is idle so the video never competes with the
+    // fonts, the stylesheet or the poster for the first paint.
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(attach, { timeout: 2500 });
+    } else {
+      window.addEventListener('load', function () { setTimeout(attach, 400); });
+    }
+
+    // Stop playback while the tab is hidden — no reason to decode frames
+    // nobody is looking at.
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) video.pause();
+      else if (video.classList.contains('is-playing')) {
+        var resume = video.play();
+        if (resume && typeof resume.catch === 'function') resume.catch(function () {});
+      }
+    });
+  })();
+
   /* --- Scroll reveals ----------------------------------------------------- */
   var revealables = document.querySelectorAll('[data-reveal]');
 

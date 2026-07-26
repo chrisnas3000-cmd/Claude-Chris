@@ -13,6 +13,7 @@
  * all of which a single file cannot have.
  */
 import { readFile, writeFile, readdir } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { join, resolve, extname } from 'node:path';
 
 const OUT = resolve(process.cwd(), '_site');
@@ -65,21 +66,42 @@ for (const [file, base64] of fontData) {
 /* --- artwork -------------------------------------------------------------- */
 const imgDir = join(SRC, 'assets', 'img');
 const imgData = new Map();
+const MIME = {
+  '.svg': 'image/svg+xml',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.webp': 'image/webp',
+  '.avif': 'image/avif',
+};
 for (const file of await readdir(imgDir)) {
-  const ext = extname(file);
-  if (ext === '.svg') {
-    const svg = await readFile(join(imgDir, file), 'utf8');
-    imgData.set(`/assets/img/${file}`, `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`);
-  } else if (ext === '.png') {
-    const png = await readFile(join(imgDir, file));
-    imgData.set(`/assets/img/${file}`, `data:image/png;base64,${png.toString('base64')}`);
-  }
+  const type = MIME[extname(file).toLowerCase()];
+  if (!type) continue;
+  const bytes = await readFile(join(imgDir, file));
+  imgData.set(`/assets/img/${file}`, `data:${type};base64,${bytes.toString('base64')}`);
 }
 const inlineAssets = (html) => {
   let out = html;
   for (const [path, uri] of imgData) out = out.replaceAll(path, uri);
+  if (heroVideoUri) {
+    out = out.replaceAll('/assets/video/hero.webm', heroVideoUri);
+    // Nothing to fall back to once the MP4 is not bundled; clearing the
+    // attribute stops the loader appending a source that would 404.
+    out = out.replace(/data-mp4="[^"]*"/, 'data-mp4=""');
+  }
   return out;
 };
+
+/* --- hero video -----------------------------------------------------------
+   Only the WebM is inlined. It is roughly 40% smaller than the MP4 and every
+   browser likely to open a preview link plays it, so carrying both would
+   double the page weight to cover a case this format does not need to. The
+   deployed site still ships both. */
+const videoPath = join(SRC, 'assets', 'video', 'hero.webm');
+let heroVideoUri = null;
+if (existsSync(videoPath)) {
+  heroVideoUri = `data:video/webm;base64,${(await readFile(videoPath)).toString('base64')}`;
+}
 
 /* --- shared chrome, taken from the built home page ------------------------- */
 const home = await read(join(OUT, 'index.html'));

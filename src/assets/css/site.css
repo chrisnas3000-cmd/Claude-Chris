@@ -20,37 +20,144 @@
     10.  Footer additions
    ========================================================================== */
 
-/* 1. Hero ================================================================= */
+/* 1. Hero =================================================================
+   A full-bleed film hero. The still paints first and the video fades in over
+   it once it is genuinely playing, so the section is never blank and never
+   depends on the video arriving. */
 
-.hero { padding-block: var(--s-7) var(--section-y); }
-
-.hero__grid { display: grid; gap: var(--s-7); align-items: center; }
-@media (min-width: 60rem) {
-  /* Asymmetric: type takes the wider column, the image the narrower one. */
-  .hero__grid { grid-template-columns: 6fr 5fr; gap: var(--s-9); }
+.hero--film {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  /* Tall enough to be immersive, capped so it never dwarfs a laptop screen. */
+  min-height: min(88svh, 800px);
+  padding-block: calc(var(--s-10) + var(--s-6)) var(--s-9);
+  background: var(--espresso);
+  overflow: hidden;
+  isolation: isolate;
 }
 
-.hero__title { margin-block: var(--s-4) var(--s-5); }
-.hero__lead { margin-bottom: var(--s-6); }
+.hero__media { position: absolute; inset: 0; z-index: -1; }
+.hero__still,
+.hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* The footage's subject sits right of centre; this keeps it in frame as the
+     viewport narrows and the crop tightens. */
+  object-position: 62% 50%;
+}
+.hero__video {
+  opacity: 0;
+  transition: opacity 1.2s var(--ease-soft);
+}
+.hero__video.is-playing { opacity: 1; }
+
+/*
+  Two gradients doing separate jobs. The horizontal one gives the type a dark
+  ground on the left while leaving the room visible on the right; the vertical
+  one seats the header at the top and closes the section at the bottom.
+  Legibility is a property of the scrim, never of the particular frame behind
+  it — the footage moves, and a frame that is dark enough now will not be in
+  three seconds.
+*/
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg,
+      rgba(41, 33, 29, 0.94) 0%,
+      rgba(41, 33, 29, 0.90) 30%,
+      rgba(41, 33, 29, 0.72) 52%,
+      rgba(41, 33, 29, 0.34) 78%,
+      rgba(41, 33, 29, 0.20) 100%),
+    linear-gradient(180deg,
+      rgba(41, 33, 29, 0.68) 0%,
+      rgba(41, 33, 29, 0.42) 12%,
+      rgba(41, 33, 29, 0.12) 30%,
+      rgba(41, 33, 29, 0.20) 70%,
+      rgba(41, 33, 29, 0.60) 100%);
+}
+
+.hero__inner { position: relative; max-width: var(--shell); }
+.hero--film .hero__title { margin-block: var(--s-4) var(--s-5); color: var(--ivory); max-width: 14ch; }
+.hero--film .hero__title em { color: var(--sand); }
+.hero--film .hero__lead { margin-bottom: var(--s-6); color: rgba(247, 242, 234, 0.88); }
 .hero__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); }
 
-.hero__figure {
-  overflow: hidden;
-  border-radius: var(--r-lg);
-  background: var(--sand);
+/* Eyebrow and outline button need light-on-dark variants here — the standard
+   bronze accent is tuned for the ivory grounds and is unreadable on film. */
+.eyebrow--on-film { color: var(--sand); }
+.btn--outline-film { border-color: rgba(247, 242, 234, 0.55); color: var(--ivory); }
+.btn--outline-film:hover {
+  background: rgba(247, 242, 234, 0.12);
+  border-color: var(--ivory);
+  color: var(--ivory);
 }
-.hero__figure img,
-.hero__figure canvas { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
-@media (max-width: 59.99rem) {
-  .hero__figure img, .hero__figure canvas { aspect-ratio: 3 / 2; }
+
+@media (max-width: 47.99rem) {
+  .hero--film {
+    min-height: min(84svh, 680px);
+    padding-block: calc(var(--s-9) + var(--s-5)) var(--s-7);
+  }
+  /* Weighted downward on phones: the crop is tighter and the type sits lower. */
+  .hero__scrim {
+    background: linear-gradient(180deg,
+      rgba(41, 33, 29, 0.84) 0%,
+      rgba(41, 33, 29, 0.46) 24%,
+      rgba(41, 33, 29, 0.72) 44%,
+      rgba(41, 33, 29, 0.92) 62%,
+      rgba(41, 33, 29, 0.95) 100%);
+  }
+  .hero--film .hero__title { max-width: none; }
 }
+
+/* 1c. Header over film ====================================================
+   On the home page the hero runs to the top edge and the navigation floats
+   over it. The hero is pulled up by exactly the header's height and pads
+   itself back out, so nothing overlaps and no magic numbers leak elsewhere.
+   Once scrolled, .is-stuck restores the normal ivory header and dark type. */
+
+.page-home .hero--film {
+  margin-top: calc(-1 * var(--header-h));
+  padding-top: calc(var(--header-h) + var(--s-10));
+}
+@media (max-width: 47.99rem) {
+  .page-home .hero--film { padding-top: calc(var(--header-h) + var(--s-8)); }
+}
+
+.page-home .header:not(.is-stuck) .logo,
+.page-home .header:not(.is-stuck) .nav__link { color: var(--ivory); }
+.page-home .header:not(.is-stuck) .logo__mark { color: var(--sand); }
+.page-home .header:not(.is-stuck) .logo__sub { color: rgba(247, 242, 234, 0.78); }
+.page-home .header:not(.is-stuck) .nav__link::after { background: var(--sand); }
+.page-home .header:not(.is-stuck) .nav-toggle {
+  border-color: rgba(247, 242, 234, 0.55);
+  color: var(--ivory);
+}
+.page-home .header:not(.is-stuck) .btn--primary {
+  background: var(--ivory);
+  color: var(--espresso);
+}
+.page-home .header:not(.is-stuck) .btn--primary:hover { background: var(--white); }
+
+/* 1b. Proof points strip ================================================== */
+
+.marks-strip { padding-block: var(--s-6) 0; background: var(--surface); }
 
 /* 2. Marks ================================================================ */
 
+/*
+  Stacked on phones. Three across at 390px left roughly 100px a column, which
+  broke "WhatsApp" across two lines mid-word. Now that these sit in their own
+  strip rather than inside the hero, there is no height pressure forcing them
+  into a row, so they get the space they need.
+*/
 .marks {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  margin-top: var(--s-8);
+  grid-template-columns: 1fr;
   border-top: 1px solid var(--line-quiet);
 }
 .marks__item {
@@ -59,10 +166,17 @@
   gap: 0.15rem;
   padding-block: var(--s-5);
   min-width: 0;
+  border-bottom: 1px solid var(--line-quiet);
 }
-.marks__item + .marks__item {
-  padding-left: var(--s-4);
-  border-left: 1px solid var(--line-quiet);
+.marks__item:last-child { border-bottom: 0; }
+
+@media (min-width: 40rem) {
+  .marks { grid-template-columns: repeat(3, 1fr); }
+  .marks__item { border-bottom: 0; }
+  .marks__item + .marks__item {
+    padding-left: var(--s-6);
+    border-left: 1px solid var(--line-quiet);
+  }
 }
 .marks__label {
   color: var(--text-accent);
@@ -73,15 +187,13 @@
 }
 .marks__value {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 4vw, 2.6rem);
+  font-size: clamp(1.6rem, 3.4vw, 2.6rem);
   font-weight: 400;
   line-height: 1.15;
-  overflow-wrap: break-word;
 }
 .marks__detail { color: var(--text-muted); font-size: var(--t-small); line-height: 1.4; }
 
 @media (min-width: 48rem) {
-  .marks__item + .marks__item { padding-left: var(--s-6); }
   .marks__label { font-size: var(--t-label); }
 }
 

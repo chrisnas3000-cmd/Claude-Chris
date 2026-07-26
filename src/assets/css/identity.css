@@ -762,12 +762,16 @@ select.field__control {
   backdrop-filter: blur(12px);
   border-bottom-color: var(--line-quiet);
 }
+/* Published as a token so a hero can pull itself up under the header by
+   exactly this amount without hard-coding the number. */
+:root { --header-h: 4.75rem; }
+
 .header__inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--s-4);
-  min-height: 4.75rem;
+  min-height: var(--header-h);
 }
 
 .logo { display: inline-flex; align-items: center; gap: var(--s-3); text-decoration: none; color: var(--text); }

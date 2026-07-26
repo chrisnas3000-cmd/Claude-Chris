@@ -310,9 +310,9 @@ const images = {
     // Leave `src` empty to use the generated placeholder frame; set it to a
     // file in src/assets/img/ to use a real photograph instead. Nothing else
     // needs to change — the template switches automatically.
-    src: '',
+    src: '/assets/img/hero-poster.jpg',
     tone: 'warm',
-    alt: 'A treatment room at Teena\u2019z Spa, lit low and warm',
+    alt: 'A treatment room lit by candles, with warm towels, hot stones and steam',
   },
   hammam: {
     src: '',
@@ -356,6 +356,30 @@ const images = {
  *    Keep the light/dark pairings contrast-safe if you change them:
  *    text on its background should stay at 4.5:1 or better.
  * ------------------------------------------------------------------------ */
+/* ---------------------------------------------------------------------------
+ * 7b. HERO VIDEO
+ *
+ *    Set `enabled: false` to fall back to the poster image everywhere; the
+ *    hero keeps working and nothing else needs changing.
+ *
+ *    The video is decorative and silent. It is never the only way any
+ *    information is conveyed, so it carries no captions or transcript.
+ *
+ *    To replace it, encode a new pair with the same recipe (see README) and
+ *    drop them into src/assets/video/. Both formats matter: WebM is roughly
+ *    40% smaller and covers most modern browsers, MP4 covers the rest.
+ * ------------------------------------------------------------------------ */
+const heroVideo = {
+  enabled: true,
+  webm: '/assets/video/hero.webm',
+  mp4: '/assets/video/hero.mp4',
+  // Shown before the video loads, and instead of it whenever playback is
+  // suppressed — reduced motion, Save-Data, or a slow connection.
+  poster: '/assets/img/hero-poster.jpg',
+  width: 1600,
+  height: 894,
+};
+
 const brand = {
   /*
     The visual identity palette. These are injected as CSS custom properties
@@ -423,6 +447,7 @@ const disclaimer = {
 
 export default {
   business,
+  heroVideo,
   contact,
   hours,
   serviceCategories,

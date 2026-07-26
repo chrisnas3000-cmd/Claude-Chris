@@ -9,31 +9,52 @@ description: "Teena'z Spa is a spa, massage and beauty centre in Sodeco, Achrafi
 {% set wa = site.contact.whatsapp.link | whatsapp(site.contact.whatsapp.prefill) %}
 
 <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
-<section class="hero">
-  <div class="shell">
-    <div class="hero__grid">
+{#
+  The still sits underneath and paints immediately; the video fades in over it
+  once it is actually playing. That way the hero is never empty, and when
+  playback is suppressed — reduced motion, Save-Data, a slow connection, or no
+  video support — what remains is a finished image rather than a gap.
 
-      <div>
-        <p class="eyebrow eyebrow-rule reveal" data-reveal>{{ site.copy.home.heroEyebrow }}</p>
-        <h1 class="display-1 hero__title reveal" data-reveal data-reveal-delay="1">
-          {{ site.copy.home.heroTitle }}<br><em>{{ site.copy.home.heroTitleAccent }}</em>
-        </h1>
-        <p class="lead hero__lead reveal" data-reveal data-reveal-delay="2">{{ site.copy.home.heroLead }}</p>
-        <div class="hero__actions reveal" data-reveal data-reveal-delay="3">
-          <a class="btn btn--primary btn--lg" href="{{ wa }}" target="_blank" rel="noopener">Book on WhatsApp</a>
-          <a class="btn btn--secondary btn--lg" href="/treatments/">See treatments</a>
-        </div>
-      </div>
+  The video is decorative and silent: it carries no information the copy does
+  not already give, which is why it is hidden from assistive technology and
+  needs no captions.
+#}
+<section class="hero hero--film">
+  <div class="hero__media">
+    <img class="hero__still" src="{{ site.heroVideo.poster }}" alt="{{ site.images.hero.alt }}"
+         width="{{ site.heroVideo.width }}" height="{{ site.heroVideo.height }}"
+         fetchpriority="high" decoding="async">
 
-      <figure class="hero__figure ken reveal" data-reveal data-reveal-delay="2">
-        {{ frame(site.images.hero, 'hero', null, true) }}
-      </figure>
+    {% if site.heroVideo.enabled %}
+    <video class="hero__video" data-hero-video
+           data-webm="{{ site.heroVideo.webm }}" data-mp4="{{ site.heroVideo.mp4 }}"
+           width="{{ site.heroVideo.width }}" height="{{ site.heroVideo.height }}"
+           muted loop playsinline preload="none"
+           aria-hidden="true" tabindex="-1" disablepictureinpicture></video>
+    {% endif %}
 
+    <span class="hero__scrim" aria-hidden="true"></span>
+  </div>
+
+  <div class="shell hero__inner">
+    <p class="eyebrow eyebrow--on-film reveal" data-reveal>{{ site.copy.home.heroEyebrow }}</p>
+    <h1 class="display-1 hero__title reveal" data-reveal data-reveal-delay="1">
+      {{ site.copy.home.heroTitle }}<br><em>{{ site.copy.home.heroTitleAccent }}</em>
+    </h1>
+    <p class="lead hero__lead reveal" data-reveal data-reveal-delay="2">{{ site.copy.home.heroLead }}</p>
+    <div class="hero__actions reveal" data-reveal data-reveal-delay="3">
+      <a class="btn btn--on-deep btn--lg" href="{{ wa }}" target="_blank" rel="noopener">Book on WhatsApp</a>
+      <a class="btn btn--outline-film btn--lg" href="/treatments/">See treatments</a>
     </div>
+  </div>
+</section>
 
+<!-- ── Proof points ──────────────────────────────────────────────────────── -->
+<section class="marks-strip">
+  <div class="shell">
     <ul class="marks">
       {% for mark in site.copy.home.marks %}
-      <li class="marks__item reveal" data-reveal data-reveal-delay="{{ loop.index + 3 }}">
+      <li class="marks__item reveal" data-reveal data-reveal-delay="{{ loop.index }}">
         <span class="marks__label">{{ mark.label }}</span>
         <span class="marks__value">{% if mark.value == 'auto' %}{{ site.serviceCount }}{% else %}{{ mark.value }}{% endif %}</span>
         <span class="marks__detail">{{ mark.detail }}</span>

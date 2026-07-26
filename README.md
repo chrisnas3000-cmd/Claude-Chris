@@ -112,6 +112,78 @@ search engines read.
 
 ---
 
+## The hero video
+
+The home page opens on a silent, looping clip of the treatment room. It is
+configured in `site.js` under `heroVideo`; set `enabled: false` to fall back to
+the poster image everywhere.
+
+### How it behaves
+
+The poster image paints first and the video fades in over it only once frames
+are genuinely rendering, so the hero is never blank and never depends on the
+video arriving. The markup ships with **no `<source>` element and
+`preload="none"`** — nothing is downloaded until the loader decides the video is
+worth fetching.
+
+It is not fetched at all when:
+
+- the visitor prefers reduced motion,
+- `Save-Data` is set,
+- or the connection reports as 2G.
+
+In each case the poster carries the hero on its own and **zero video bytes are
+transferred** — the tests assert this, because skipping playback while still
+downloading two megabytes would miss the point.
+
+Playback also pauses while the tab is hidden, and the browser only downloads
+the first format it supports, never both.
+
+### Encoding
+
+The source was 11.7 MB, 10s, 1924×1076 at 9.3 Mb/s — far too heavy for a hero.
+The shipped pair is 1.74 MB (MP4) and 1.02 MB (WebM) for a **20-second** loop.
+It is longer because it is a boomerang: the clip is a one-way camera pan, so
+playing it forward then reversed removes the jump cut a plain loop would have
+at the seam.
+
+To re-encode a replacement, from a source at `in.mp4`:
+
+```bash
+FF=node_modules/ffmpeg-static/ffmpeg
+FILTER="[0:v]scale=1600:-2,setsar=1,split[a][b];[b]reverse[r];[a][r]concat=n=2:v=1[v]"
+
+$FF -i in.mp4 -filter_complex "$FILTER" -map "[v]" -an \
+  -c:v libx264 -profile:v high -pix_fmt yuv420p -crf 27 -preset slow \
+  -movflags +faststart src/assets/video/hero.mp4
+
+$FF -i in.mp4 -filter_complex "$FILTER" -map "[v]" -an \
+  -c:v libvpx-vp9 -crf 36 -b:v 0 -row-mt 1 src/assets/video/hero.webm
+
+$FF -ss 0.2 -i in.mp4 -frames:v 1 -vf scale=1600:-2 -q:v 5 \
+  src/assets/img/hero-poster.jpg
+```
+
+`-an` matters: it guarantees no audio track ships, so the video cannot make a
+sound under any circumstance.
+
+### Legibility over moving footage
+
+Text over video cannot be checked by a static audit — the background moves, so
+a frame that passes now may not three seconds later. `npm run check:video`
+samples the **actual composited pixels** behind each piece of hero type across
+the whole loop, at both phone and desktop widths, and reports the worst frame.
+
+It measures the real glyph bounds rather than the block box, and reports the
+95th percentile alongside the maximum: a single candle flame behind one letter
+should not condemn a headline, but the bright tail of the region still has to
+be legible. Every text element currently clears AA on both counts.
+
+If you replace the footage, run that check. The scrim is tuned to this clip,
+and a brighter one will need a stronger one.
+
+---
+
 ## Two separate things in this repository
 
 | | What it is | Where |
@@ -246,6 +318,7 @@ scripts/                 ← build and test tooling
 | `npm run build` | Generate artwork, then build to `_site/` |
 | `npm test` | Build and run every check below |
 | `npm run check` | Broken links, missing assets, JSON-LD, meta tags, headings |
+| `npm run check:video` | Contrast of hero type against the moving video, across the loop |
 | `npm run a11y` | axe-core WCAG 2.1 AA audit plus keyboard checks |
 | `npm run e2e` | Menu, booking bar, jump links, service booking links |
 | `npm run shots` | Screenshots at 3 widths into `.screenshots/` |

@@ -89,7 +89,26 @@ function share() {
 
 /* --- write, and clear out anything this script no longer produces --------- */
 const files = { 'favicon.svg': favicon(), 'share.svg': share() };
-const keep = new Set([...Object.keys(files), 'share.png', 'apple-touch-icon.png']);
+
+/*
+  Keep what this script writes, what `npm run raster` derives from it, and
+  anything site.js points at. That last part matters: real photographs live in
+  the same folder, and a cleanup that only knew about generated files would
+  quietly delete them on the next build.
+*/
+const referenced = [
+  ...Object.values(site.images).map((image) => image.src),
+  site.heroVideo?.poster,
+]
+  .filter(Boolean)
+  .map((path) => path.split('/').pop());
+
+const keep = new Set([
+  ...Object.keys(files),
+  'share.png',
+  'apple-touch-icon.png',
+  ...referenced,
+]);
 
 await mkdir(OUT, { recursive: true });
 for (const [name, contents] of Object.entries(files)) {

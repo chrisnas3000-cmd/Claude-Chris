@@ -298,6 +298,65 @@ await test('placeholder media frames actually paint', async () => {
   await page.close();
 });
 
+await test('hero video plays, and only the supported format is fetched', async () => {
+  const page = await desktop.newPage();
+  const media = [];
+  page.on('request', (r) => { if (/\.(mp4|webm)$/.test(r.url())) media.push(r.url().split('/').pop()); });
+  await page.goto(base, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(3500);
+
+  const state = await page.evaluate(() => {
+    const v = document.querySelector('[data-hero-video]');
+    return v && { playing: v.classList.contains('is-playing'), muted: v.muted, loop: v.loop, paused: v.paused };
+  });
+  assert(state, 'no hero video element');
+  assert(state.playing, 'hero video never started playing');
+  assert(state.muted, 'hero video is not muted');
+  assert(state.loop, 'hero video does not loop');
+  // The browser picks the first source it supports and stops; downloading both
+  // encodes would double the cost of the hero for no benefit.
+  assert(media.length === 1, `expected 1 video download, got ${media.length}: ${media.join(', ')}`);
+  await page.close();
+});
+
+await test('hero video is suppressed, and never downloaded, under reduced motion', async () => {
+  // A decorative background video is exactly what this preference is for, and
+  // skipping it has to mean skipping the bytes too — not just the playback.
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
+  const page = await ctx.newPage();
+  const media = [];
+  page.on('request', (r) => { if (/\.(mp4|webm)$/.test(r.url())) media.push(r.url()); });
+  await page.goto(base, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(3000);
+
+  assert(media.length === 0, `video was downloaded despite reduced motion: ${media.join(', ')}`);
+  const sources = await page.evaluate(() =>
+    document.querySelectorAll('[data-hero-video] source').length);
+  assert(sources === 0, 'video sources were attached under reduced motion');
+
+  // The poster still has to carry the hero on its own.
+  const poster = await page.evaluate(() => {
+    const img = document.querySelector('.hero__still');
+    return img && img.complete && img.naturalWidth > 0;
+  });
+  assert(poster, 'hero poster image did not load as the fallback');
+  await ctx.close();
+});
+
+await test('hero video is skipped when the visitor asked to save data', async () => {
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await ctx.newPage();
+  const media = [];
+  page.on('request', (r) => { if (/\.(mp4|webm)$/.test(r.url())) media.push(r.url()); });
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'connection', { value: { saveData: true }, configurable: true });
+  });
+  await page.goto(base, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(3000);
+  assert(media.length === 0, `video downloaded despite Save-Data: ${media.join(', ')}`);
+  await ctx.close();
+});
+
 await test('the 404 page offers a way back', async () => {
   const page = await desktop.newPage();
   await page.goto(`${base}/404.html`, { waitUntil: 'networkidle' });
