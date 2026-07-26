@@ -12,8 +12,13 @@
  * that version has real URLs, per-page titles and metadata, and a sitemap,
  * all of which a single file cannot have.
  */
-import { readFile, writeFile, readdir } from 'node:fs/promises';
+import { readFile, writeFile, readdir, mkdir, copyFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+
+const execFileAsync = promisify(execFile);
+const FFMPEG = resolve('node_modules/ffmpeg-static/ffmpeg');
 import { join, resolve, extname } from 'node:path';
 
 const OUT = resolve(process.cwd(), '_site');
@@ -83,11 +88,11 @@ for (const file of await readdir(imgDir)) {
 const inlineAssets = (html) => {
   let out = html;
   for (const [path, uri] of imgData) out = out.replaceAll(path, uri);
-  if (heroVideoUri) {
-    out = out.replaceAll('/assets/video/hero.webm', heroVideoUri);
-    // Nothing to fall back to once the MP4 is not bundled; clearing the
-    // attribute stops the loader appending a source that would 404.
-    out = out.replace(/data-mp4="[^"]*"/, 'data-mp4=""');
+  for (const [path, uri] of videoData) out = out.replaceAll(path, uri);
+  if (videoData.size) {
+    // Nothing to fall back to once the MP4s are not bundled; clearing the
+    // attributes stops the loader appending sources that would 404.
+    out = out.replaceAll(/data-mp4="[^"]*"/g, 'data-mp4=""');
   }
   return out;
 };
@@ -97,10 +102,42 @@ const inlineAssets = (html) => {
    browser likely to open a preview link plays it, so carrying both would
    double the page weight to cover a case this format does not need to. The
    deployed site still ships both. */
-const videoPath = join(SRC, 'assets', 'video', 'hero.webm');
-let heroVideoUri = null;
-if (existsSync(videoPath)) {
-  heroVideoUri = `data:video/webm;base64,${(await readFile(videoPath)).toString('base64')}`;
+/*
+  Videos are re-encoded smaller for the bundle rather than inlined as shipped.
+  A data URI sits inside the document, so the whole file has to arrive before
+  anything renders — inlining the production encodes made a 6 MB page that
+  showed nothing for several seconds. These are half-resolution and heavily
+  compressed, which is invisible at the size a preview is judged at and cuts
+  the page to about a quarter. The deployed site is unaffected.
+*/
+const videoDir = join(SRC, 'assets', 'video');
+const videoData = new Map();
+
+if (existsSync(videoDir)) {
+  const tmp = join(process.cwd(), '.cache', 'preview-video');
+  await mkdir(tmp, { recursive: true });
+
+  for (const file of await readdir(videoDir)) {
+    if (!file.endsWith('.webm')) continue;
+    const out = join(tmp, file);
+    // Hero fills the viewport; cards never exceed ~366px, so they go smaller.
+    const width = file.startsWith('hero') ? 960 : 560;
+    try {
+      await execFileAsync(FFMPEG, ['-hide_banner', '-loglevel', 'error',
+        '-i', join(videoDir, file),
+        '-vf', `scale=${width}:-2`, '-an',
+        '-c:v', 'libvpx-vp9', '-crf', '44', '-b:v', '0',
+        '-row-mt', '1', '-deadline', 'good', '-cpu-used', '5', out, '-y']);
+    } catch {
+      // No ffmpeg available: fall back to the production file.
+      await copyFile(join(videoDir, file), out);
+    }
+    const bytes = await readFile(out);
+    videoData.set(
+      `/assets/video/${file}`,
+      `data:video/webm;base64,${bytes.toString('base64')}`
+    );
+  }
 }
 
 /* --- shared chrome, taken from the built home page ------------------------- */

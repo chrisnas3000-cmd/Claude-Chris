@@ -544,6 +544,9 @@ a.card { text-decoration: none; color: inherit; }
 
 .figure { display: grid; gap: var(--s-3); }
 .figure__frame {
+  /* Positioned so absolutely-placed children — a video layered over its
+     poster — are contained by the frame instead of escaping to the viewport. */
+  position: relative;
   overflow: hidden;
   border-radius: var(--r-lg);
   background: var(--sand);

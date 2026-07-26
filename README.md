@@ -186,11 +186,10 @@ and a brighter one will need a stronger one.
 
 ## Service card videos
 
-The three category cards on the home page can each play a clip instead of a
-placeholder frame. The pipeline is built and tested; it is **switched off**
-until the source files are in place.
+Each of the three category cards on the home page plays its own silent,
+looping clip.
 
-### Turning them on
+### Replacing them
 
 1. Put the three source videos somewhere on disk.
 2. Encode them — order matters, it is massage, body, beauty:
@@ -200,12 +199,14 @@ node scripts/encode-service-videos.mjs massage.mp4 body.mp4 beauty.mp4
 ```
 
 That writes `service-<name>.mp4`, `service-<name>.webm` and
-`service-<name>-poster.jpg` for each. Roughly 300 KB, 180 KB and 33 KB
-respectively from an 8-second 1080×1080 source.
+`service-<name>-poster.jpg` for each. The current set is 424–552 KB (MP4),
+398–490 KB (WebM) and 44–57 KB (poster), from 8-second 1664×1244 sources.
 
-3. Set `video: true` on `massage`, `body` and `beauty` in the `images` block of
-   `src/_data/site.js`.
-4. `npm test`.
+3. `npm test`.
+
+`video: true` is already set on the three entries in the `images` block of
+`src/_data/site.js`. Set it to `false` on any card to fall back to a
+placeholder frame.
 
 ### How they behave
 
@@ -225,9 +226,9 @@ duration.
 
 ### Framing
 
-The card frame is **4:3** and uses `object-fit: cover`, so a 1:1 source is
-centre-cropped top and bottom — about 12% off each edge. Keep the subject
-centred. Export at 1280×960 if you want to fill the frame exactly.
+The card frame is **4:3** and the encoder outputs 1000×750 to match, so a 4:3
+source is preserved intact. Anything else is centre-cropped to fit — a square
+source loses about 12% off the top and bottom. Keep the subject centred.
 
 ---
 

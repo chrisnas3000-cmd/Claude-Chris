@@ -330,7 +330,7 @@ const images = {
     // Set to true once scripts/encode-service-videos.mjs has produced
     // service-massage.mp4/.webm and service-massage-poster.jpg. The card then
     // plays the clip instead of showing a placeholder frame.
-    video: false,
+    video: true,
     alt: 'Warm towels and oils laid out beside a massage table',
   },
   body: {
@@ -339,7 +339,7 @@ const images = {
     // Set to true once scripts/encode-service-videos.mjs has produced
     // service-body.mp4/.webm and service-body-poster.jpg. The card then
     // plays the clip instead of showing a placeholder frame.
-    video: false,
+    video: true,
     alt: 'The steam room, prepared for a Moroccan bath',
   },
   beauty: {
@@ -348,7 +348,7 @@ const images = {
     // Set to true once scripts/encode-service-videos.mjs has produced
     // service-beauty.mp4/.webm and service-beauty-poster.jpg. The card then
     // plays the clip instead of showing a placeholder frame.
-    video: false,
+    video: true,
     alt: 'Candlelight and glassware in the beauty area',
   },
   // Used for link previews on WhatsApp, Instagram and search results.

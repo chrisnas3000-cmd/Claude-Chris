@@ -17,8 +17,9 @@
  *  - **Silence.** `-an` guarantees no audio track ships, whatever the source
  *    contained.
  *
- * Output is square-safe: the card frames are 4:3 and use object-fit: cover, so
- * a 1:1 source is centre-cropped top and bottom. Keep the subject centred.
+ * Output matches the card frame's 4:3 ratio, so a 4:3 source is preserved
+ * intact and any other ratio is centre-cropped to fit. Keep the subject
+ * centred either way.
  */
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
@@ -31,9 +32,14 @@ const FFMPEG = resolve('node_modules/ffmpeg-static/ffmpeg');
 const VIDEO_DIR = resolve('src/assets/video');
 const IMG_DIR = resolve('src/assets/img');
 
-/** Longest edge of the encode. The card never renders above 366 CSS px, so
- *  900 covers 2x with headroom and keeps each file small. */
-const SIZE = 900;
+/*
+  The card frame is 4:3 and never renders above 366 x 275 CSS px, so 1000 x 750
+  covers 2x with headroom and keeps each file small. Encoding at the frame's
+  own ratio means a 4:3 source loses nothing; anything else is centre-cropped
+  to fit, which is what the card would do at display time anyway.
+*/
+const WIDTH = 1000;
+const HEIGHT = 750;
 /** Seconds of dissolve between the tail and the head. */
 const FADE = 1.0;
 
@@ -75,8 +81,8 @@ for (const [i, category] of CATEGORIES.entries()) {
 
   // Dissolve the tail back over the head: the clip ends where it began.
   const filter =
-    `[0:v]scale=${SIZE}:${SIZE}:force_original_aspect_ratio=increase,` +
-    `crop=${SIZE}:${SIZE},setsar=1,split[a][b];` +
+    `[0:v]scale=${WIDTH}:${HEIGHT}:force_original_aspect_ratio=increase,` +
+    `crop=${WIDTH}:${HEIGHT},setsar=1,split[a][b];` +
     `[a]trim=0:${kept},setpts=PTS-STARTPTS[main];` +
     `[b]trim=${kept}:${total.toFixed(3)},setpts=PTS-STARTPTS,format=yuva420p,` +
     `fade=t=out:st=0:d=${fade}:alpha=1[tail];` +
@@ -98,7 +104,7 @@ for (const [i, category] of CATEGORIES.entries()) {
 
   await run(FFMPEG, ['-hide_banner', '-loglevel', 'error', '-ss', '0.3', '-i', source,
     '-frames:v', '1',
-    '-vf', `scale=${SIZE}:${SIZE}:force_original_aspect_ratio=increase,crop=${SIZE}:${SIZE}`,
+    '-vf', `scale=${WIDTH}:${HEIGHT}:force_original_aspect_ratio=increase,crop=${WIDTH}:${HEIGHT}`,
     '-q:v', '5', poster, '-y']);
 
   const sizes = await Promise.all([mp4, webm, poster].map(async (f) => (await stat(f)).size));

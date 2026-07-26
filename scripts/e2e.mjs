@@ -357,6 +357,65 @@ await test('hero video is skipped when the visitor asked to save data', async ()
   await ctx.close();
 });
 
+await test('card videos load only once scrolled to, and pause when they leave', async () => {
+  const page = await desktop.newPage();
+  const media = [];
+  page.on('request', (r) => { if (/service-.*\.(mp4|webm)$/.test(r.url())) media.push(r.url().split('/').pop()); });
+  await page.goto(base, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(2500);
+
+  // Three clips below the fold should cost nothing to someone who never
+  // scrolls that far.
+  assert(media.length === 0, `card videos fetched before scrolling: ${media.join(', ')}`);
+
+  await page.evaluate(() => document.querySelector('.cats').scrollIntoView({ block: 'center' }));
+  await page.waitForTimeout(5000);
+  assert(media.length === 3, `expected 3 card videos, got ${media.length}: ${media.join(', ')}`);
+
+  const playing = await page.evaluate(() =>
+    Array.prototype.filter.call(
+      document.querySelectorAll('[data-card-video]'),
+      (v) => v.classList.contains('is-playing') && !v.paused
+    ).length
+  );
+  assert(playing === 3, `${playing} of 3 card videos are playing`);
+
+  // Scrolling away should stop them decoding frames nobody can see.
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(1200);
+  const paused = await page.evaluate(() =>
+    Array.prototype.filter.call(
+      document.querySelectorAll('.cats [data-card-video]'), (v) => v.paused
+    ).length
+  );
+  assert(paused === 3, `${paused} of 3 card videos paused after scrolling away`);
+  await page.close();
+});
+
+await test('card videos stay inside their frame on the treatments page', async () => {
+  // These sit in .figure__frame rather than .card__media. When that frame was
+  // not a positioning context the absolutely-placed video escaped it and
+  // covered the whole viewport.
+  const page = await desktop.newPage();
+  await page.goto(`${base}/treatments/`, { waitUntil: 'networkidle' });
+  await page.evaluate(() =>
+    document.querySelector('#massage .figure__frame').scrollIntoView({ block: 'center' }));
+  await page.waitForTimeout(3500);
+
+  const fits = await page.evaluate(() => {
+    const frame = document.querySelector('#massage .figure__frame');
+    const video = frame.querySelector('video');
+    if (!video) return null;
+    const f = frame.getBoundingClientRect();
+    const v = video.getBoundingClientRect();
+    return v.width <= f.width + 1 && v.height <= f.height + 1
+      && v.left >= f.left - 1 && v.top >= f.top - 1;
+  });
+  assert(fits !== null, 'no video found in the treatments category frame');
+  assert(fits, 'card video escaped its frame');
+  await page.close();
+});
+
 await test('the 404 page offers a way back', async () => {
   const page = await desktop.newPage();
   await page.goto(`${base}/404.html`, { waitUntil: 'networkidle' });
