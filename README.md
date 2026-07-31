@@ -399,32 +399,36 @@ with `npm run build` as the build command.
 
 ### Currently published on GitHub Pages (free)
 
-<https://chrisnas3000-cmd.github.io/Claude-Chris/>
+`https://<owner>.github.io/<repo>/`
 
 `.github/workflows/deploy.yml` builds and publishes on every push to the
-development branch. **It needs one manual step first**, from a repository
-admin:
+development branch. Enabling Pages was a one-off manual step, done by a
+repository admin:
 
 > **Settings → Pages → Build and deployment → Source: _GitHub Actions_**
 
 The workflow asks `actions/configure-pages` to enable Pages itself, but the
 workflow token is not permitted to create a Pages site — it fails with
 `Resource not accessible by integration`. Only a human with admin rights on
-the repository can turn Pages on. Until that is done the build and the checks
-run and pass, then the publish step fails and nothing is deployed. Once it is
-done, push anything (or re-run the workflow) and the site goes live.
+the repository can turn Pages on.
 
 A project repository is served from `/<repo>/` rather than the root, so the
-workflow sets two environment variables:
+workflow sets two environment variables — both read from the repository
+itself, so **renaming the repository moves the site and nothing here needs
+editing**:
 
-| Variable      | Value                                            | What it does                                     |
-| ------------- | ------------------------------------------------ | ------------------------------------------------ |
-| `PATH_PREFIX` | `/Claude-Chris/`                                 | Eleventy's `pathPrefix` — prefixes every internal link and asset |
-| `SITE_URL`    | `https://chrisnas3000-cmd.github.io/Claude-Chris`| `seo.url` — canonicals, sitemap and share previews |
+| Variable      | Value                                                | What it does                                     |
+| ------------- | ---------------------------------------------------- | ------------------------------------------------ |
+| `PATH_PREFIX` | `/${{ github.event.repository.name }}/`              | Eleventy's `pathPrefix` — prefixes every internal link and asset |
+| `SITE_URL`    | `https://<owner>.github.io/<repo>`                    | `seo.url` — canonicals, sitemap and share previews |
 
 Both are unset locally, so development and any root-served host behave exactly
 as before. **Moving to a real domain:** delete `PATH_PREFIX` from the workflow
 and set `SITE_URL` to the domain — nothing else changes.
+
+**Renaming the repository:** rename it in **Settings → General**, then re-run
+the workflow. GitHub redirects the old Pages address to the new one for a
+while, but the new one is the real address; update any link you have shared.
 
 Because of the prefix, internal paths in templates must go through Eleventy's
 `url` filter — `href="{{ "/visit/" | url }}"`. `npm run check` fails on any

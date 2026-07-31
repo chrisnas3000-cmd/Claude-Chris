@@ -2,8 +2,9 @@
 #
 # GitHub Pages serves a project repository from /<repo>/, so the build needs
 # PATH_PREFIX set to that subpath — every internal link goes through Eleventy's
-# `url` filter and picks it up. On a custom domain served from the root, drop
-# PATH_PREFIX and set SITE_URL to the domain.
+# `url` filter and picks it up. Both values below read the repository's own
+# name, so renaming the repo is all it takes to move the site. On a custom
+# domain served from the root, drop PATH_PREFIX and set SITE_URL to the domain.
 #
 # One-time setup, and it must be done by a human with admin rights — the
 # workflow token cannot create a Pages site (it gets "Resource not accessible
@@ -27,8 +28,10 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  PATH_PREFIX: /Claude-Chris/
-  SITE_URL: https://chrisnas3000-cmd.github.io/Claude-Chris
+  # Both are derived from the repository itself, so renaming the repo moves the
+  # site to its new address with nothing here to edit.
+  PATH_PREFIX: /${{ github.event.repository.name }}/
+  SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
 
 jobs:
   build:

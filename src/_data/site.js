@@ -434,8 +434,9 @@ const brand = {
 const seo = {
   // No trailing slash. Include any subpath the host serves the site from —
   // canonical URLs, the sitemap and share previews are all built from this.
-  // Currently the free GitHub Pages address; change it to the real domain
-  // (and clear PATH_PREFIX in the workflow) when one is bought.
+  // The deploy workflow supplies SITE_URL, derived from the repository name,
+  // so the published site is always right; this literal is only the fallback
+  // for a local build. Set it to the real domain once one is bought.
   url: process.env.SITE_URL || 'https://chrisnas3000-cmd.github.io/Claude-Chris',
   locale: 'en',
   localeOg: 'en_US',
