@@ -49,7 +49,12 @@ jobs:
       - name: Check the build
         run: npm run check
 
+      # Turns Pages on for the repository if it is not already, so publishing
+      # needs no manual switch. If the token is not allowed to, this fails and
+      # an admin has to set Settings -> Pages -> Source: GitHub Actions by hand.
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:

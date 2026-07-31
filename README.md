@@ -402,11 +402,12 @@ with `npm run build` as the build command.
 <https://chrisnas3000-cmd.github.io/Claude-Chris/>
 
 `.github/workflows/deploy.yml` builds and publishes on every push to the
-development branch. It needs one manual step, once, from a repository admin:
+development branch. It asks `actions/configure-pages` to turn Pages on itself,
+so there is normally nothing to click. If that step fails with `Get Pages site
+failed`, the workflow's token is not allowed to enable it and a repository
+admin has to set it by hand, once:
 
 > **Settings → Pages → Build and deployment → Source: _GitHub Actions_**
-
-Until that is set, the workflow runs but the deploy step fails.
 
 A project repository is served from `/<repo>/` rather than the root, so the
 workflow sets two environment variables:
