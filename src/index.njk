@@ -41,8 +41,8 @@ description: "Teena'z Spa is a spa, massage and beauty centre in Sodeco, Achrafi
     <h1 class="display-1 hero__title" data-reveal="type" data-reveal-delay="1">
       {{ site.copy.home.heroTitle }}<br><em>{{ site.copy.home.heroTitleAccent }}</em>
     </h1>
-    <p class="lead hero__lead"-delay="2">{{ site.copy.home.heroLead }}</p>
-    <div class="hero__actions"-delay="3">
+    <p class="lead hero__lead">{{ site.copy.home.heroLead }}</p>
+    <div class="hero__actions">
       <a class="btn btn--on-deep btn--lg" href="{{ wa }}" target="_blank" rel="noopener">Book on WhatsApp</a>
       <a class="btn btn--outline-film btn--lg" href="/treatments/">See treatments</a>
     </div>
@@ -54,7 +54,7 @@ description: "Teena'z Spa is a spa, massage and beauty centre in Sodeco, Achrafi
   <div class="shell">
     <ul class="marks">
       {% for mark in site.copy.home.marks %}
-      <li class="marks__item"-delay="{{ loop.index }}">
+      <li class="marks__item">
         <span class="marks__label">{{ mark.label }}</span>
         <span class="marks__value">{% if mark.value == 'auto' %}{{ site.serviceCount }}{% else %}{{ mark.value }}{% endif %}</span>
         <span class="marks__detail">{{ mark.detail }}</span>
@@ -115,7 +115,7 @@ description: "Teena'z Spa is a spa, massage and beauty centre in Sodeco, Achrafi
         #}
         <ol class="steps">
           {% for step in site.copy.home.ritualSteps %}
-          <li class="steps__item"-delay="{{ loop.index }}">
+          <li class="steps__item">
             <span class="steps__num" aria-hidden="true">{{ loop.index }}</span>
             <h3 class="steps__name">{{ step.name }}</h3>
             <p class="steps__text">{{ step.text }}</p>
