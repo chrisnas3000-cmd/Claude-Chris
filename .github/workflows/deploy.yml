@@ -5,7 +5,9 @@
 # `url` filter and picks it up. On a custom domain served from the root, drop
 # PATH_PREFIX and set SITE_URL to the domain.
 #
-# One-time setup by a repository admin:
+# One-time setup, and it must be done by a human with admin rights — the
+# workflow token cannot create a Pages site (it gets "Resource not accessible
+# by integration"):
 #   Settings -> Pages -> Build and deployment -> Source: GitHub Actions
 name: Deploy to GitHub Pages
 
@@ -49,9 +51,9 @@ jobs:
       - name: Check the build
         run: npm run check
 
-      # Turns Pages on for the repository if it is not already, so publishing
-      # needs no manual switch. If the token is not allowed to, this fails and
-      # an admin has to set Settings -> Pages -> Source: GitHub Actions by hand.
+      # Left on so this works by itself anywhere the token is allowed to enable
+      # Pages. In this repository it is not, so the switch above has to be
+      # thrown by hand once; after that this step simply finds the site.
       - uses: actions/configure-pages@v5
         with:
           enablement: true

@@ -402,12 +402,17 @@ with `npm run build` as the build command.
 <https://chrisnas3000-cmd.github.io/Claude-Chris/>
 
 `.github/workflows/deploy.yml` builds and publishes on every push to the
-development branch. It asks `actions/configure-pages` to turn Pages on itself,
-so there is normally nothing to click. If that step fails with `Get Pages site
-failed`, the workflow's token is not allowed to enable it and a repository
-admin has to set it by hand, once:
+development branch. **It needs one manual step first**, from a repository
+admin:
 
 > **Settings → Pages → Build and deployment → Source: _GitHub Actions_**
+
+The workflow asks `actions/configure-pages` to enable Pages itself, but the
+workflow token is not permitted to create a Pages site — it fails with
+`Resource not accessible by integration`. Only a human with admin rights on
+the repository can turn Pages on. Until that is done the build and the checks
+run and pass, then the publish step fails and nothing is deployed. Once it is
+done, push anything (or re-run the workflow) and the site goes live.
 
 A project repository is served from `/<repo>/` rather than the root, so the
 workflow sets two environment variables:
