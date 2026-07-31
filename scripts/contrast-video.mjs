@@ -21,8 +21,11 @@ const TMP = '/tmp/claude-0/-home-user-Claude-Chris/32e0fec5-46f3-53f1-a9f7-b61f9
 const TYPES = { '.html':'text/html','.css':'text/css','.js':'text/javascript','.svg':'image/svg+xml',
   '.png':'image/png','.jpg':'image/jpeg','.woff2':'font/woff2','.mp4':'video/mp4','.webm':'video/webm' };
 
+const PREFIX = (process.env.PATH_PREFIX || '/').replace(/\/*$/, '/');
+
 const server = createServer(async (req, res) => {
   let p = decodeURIComponent(req.url.split('?')[0]);
+  if (PREFIX !== '/' && p.startsWith(PREFIX.slice(0, -1))) p = p.slice(PREFIX.length - 1) || '/';
   let f = join(OUT, p);
   if (p.endsWith('/')) f = join(f, 'index.html'); else if (!extname(f)) f = join(f, 'index.html');
   if (!existsSync(f)) { res.writeHead(404); res.end('nf'); return; }

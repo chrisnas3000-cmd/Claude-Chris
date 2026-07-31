@@ -43,6 +43,16 @@ export default function (eleventyConfig) {
   );
 
   return {
+    /*
+      GitHub Pages serves a project repo from /<repo>/, not from the root, so
+      every internal link needs that prefix. Set PATH_PREFIX in the build
+      environment; local development and any root-served host leave it unset
+      and nothing changes.
+
+      Templates must pass internal paths through the `url` filter for this to
+      apply — `{{ "/visit/" | url }}`.
+    */
+    pathPrefix: process.env.PATH_PREFIX || '/',
     dir: {
       input: 'src',
       output: '_site',

@@ -1,7 +1,7 @@
 <header class="header" data-header>
   <div class="shell header__inner">
 
-    <a class="logo" href="/" aria-label="{{ site.business.name }} — home">
+    <a class="logo" href="{{ "/" | url }}" aria-label="{{ site.business.name }} — home">
       <svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
         <circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1"/>
         <path d="M16 6c4.4 3.2 6.6 6.6 6.6 10a6.6 6.6 0 0 1-13.2 0C9.4 12.6 11.6 9.2 16 6Z"
@@ -18,7 +18,7 @@
       <ul class="nav__list">
         {% for item in site.nav %}
         <li>
-          <a class="nav__link" href="{{ item.url }}"
+          <a class="nav__link" href="{{ item.url | url }}"
              {% if page.url == item.url %}aria-current="page"{% endif %}>{{ item.label }}</a>
         </li>
         {% endfor %}
@@ -47,7 +47,7 @@
 
   <nav class="drawer__list" aria-label="Main, mobile">
     {% for item in site.nav %}
-    <a class="drawer__link" href="{{ item.url }}">{{ item.label }}</a>
+    <a class="drawer__link" href="{{ item.url | url }}">{{ item.label }}</a>
     {% endfor %}
   </nav>
 

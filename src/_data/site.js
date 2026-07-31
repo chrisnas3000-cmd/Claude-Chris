@@ -432,9 +432,11 @@ const brand = {
  * 9. SITE / SEO SETTINGS
  * ------------------------------------------------------------------------ */
 const seo = {
-  // No trailing slash. Set this to the real domain before going live —
-  // canonical URLs, the sitemap and share previews all depend on it.
-  url: 'https://teenaz-spa.example',
+  // No trailing slash. Include any subpath the host serves the site from —
+  // canonical URLs, the sitemap and share previews are all built from this.
+  // Currently the free GitHub Pages address; change it to the real domain
+  // (and clear PATH_PREFIX in the workflow) when one is bought.
+  url: process.env.SITE_URL || 'https://chrisnas3000-cmd.github.io/Claude-Chris',
   locale: 'en',
   localeOg: 'en_US',
   // Falls back to business.summary when a page sets no description.

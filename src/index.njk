@@ -21,13 +21,13 @@ description: "Teena'z Spa is a spa, massage and beauty centre in Sodeco, Achrafi
 #}
 <section class="hero hero--film">
   <div class="hero__media">
-    <img class="hero__still" src="{{ site.heroVideo.poster }}" alt="{{ site.images.hero.alt }}"
+    <img class="hero__still" src="{{ site.heroVideo.poster | url }}" alt="{{ site.images.hero.alt }}"
          width="{{ site.heroVideo.width }}" height="{{ site.heroVideo.height }}"
          fetchpriority="high" decoding="async">
 
     {% if site.heroVideo.enabled %}
     <video class="hero__video" data-hero-video
-           data-webm="{{ site.heroVideo.webm }}" data-mp4="{{ site.heroVideo.mp4 }}"
+           data-webm="{{ site.heroVideo.webm | url }}" data-mp4="{{ site.heroVideo.mp4 | url }}"
            width="{{ site.heroVideo.width }}" height="{{ site.heroVideo.height }}"
            muted loop playsinline preload="none"
            aria-hidden="true" tabindex="-1" disablepictureinpicture></video>
@@ -44,7 +44,7 @@ description: "Teena'z Spa is a spa, massage and beauty centre in Sodeco, Achrafi
     <p class="lead hero__lead">{{ site.copy.home.heroLead }}</p>
     <div class="hero__actions">
       <a class="btn btn--on-deep btn--lg" href="{{ wa }}" target="_blank" rel="noopener">Book on WhatsApp</a>
-      <a class="btn btn--outline-film btn--lg" href="/treatments/">See treatments</a>
+      <a class="btn btn--outline-film btn--lg" href="{{ "/treatments/" | url }}">See treatments</a>
     </div>
   </div>
 </section>
@@ -76,7 +76,7 @@ description: "Teena'z Spa is a spa, massage and beauty centre in Sodeco, Achrafi
       {% for category in site.serviceCategories %}
       {% set img = site.images[category.image] %}
       <li>
-        <a class="card card--link" href="/treatments/#{{ category.id }}" data-reveal="media" data-reveal-delay="{{ loop.index }}">
+        <a class="card card--link" href="{{ "/treatments/" | url }}#{{ category.id }}" data-reveal="media" data-reveal-delay="{{ loop.index }}">
           <span class="card__media">{{ frame(img, category.id) }}</span>
           <span class="card__body">
             <span class="cat__count">{{ category.services | length }} treatments</span>
@@ -166,7 +166,7 @@ description: "Teena'z Spa is a spa, massage and beauty centre in Sodeco, Achrafi
           {% for line in site.contact.address.lines %}<span>{{ line }}</span>{% endfor %}
         </address>
 
-        <a class="link" href="/visit/">How to find us</a>
+        <a class="link" href="{{ "/visit/" | url }}">How to find us</a>
       </div>
 
     </div>

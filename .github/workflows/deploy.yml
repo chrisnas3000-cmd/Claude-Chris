@@ -1,0 +1,66 @@
+# Builds the site and publishes it to GitHub Pages.
+#
+# GitHub Pages serves a project repository from /<repo>/, so the build needs
+# PATH_PREFIX set to that subpath — every internal link goes through Eleventy's
+# `url` filter and picks it up. On a custom domain served from the root, drop
+# PATH_PREFIX and set SITE_URL to the domain.
+#
+# One-time setup by a repository admin:
+#   Settings -> Pages -> Build and deployment -> Source: GitHub Actions
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [claude/install-frontend-design-skills-4t9oy7]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it mid-publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  PATH_PREFIX: /Claude-Chris/
+  SITE_URL: https://chrisnas3000-cmd.github.io/Claude-Chris
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      # Catches broken links, missing assets and paths that skipped the url
+      # filter. A failure here stops the deploy.
+      - name: Check the build
+        run: npm run check
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

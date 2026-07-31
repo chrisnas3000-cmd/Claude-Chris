@@ -27,8 +27,15 @@ const TYPES = {
   '.woff2': 'font/woff2',
 };
 
+// Mirrors the host's path prefix, so the built pages load with the same URLs
+// they will have in production.
+const PREFIX = (process.env.PATH_PREFIX || '/').replace(/\/*$/, '/');
+
 const server = createServer(async (req, res) => {
   let path = decodeURIComponent(req.url.split('?')[0]);
+  if (PREFIX !== '/' && path.startsWith(PREFIX.slice(0, -1))) {
+    path = path.slice(PREFIX.length - 1) || '/';
+  }
   let file = join(OUT, path);
   if (path.endsWith('/')) file = join(file, 'index.html');
   else if (!extname(file)) file = join(file, 'index.html');

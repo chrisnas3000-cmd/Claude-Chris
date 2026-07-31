@@ -397,6 +397,33 @@ The build output is plain static files. Any static host works — Netlify, Verce
 Cloudflare Pages, GitHub Pages, or ordinary shared hosting. Point it at `_site/`
 with `npm run build` as the build command.
 
+### Currently published on GitHub Pages (free)
+
+<https://chrisnas3000-cmd.github.io/Claude-Chris/>
+
+`.github/workflows/deploy.yml` builds and publishes on every push to the
+development branch. It needs one manual step, once, from a repository admin:
+
+> **Settings → Pages → Build and deployment → Source: _GitHub Actions_**
+
+Until that is set, the workflow runs but the deploy step fails.
+
+A project repository is served from `/<repo>/` rather than the root, so the
+workflow sets two environment variables:
+
+| Variable      | Value                                            | What it does                                     |
+| ------------- | ------------------------------------------------ | ------------------------------------------------ |
+| `PATH_PREFIX` | `/Claude-Chris/`                                 | Eleventy's `pathPrefix` — prefixes every internal link and asset |
+| `SITE_URL`    | `https://chrisnas3000-cmd.github.io/Claude-Chris`| `seo.url` — canonicals, sitemap and share previews |
+
+Both are unset locally, so development and any root-served host behave exactly
+as before. **Moving to a real domain:** delete `PATH_PREFIX` from the workflow
+and set `SITE_URL` to the domain — nothing else changes.
+
+Because of the prefix, internal paths in templates must go through Eleventy's
+`url` filter — `href="{{ "/visit/" | url }}"`. `npm run check` fails on any
+site-absolute path that skipped it, so a missed one cannot reach production.
+
 ---
 
 ## What this site deliberately does not claim

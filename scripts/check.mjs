@@ -20,6 +20,17 @@ const OUT = resolve(process.cwd(), '_site');
 const failures = [];
 const warnings = [];
 
+/*
+  When the site is hosted under a subpath (GitHub Pages project sites), every
+  internal reference in the built HTML carries that prefix while the files on
+  disk do not. Strip it before resolving — and treat a site-absolute reference
+  that is *missing* the prefix as broken, since that is exactly the mistake
+  this check exists to catch: a path that skipped the `url` filter and will
+  404 in production.
+*/
+const PREFIX = (process.env.PATH_PREFIX || '/').replace(/\/*$/, '/');
+const hasPrefix = PREFIX !== '/';
+
 function fail(file, message) {
   failures.push(`${file}: ${message}`);
 }
@@ -110,6 +121,10 @@ for (const file of pages) {
   const refs = [
     ...(html.match(/href="([^"]+)"/g) || []),
     ...(html.match(/src="([^"]+)"/g) || []),
+    ...(html.match(/\bposter="([^"]+)"/g) || []),
+    // Video sources are attached by JS on demand, so they never appear in a
+    // src attribute — check them here or nothing does.
+    ...(html.match(/\bdata-(?:webm|mp4)="([^"]+)"/g) || []),
   ].map((m) => m.slice(m.indexOf('"') + 1, -1));
 
   // Also catch url(...) inside inline styles.
@@ -139,7 +154,11 @@ for (const file of pages) {
       warn(rel, `relative reference (prefer site-absolute): ${ref}`);
       continue;
     }
-    const target = targetFor(ref);
+    if (hasPrefix && !ref.startsWith(PREFIX)) {
+      fail(rel, `reference missing the "${PREFIX}" path prefix (needs the url filter): ${ref}`);
+      continue;
+    }
+    const target = targetFor(hasPrefix ? ref.slice(PREFIX.length - 1) : ref);
     if (!existsSync(target)) fail(rel, `broken reference: ${ref}`);
   }
 

@@ -32,7 +32,7 @@ description: "About Teena'z Spa — a spa, massage and beauty centre in Sodeco, 
           <ul class="do-dont__list" style="font-size: var(--t-small);">
             {% for point in site.copy.about.points %}<li>{{ point }}</li>{% endfor %}
           </ul>
-          <div class="card__foot"><a class="link small" href="/treatments/">See the treatment list</a></div>
+          <div class="card__foot"><a class="link small" href="{{ "/treatments/" | url }}">See the treatment list</a></div>
         </div>
       </aside>
 
@@ -61,7 +61,7 @@ description: "About Teena'z Spa — a spa, massage and beauty centre in Sodeco, 
       <a class="btn btn--on-deep btn--lg"
          href="{{ site.contact.whatsapp.link | whatsapp(site.contact.whatsapp.prefill) }}"
          target="_blank" rel="noopener">Book on WhatsApp</a>
-      <a class="btn btn--secondary btn--lg" href="/visit/"
+      <a class="btn btn--secondary btn--lg" href="{{ "/visit/" | url }}"
          style="border-color: var(--sand); color: var(--sand);">Find us</a>
     </div>
   </div>

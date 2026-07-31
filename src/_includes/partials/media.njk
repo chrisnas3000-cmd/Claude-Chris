@@ -21,17 +21,18 @@
       Decorative and silent: hidden from assistive technology, and the poster
       carries the alt text for anyone the video never reaches.
     #}
-    <img class="card__still" src="/assets/img/service-{{ id }}-poster.jpg"
+    {%- set poster = ('/assets/img/service-' + id + '-poster.jpg') | url -%}
+    <img class="card__still" src="{{ poster }}"
          alt="{{ image.alt }}" loading="lazy" decoding="async"
          {% if ratio %}style="aspect-ratio: {{ ratio }};"{% endif %}>
     <video class="card__video" data-card-video
-           data-webm="/assets/video/service-{{ id }}.webm"
-           data-mp4="/assets/video/service-{{ id }}.mp4"
-           poster="/assets/img/service-{{ id }}-poster.jpg"
+           data-webm="{{ ('/assets/video/service-' + id + '.webm') | url }}"
+           data-mp4="{{ ('/assets/video/service-' + id + '.mp4') | url }}"
+           poster="{{ poster }}"
            muted loop playsinline preload="none"
            aria-hidden="true" tabindex="-1" disablepictureinpicture></video>
   {%- elif image.src -%}
-    <img src="{{ image.src }}" alt="{{ image.alt }}"
+    <img src="{{ image.src | url }}" alt="{{ image.alt }}"
          {% if ratio %}style="aspect-ratio: {{ ratio }};"{% endif %}
          {% if eager %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
          decoding="async">

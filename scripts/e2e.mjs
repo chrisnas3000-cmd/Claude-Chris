@@ -22,8 +22,15 @@ const TYPES = {
   '.woff2': 'font/woff2',
 };
 
+// Mirrors the host's path prefix so links built with the `url` filter resolve
+// here exactly as they will in production.
+const PREFIX = (process.env.PATH_PREFIX || '/').replace(/\/*$/, '/');
+
 const server = createServer(async (req, res) => {
   let path = decodeURIComponent(req.url.split('?')[0]);
+  if (PREFIX !== '/' && path.startsWith(PREFIX.slice(0, -1))) {
+    path = path.slice(PREFIX.length - 1) || '/';
+  }
   let file = join(OUT, path);
   if (path.endsWith('/')) file = join(file, 'index.html');
   else if (!extname(file)) file = join(file, 'index.html');
@@ -47,7 +54,9 @@ function findChromium() {
 
 const executablePath = findChromium();
 const browser = await chromium.launch(executablePath ? { executablePath } : {});
-const base = `http://127.0.0.1:${PORT}`;
+const base = `http://127.0.0.1:${PORT}${PREFIX.replace(/\/$/, '')}`;
+// A site-absolute path as it appears in the built HTML, prefix included.
+const href = (path) => `${PREFIX.replace(/\/$/, '')}${path}`;
 const failures = [];
 let passed = 0;
 
@@ -105,7 +114,7 @@ await test('mobile menu opens, navigates and closes', async () => {
 
   await toggle.click();
   await page.waitForTimeout(450);
-  await page.locator('#drawer a[href="/treatments/"]').click();
+  await page.locator(`#drawer a[href="${href('/treatments/')}"]`).click();
   await page.waitForURL('**/treatments/');
   assert(page.url().endsWith('/treatments/'), 'menu link did not navigate');
   await page.close();
@@ -421,7 +430,10 @@ await test('card videos stay inside their frame on the treatments page', async (
 await test('the 404 page offers a way back', async () => {
   const page = await desktop.newPage();
   await page.goto(`${base}/404.html`, { waitUntil: 'networkidle' });
-  assert(await page.locator('a[href="/"]').first().isVisible(), 'no link home on the 404 page');
+  assert(
+    await page.locator(`a[href="${href('/')}"]`).first().isVisible(),
+    'no link home on the 404 page'
+  );
   await page.close();
 });
 
