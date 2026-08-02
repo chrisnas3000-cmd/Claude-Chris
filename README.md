@@ -377,7 +377,49 @@ scripts/                 ← build and test tooling
 | `npm run preview:identity` | Pack the identity system into a single `identity.html` |
 | `npm run art` | Regenerate SVG artwork from the brand palette |
 | `npm run raster` | Regenerate `share.png` and the touch icon |
+| `npm run images` | Derive the phone-sized copy of each photograph (runs in `build`) |
+| `npm run video:mobile` | Re-derive the phone-sized copy of each video |
 | `npm run fonts` | Re-download and self-host the web fonts |
+
+---
+
+## Built for phones first
+
+Most visitors arrive on a phone, so the weight of the first screen is the
+number that matters. Measured on an iPhone 14 Pro viewport, homepage, cold:
+
+| | Before | After |
+| --- | --- | --- |
+| Chrome / Android (WebM) | 1619 KB | **963 KB** |
+| Safari on iPhone (H.264) | ~2350 KB | **~1053 KB** |
+
+Where that came from, and what to keep in mind when changing things:
+
+- **Two encodes of every video.** `<name>-sm.mp4` / `.webm` are roughly a
+  quarter the size and are what `main.js` attaches below 48rem. The choice is
+  made once, at attach time — re-picking on resize would restart a playing
+  video, which is a worse experience than the bytes are worth. **Re-run
+  `npm run video:mobile` after replacing any video**, or the small copy still
+  shows the old footage.
+- **Two sizes of every photograph**, offered through `srcset` with real
+  measured widths from `src/_data/imageVariants.json`. `npm run build` keeps
+  them current. A variant must be named `<name>-<width>w.<ext>` — `npm run art`
+  sweeps the image folder and only recognises that convention.
+- **`viewport-fit=cover` plus `env(safe-area-inset-*)`.** The film reaches the
+  edges of the screen while the booking bar, the drawer and the page gutters
+  stay clear of the notch and the home indicator. The two belong together:
+  without the meta tag every inset reports zero, and without the insets the
+  bottom of the booking bar sits under the iPhone home indicator.
+- **Every `:hover` rule is inside `@media (hover: hover)`.** A touch browser
+  applies `:hover` on tap and leaves it applied, so an unguarded rule leaves a
+  tapped card stuck in its lifted state. `npm run check` fails on any hover
+  rule outside a guard — checked against the CSS rather than in a browser,
+  because Chromium under Playwright does not reproduce sticky hover, so a
+  runtime test would pass whether or not the guards exist.
+
+One rule is split on purpose: `.nav__link:hover::after` and
+`.nav__link[aria-current="page"]::after` were a single rule, and guarding them
+together would have taken the current-page underline away from touch devices.
 
 ---
 

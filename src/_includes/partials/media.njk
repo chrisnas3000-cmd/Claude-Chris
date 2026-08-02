@@ -5,12 +5,17 @@
   not, a painted placeholder frame stands in — sized identically, so dropping
   a photograph in later changes nothing about the layout.
 
+  `sizes` describes how wide the image renders, so the browser can pick a
+  candidate before layout exists. The default assumes the common case on this
+  site: full width on a phone, about half the shell on a wide screen.
+
   Usage:
-    {% from "partials/media.njk" import frame %}
+    {% from "partials/media.njk" import frame with context %}
     {{ frame(site.images.hero, 'hero', '4 / 5') }}
 #}
 
-{% macro frame(image, id, ratio, eager) %}
+{% macro frame(image, id, ratio, eager, sizes) %}
+  {%- set widths = sizes if sizes else '(min-width: 48rem) 46vw, 100vw' -%}
   {%- if image.video -%}
     {#
       A card clip. The poster paints first and the video fades in over it once
@@ -21,18 +26,25 @@
       Decorative and silent: hidden from assistive technology, and the poster
       carries the alt text for anyone the video never reaches.
     #}
-    {%- set poster = ('/assets/img/service-' + id + '-poster.jpg') | url -%}
+    {%- set posterPath = '/assets/img/service-' + id + '-poster.jpg' -%}
+    {%- set poster = posterPath | url -%}
+    {%- set posterSet = posterPath | srcset(imageVariants) -%}
     <img class="card__still" src="{{ poster }}"
+         {% if posterSet %}srcset="{{ posterSet }}" sizes="{{ widths }}"{% endif %}
          alt="{{ image.alt }}" loading="lazy" decoding="async"
          {% if ratio %}style="aspect-ratio: {{ ratio }};"{% endif %}>
     <video class="card__video" data-card-video
            data-webm="{{ ('/assets/video/service-' + id + '.webm') | url }}"
            data-mp4="{{ ('/assets/video/service-' + id + '.mp4') | url }}"
+           data-webm-sm="{{ ('/assets/video/service-' + id + '-sm.webm') | url }}"
+           data-mp4-sm="{{ ('/assets/video/service-' + id + '-sm.mp4') | url }}"
            poster="{{ poster }}"
            muted loop playsinline preload="none"
            aria-hidden="true" tabindex="-1" disablepictureinpicture></video>
   {%- elif image.src -%}
+    {%- set imageSet = image.src | srcset(imageVariants) -%}
     <img src="{{ image.src | url }}" alt="{{ image.alt }}"
+         {% if imageSet %}srcset="{{ imageSet }}" sizes="{{ widths }}"{% endif %}
          {% if ratio %}style="aspect-ratio: {{ ratio }};"{% endif %}
          {% if eager %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
          decoding="async">

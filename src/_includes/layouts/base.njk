@@ -2,7 +2,10 @@
 <html lang="{{ site.seo.locale }}">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+{# viewport-fit=cover lets the hero film reach the edges of the screen, and is
+   what makes env(safe-area-inset-*) report anything other than zero. The CSS
+   pads the controls back out of the notch and the home indicator. #}
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
 {% set pageTitle = title if title else site.business.name %}
 {% set pageDesc = description if description else site.seo.defaultDescription %}

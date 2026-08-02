@@ -5,9 +5,11 @@
   "type": "module",
   "description": "Website concept for Teena'z Spa — spa, massage and beauty in Sodeco, Achrafieh, Beirut.",
   "scripts": {
-    "start": "npm run art && npm run raster && eleventy --serve",
-    "build": "npm run art && npm run raster && eleventy",
+    "start": "npm run art && npm run raster && npm run images && eleventy --serve",
+    "build": "npm run art && npm run raster && npm run images && eleventy",
     "art": "node scripts/generate-art.mjs",
+    "images": "node scripts/responsive-images.mjs",
+    "video:mobile": "node scripts/encode-mobile-video.mjs",
     "fonts": "node scripts/fetch-fonts.mjs",
     "check": "node scripts/check.mjs",
     "raster": "node scripts/rasterize.mjs",

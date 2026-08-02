@@ -195,6 +195,30 @@ await test('every service row offers a WhatsApp booking link for that service', 
   await page.close();
 });
 
+/*
+  Sticky hover is deliberately checked in scripts/check.mjs against the CSS
+  itself, not here. Chromium under Playwright's touch emulation does not
+  reproduce it: removing a `(hover: hover)` guard and tapping the card with
+  both dispatched touch events and a real `tap()` left the computed transform
+  at identity either way, so a runtime test here passes on broken CSS and is
+  worse than no test at all.
+*/
+
+await test('phones are served the small video encodes', async () => {
+  const page = await phoneCtx.newPage();
+  const fetched = [];
+  page.on('request', (r) => {
+    if (/\.(mp4|webm)$/.test(new URL(r.url()).pathname)) fetched.push(new URL(r.url()).pathname);
+  });
+  await page.goto(base, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(3500);
+
+  assert(fetched.length > 0, 'no video was fetched on a phone at all');
+  const full = fetched.filter((p) => !p.includes('-sm.'));
+  assert(full.length === 0, `phone fetched a desktop encode: ${full.join(', ')}`);
+  await page.close();
+});
+
 await test('the header becomes opaque once scrolled', async () => {
   const page = await desktop.newPage();
   await page.goto(base, { waitUntil: 'networkidle' });

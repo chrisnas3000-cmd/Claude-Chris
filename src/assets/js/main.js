@@ -73,6 +73,40 @@
     else desktop.addListener(onBreak);
   }
 
+  /* --- Choosing a video encode --------------------------------------------
+     Most visitors are on a phone, where the desktop encode is roughly four
+     times the pixels the screen can resolve. Below the layout's own 48rem
+     breakpoint we attach the small pair instead.
+
+     Decided once, at attach time, and never revisited: swapping the source of
+     a playing video restarts it, and a visitor who rotates their phone should
+     not be shown the hero jumping back to frame one to save bytes already
+     spent. If the small file is missing the attribute is absent and this
+     falls back to the full-size one on its own.
+  */
+  var wantsSmall = window.matchMedia('(max-width: 47.99rem)').matches;
+
+  function sourcesFor(video) {
+    function pick(kind) {
+      var small = video.getAttribute('data-' + kind + '-sm');
+      return (wantsSmall && small) || video.getAttribute('data-' + kind);
+    }
+    return [
+      { src: pick('webm'), type: 'video/webm' },
+      { src: pick('mp4'), type: 'video/mp4' },
+    ];
+  }
+
+  function attachSources(video) {
+    sourcesFor(video).forEach(function (item) {
+      if (!item.src) return;
+      var source = document.createElement('source');
+      source.src = item.src;
+      source.type = item.type;
+      video.appendChild(source);
+    });
+  }
+
   /* --- Hero video ---------------------------------------------------------
      The markup ships with no <source> and preload="none", so nothing is
      downloaded until this decides the video is worth fetching. If it never
@@ -89,16 +123,7 @@
     if (reduced || connection.saveData === true || slow) return;
 
     function attach() {
-      [
-        { src: video.getAttribute('data-webm'), type: 'video/webm' },
-        { src: video.getAttribute('data-mp4'), type: 'video/mp4' },
-      ].forEach(function (item) {
-        if (!item.src) return;
-        var source = document.createElement('source');
-        source.src = item.src;
-        source.type = item.type;
-        video.appendChild(source);
-      });
+      attachSources(video);
 
       // Only reveal the video once frames are genuinely rendering. Fading in
       // on `canplay` alone can show a black box for a beat on slower devices.
@@ -148,16 +173,7 @@
       if (video.dataset.started) return;
       video.dataset.started = '1';
 
-      [
-        { src: video.getAttribute('data-webm'), type: 'video/webm' },
-        { src: video.getAttribute('data-mp4'), type: 'video/mp4' },
-      ].forEach(function (item) {
-        if (!item.src) return;
-        var source = document.createElement('source');
-        source.src = item.src;
-        source.type = item.type;
-        video.appendChild(source);
-      });
+      attachSources(video);
 
       video.addEventListener('playing', function () {
         video.classList.add('is-playing');

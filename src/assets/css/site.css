@@ -91,10 +91,12 @@
    bronze accent is tuned for the ivory grounds and is unreadable on film. */
 .eyebrow--on-film { color: var(--sand); }
 .btn--outline-film { border-color: rgba(247, 242, 234, 0.55); color: var(--ivory); }
-.btn--outline-film:hover {
-  background: rgba(247, 242, 234, 0.12);
-  border-color: var(--ivory);
-  color: var(--ivory);
+@media (hover: hover) {
+  .btn--outline-film:hover {
+    background: rgba(247, 242, 234, 0.12);
+    border-color: var(--ivory);
+    color: var(--ivory);
+  }
 }
 
 @media (max-width: 47.99rem) {
@@ -141,7 +143,9 @@
   background: var(--ivory);
   color: var(--espresso);
 }
-.page-home .header:not(.is-stuck) .btn--primary:hover { background: var(--white); }
+@media (hover: hover) {
+  .page-home .header:not(.is-stuck) .btn--primary:hover { background: var(--white); }
+}
 
 /* 1b. Proof points strip ================================================== */
 
@@ -257,12 +261,16 @@
               border-color var(--dur) var(--ease);
 }
 .service__book svg { width: 1em; height: 1em; transition: transform var(--dur) var(--ease); }
-.service__book:hover {
-  background: var(--espresso);
-  border-color: var(--espresso);
-  color: var(--ivory);
+@media (hover: hover) {
+  .service__book:hover {
+    background: var(--espresso);
+    border-color: var(--espresso);
+    color: var(--ivory);
+  }
 }
-.service__book:hover svg { transform: translateX(3px); }
+@media (hover: hover) {
+  .service__book:hover svg { transform: translateX(3px); }
+}
 
 @media (max-width: 40rem) {
   /* The booking control drops below the text rather than squeezing beside it. */
@@ -284,7 +292,9 @@
   text-decoration: none;
   transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
 }
-.jump__link:hover { border-color: var(--bronze-ink); color: var(--text-accent); }
+@media (hover: hover) {
+  .jump__link:hover { border-color: var(--bronze-ink); color: var(--text-accent); }
+}
 
 /* 5. Ritual steps =========================================================
    Numbered because a hammam genuinely is a sequence — the order is the
@@ -359,7 +369,9 @@
   font-weight: 500;
 }
 .cat__more svg { width: 1.05em; height: 1.05em; transition: transform var(--dur) var(--ease); }
-.card--link:hover .cat__more svg { transform: translateX(4px); }
+@media (hover: hover) {
+  .card--link:hover .cat__more svg { transform: translateX(4px); }
+}
 
 /* 7b. Card video =========================================================
    The still sits underneath and the clip fades in over it, same pattern as
@@ -381,8 +393,10 @@
 .card__video.is-playing { opacity: 1; }
 
 /* The card's hover scale applies to whichever layer is showing. */
-.card--link:hover .card__still,
-.card--link:hover .card__video { transform: scale(1.04); }
+@media (hover: hover) {
+  .card--link:hover .card__still,
+  .card--link:hover .card__video { transform: scale(1.04); }
+}
 .card__still { transition: transform var(--dur-image) var(--ease-soft); }
 
 @media (prefers-reduced-motion: reduce) {
@@ -411,6 +425,14 @@
 }
 .booking-bar.is-visible { transform: none; }
 
+/*
+  The bar sits at the very bottom of the screen, which on any phone with a home
+  indicator means the last ~34px of it is behind a system gesture area: the
+  buttons look right and the bottom of the tap target is not reliably tappable.
+  The padding goes on the actions rather than the bar so each one's own colour
+  still runs to the edge of the glass — the inset is breathing room, not a
+  stripe of some third colour.
+*/
 .booking-bar__action {
   flex: 1;
   display: inline-flex;
@@ -418,7 +440,7 @@
   justify-content: center;
   gap: var(--s-2);
   min-height: 3.5rem;
-  padding: var(--s-4) var(--s-3);
+  padding: var(--s-4) var(--s-3) calc(var(--s-4) + env(safe-area-inset-bottom, 0px));
   font-size: 0.9375rem;
   font-weight: 500;
   text-decoration: none;
@@ -426,15 +448,22 @@
 }
 .booking-bar__icon { width: 1.25rem; height: 1.25rem; flex: none; }
 .booking-bar__action--wa { flex: 2; background: var(--espresso); color: var(--ivory); }
-.booking-bar__action--wa:hover { background: #3A302A; }
+@media (hover: hover) {
+  .booking-bar__action--wa:hover { background: #3A302A; }
+}
 .booking-bar__action--call { background: var(--white); color: var(--text); }
-.booking-bar__action--call:hover { background: var(--sand); }
+@media (hover: hover) {
+  .booking-bar__action--call:hover { background: var(--sand); }
+}
 
 @media (min-width: 48rem) {
+  /* A phone held sideways is wider than 48rem, so this floating layout is what
+     a landscape iPhone actually gets — and there the notch is on a side, not
+     the bottom. Both insets are needed. */
   .booking-bar {
     left: auto;
-    right: var(--s-5);
-    bottom: var(--s-5);
+    right: calc(var(--s-5) + env(safe-area-inset-right, 0px));
+    bottom: calc(var(--s-5) + env(safe-area-inset-bottom, 0px));
     gap: var(--s-3);
     background: none;
     transform: translateY(150%);
@@ -450,9 +479,10 @@
   .booking-bar__label { display: none; }
 }
 
-/* Keeps the fixed bar from covering the last of the footer on phones. */
+/* Keeps the fixed bar from covering the last of the footer on phones. The bar
+   grew by the safe-area inset, so this has to grow with it. */
 @media (max-width: 47.99rem) {
-  .footer { padding-bottom: 6rem; }
+  .footer { padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -465,7 +495,9 @@
 .footer__address { display: grid; gap: 0.15rem; margin-bottom: var(--s-3); font-size: var(--t-small); }
 .footer__nav { display: flex; flex-wrap: wrap; gap: var(--s-4); }
 .footer__nav a { text-decoration: none; }
-.footer__nav a:hover { color: var(--ivory); }
+@media (hover: hover) {
+  .footer__nav a:hover { color: var(--ivory); }
+}
 
 .footer__disclaimer {
   max-width: 74ch;

@@ -245,7 +245,14 @@ address { font-style: normal; }
   width: 100%;
   max-width: var(--shell);
   margin-inline: auto;
-  padding-inline: var(--gutter);
+  /*
+    The page is laid out edge to edge (viewport-fit=cover), so that full-bleed
+    film reaches the corners of the screen. Text must not: in landscape on a
+    notched phone the gutter alone is about the width of the notch, so the
+    inset is added to it rather than trusted to cover it.
+  */
+  padding-left: calc(var(--gutter) + env(safe-area-inset-left, 0px));
+  padding-right: calc(var(--gutter) + env(safe-area-inset-right, 0px));
 }
 .shell--narrow { max-width: var(--shell-narrow); }
 
@@ -377,7 +384,9 @@ address { font-style: normal; }
   padding-bottom: 1px;
   transition: opacity var(--dur-fast) var(--ease);
 }
-.link:hover { opacity: 0.68; }
+@media (hover: hover) {
+  .link:hover { opacity: 0.68; }
+}
 
 /* 7. Buttons ============================================================== */
 
@@ -410,27 +419,39 @@ address { font-style: normal; }
     transform var(--dur-fast) var(--ease);
 }
 /* A 1px lift. Enough to acknowledge the pointer, not enough to bounce. */
-.btn:hover { transform: translateY(-1px); }
+@media (hover: hover) {
+  .btn:hover { transform: translateY(-1px); }
+}
 .btn:active { transform: translateY(0); }
 
 .btn--primary { background: var(--espresso); color: var(--ivory); }
-.btn--primary:hover { background: #3A302A; }
+@media (hover: hover) {
+  .btn--primary:hover { background: #3A302A; }
+}
 
 .btn--bronze { background: var(--bronze-ink); color: var(--white); }
-.btn--bronze:hover { background: #5F4126; }
+@media (hover: hover) {
+  .btn--bronze:hover { background: #5F4126; }
+}
 
 .btn--secondary {
   border-color: var(--line-strong);
   color: var(--text-accent);
   background: transparent;
 }
-.btn--secondary:hover { background: rgba(168, 121, 85, 0.08); border-color: var(--bronze-ink); }
+@media (hover: hover) {
+  .btn--secondary:hover { background: rgba(168, 121, 85, 0.08); border-color: var(--bronze-ink); }
+}
 
 .btn--ghost { color: var(--text); padding-inline: var(--s-3); }
-.btn--ghost:hover { color: var(--text-accent); }
+@media (hover: hover) {
+  .btn--ghost:hover { color: var(--text-accent); }
+}
 
 .btn--on-deep { background: var(--ivory); color: var(--espresso); }
-.btn--on-deep:hover { background: var(--white); }
+@media (hover: hover) {
+  .btn--on-deep:hover { background: var(--white); }
+}
 
 .btn--lg { min-height: 3.5rem; padding: 1.0625rem 2.25rem; font-size: 1rem; }
 .btn--sm { min-height: 2.5rem; padding: 0.625rem 1.125rem; font-size: var(--t-small); }
@@ -442,7 +463,9 @@ address { font-style: normal; }
 }
 
 .btn__icon { width: 1.05em; height: 1.05em; flex: none; }
-.btn:hover .btn__icon--arrow { transform: translateX(3px); }
+@media (hover: hover) {
+  .btn:hover .btn__icon--arrow { transform: translateX(3px); }
+}
 .btn__icon--arrow { transition: transform var(--dur) var(--ease); }
 
 /* 8. Cards ================================================================ */
@@ -462,10 +485,12 @@ address { font-style: normal; }
    browser underlines every piece of text inside it. */
 a.card { text-decoration: none; color: inherit; }
 
-.card--link:hover {
-  box-shadow: var(--shadow-sm);
-  border-color: var(--line);
-  transform: translateY(-2px);
+@media (hover: hover) {
+  .card--link:hover {
+    box-shadow: var(--shadow-sm);
+    border-color: var(--line);
+    transform: translateY(-2px);
+  }
 }
 
 /* Large image area, as specified — the picture leads, the type follows. */
@@ -477,7 +502,9 @@ a.card { text-decoration: none; color: inherit; }
 }
 .card__media img,
 .card__media canvas { width: 100%; height: 100%; object-fit: cover; }
-.card--link:hover .card__media img { transform: scale(1.04); }
+@media (hover: hover) {
+  .card--link:hover .card__media img { transform: scale(1.04); }
+}
 .card__media img { transition: transform var(--dur-image) var(--ease-soft); }
 
 .card__body {
@@ -604,7 +631,9 @@ a.card { text-decoration: none; color: inherit; }
 }
 .gallery__item img,
 .gallery__item canvas { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-image) var(--ease-soft); }
-.gallery__item:hover img { transform: scale(1.05); }
+@media (hover: hover) {
+  .gallery__item:hover img { transform: scale(1.05); }
+}
 
 .media-band { position: relative; overflow: hidden; }
 .media-band__frame { aspect-ratio: 21 / 9; background: var(--sand); }
@@ -634,7 +663,9 @@ a.card { text-decoration: none; color: inherit; }
   color: var(--text);
   transition: color var(--dur-fast) var(--ease);
 }
-.accordion__trigger:hover { color: var(--text-accent); }
+@media (hover: hover) {
+  .accordion__trigger:hover { color: var(--text-accent); }
+}
 .accordion__sign {
   position: relative;
   flex: none;
@@ -687,7 +718,9 @@ a.card { text-decoration: none; color: inherit; }
   transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
 }
 .field__control::placeholder { color: var(--text-muted); opacity: 0.7; }
-.field__control:hover { border-color: var(--line-strong); }
+@media (hover: hover) {
+  .field__control:hover { border-color: var(--line-strong); }
+}
 .field__control:focus {
   outline: none;
   border-color: var(--bronze-ink);
@@ -812,9 +845,15 @@ select.field__control {
   transform-origin: left;
   transition: transform var(--dur) var(--ease);
 }
-.nav__link:hover { color: var(--text-accent); }
-.nav__link:hover::after,
+@media (hover: hover) {
+  .nav__link:hover { color: var(--text-accent); }
+}
+/* Split deliberately: the current-page underline must survive on touch, where
+   the hover half below is switched off. */
 .nav__link[aria-current="page"]::after { transform: scaleX(1); }
+@media (hover: hover) {
+  .nav__link:hover::after { transform: scaleX(1); }
+}
 .nav__link[aria-current="page"] { color: var(--text-accent); }
 
 /* 15. Mobile navigation =================================================== */
@@ -844,7 +883,9 @@ select.field__control {
   display: grid;
   grid-template-rows: auto 1fr auto;
   gap: var(--s-6);
-  padding: var(--s-5) var(--gutter) var(--s-8);
+  /* Full-screen overlay: its bottom action would otherwise land on the home
+     indicator, which is exactly where a thumb reaches first. */
+  padding: var(--s-5) var(--gutter) calc(var(--s-8) + env(safe-area-inset-bottom, 0px));
   background: var(--ivory);
   opacity: 0;
   visibility: hidden;
@@ -865,15 +906,17 @@ select.field__control {
   text-decoration: none;
   transition: color var(--dur-fast) var(--ease);
 }
-.drawer__link:hover { color: var(--text-accent); }
+@media (hover: hover) {
+  .drawer__link:hover { color: var(--text-accent); }
+}
 .drawer__foot { display: grid; gap: var(--s-3); }
 
 /* 16. Floating action button ============================================== */
 
 .fab {
   position: fixed;
-  right: var(--s-5);
-  bottom: var(--s-5);
+  right: calc(var(--s-5) + env(safe-area-inset-right, 0px));
+  bottom: calc(var(--s-5) + env(safe-area-inset-bottom, 0px));
   z-index: 90;
   display: inline-flex;
   align-items: center;
@@ -893,7 +936,9 @@ select.field__control {
               background-color var(--dur) var(--ease);
 }
 .fab.is-visible { opacity: 1; transform: none; }
-.fab:hover { background: #3A302A; }
+@media (hover: hover) {
+  .fab:hover { background: #3A302A; }
+}
 .fab__icon { width: 1.25rem; height: 1.25rem; flex: none; }
 @media (max-width: 30rem) {
   /* Collapses to a circle on the smallest screens so it never crowds content. */
@@ -924,7 +969,9 @@ select.field__control {
 }
 .footer__list { display: grid; gap: var(--s-3); }
 .footer__list a { text-decoration: none; transition: color var(--dur-fast) var(--ease); }
-.footer__list a:hover { color: var(--ivory); }
+@media (hover: hover) {
+  .footer__list a:hover { color: var(--ivory); }
+}
 
 /*
   Accent tokens are tuned for the light grounds. Dropped straight onto the
@@ -932,7 +979,9 @@ select.field__control {
   footer switch to sand (10.41:1) instead.
 */
 .footer .link { color: var(--sand); }
-.footer .link:hover { color: var(--ivory); }
+@media (hover: hover) {
+  .footer .link:hover { color: var(--ivory); }
+}
 .footer__base {
   display: flex;
   flex-wrap: wrap;
@@ -1073,7 +1122,9 @@ select.field__control {
   color: var(--text-muted);
   transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
 }
-.subnav__link:hover { color: var(--text); }
+@media (hover: hover) {
+  .subnav__link:hover { color: var(--text); }
+}
 .subnav__link[aria-current="page"] { color: var(--text-accent); border-bottom-color: var(--bronze); }
 
 .placeholder-note {

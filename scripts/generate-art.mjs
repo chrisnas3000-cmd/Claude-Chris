@@ -120,11 +120,22 @@ for (const [name, contents] of Object.entries(files)) {
   await writeFile(join(OUT, name), contents);
 }
 
+/*
+  `npm run images` writes a smaller copy of each photograph beside it, named
+  `<name>-<width>w.<ext>`. Those are referenced from srcset rather than from
+  site.js, so the sweep below has to recognise the convention or it deletes
+  them every build and phones quietly go back to downloading full-size art.
+*/
+const isVariantOfKept = (name) => {
+  const match = name.match(/^(.*)-\d+w(\.[^.]+)$/);
+  return match !== null && keep.has(match[1] + match[2]);
+};
+
 // Stale artwork from a previous visual direction would otherwise sit in the
 // build forever, since nothing references it any more.
 let removed = 0;
 for (const name of await readdir(OUT)) {
-  if (keep.has(name)) continue;
+  if (keep.has(name) || isVariantOfKept(name)) continue;
   await unlink(join(OUT, name));
   removed += 1;
 }

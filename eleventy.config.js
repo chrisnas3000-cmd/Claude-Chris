@@ -42,6 +42,24 @@ export default function (eleventyConfig) {
     JSON.stringify(value).replace(/</g, '\\u003c')
   );
 
+  /*
+    Builds a srcset from the variants `npm run images` measured, so a phone
+    fetches a phone-sized photograph. Returns an empty string when an image has
+    no variant — a caller can then leave the attribute off entirely rather than
+    emit a srcset with a single candidate, which would only repeat the src.
+
+    Widths come from the manifest rather than the filename: a descriptor the
+    browser cannot trust is worse than none.
+  */
+  eleventyConfig.addFilter('srcset', (src, variants) => {
+    const entry = variants && variants[src];
+    if (!entry) return '';
+    // Same source as pathPrefix below, so the two can never disagree.
+    const prefix = (process.env.PATH_PREFIX || '/').replace(/\/+$/, '');
+    const at = (path) => `${prefix}${path}`;
+    return `${at(entry.smallSrc)} ${entry.small}w, ${at(src)} ${entry.full}w`;
+  });
+
   return {
     /*
       GitHub Pages serves a project repo from /<repo>/, not from the root, so

@@ -5,7 +5,7 @@ bodyClass: page-home
 description: "Teena'z Spa is a spa, massage and beauty centre in Sodeco, Achrafieh, Beirut. Massage, Moroccan bath, facials, manicure and more, open until 11 PM every day. Book on WhatsApp."
 ---
 
-{% from "partials/media.njk" import frame %}
+{% from "partials/media.njk" import frame with context %}
 {% set wa = site.contact.whatsapp.link | whatsapp(site.contact.whatsapp.prefill) %}
 
 <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
@@ -21,13 +21,16 @@ description: "Teena'z Spa is a spa, massage and beauty centre in Sodeco, Achrafi
 #}
 <section class="hero hero--film">
   <div class="hero__media">
+    {# Full-bleed, so it always renders at the viewport width. #}
     <img class="hero__still" src="{{ site.heroVideo.poster | url }}" alt="{{ site.images.hero.alt }}"
+         srcset="{{ site.heroVideo.poster | srcset(imageVariants) }}" sizes="100vw"
          width="{{ site.heroVideo.width }}" height="{{ site.heroVideo.height }}"
          fetchpriority="high" decoding="async">
 
     {% if site.heroVideo.enabled %}
     <video class="hero__video" data-hero-video
            data-webm="{{ site.heroVideo.webm | url }}" data-mp4="{{ site.heroVideo.mp4 | url }}"
+           data-webm-sm="{{ site.heroVideo.webmSm | url }}" data-mp4-sm="{{ site.heroVideo.mp4Sm | url }}"
            width="{{ site.heroVideo.width }}" height="{{ site.heroVideo.height }}"
            muted loop playsinline preload="none"
            aria-hidden="true" tabindex="-1" disablepictureinpicture></video>

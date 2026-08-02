@@ -392,6 +392,11 @@ const heroVideo = {
   enabled: true,
   webm: '/assets/video/hero.webm',
   mp4: '/assets/video/hero.mp4',
+  // Phone-sized copies, used below the 48rem breakpoint. Roughly a quarter of
+  // the bytes for a screen that cannot show the difference. Rebuild them with
+  // `npm run video:mobile` after replacing either file above.
+  webmSm: '/assets/video/hero-sm.webm',
+  mp4Sm: '/assets/video/hero-sm.mp4',
   // Shown before the video loads, and instead of it whenever playback is
   // suppressed — reduced motion, Save-Data, or a slow connection.
   poster: '/assets/img/hero-poster.jpg',

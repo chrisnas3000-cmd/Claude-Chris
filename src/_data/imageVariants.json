@@ -1,0 +1,37 @@
+{
+  "/assets/img/hero-poster.jpg": {
+    "full": 1600,
+    "small": 800,
+    "smallSrc": "/assets/img/hero-poster-800w.jpg"
+  },
+  "/assets/img/hammam.jpg": {
+    "full": 1000,
+    "small": 500,
+    "smallSrc": "/assets/img/hammam-500w.jpg"
+  },
+  "/assets/img/interior.jpg": {
+    "full": 1600,
+    "small": 800,
+    "smallSrc": "/assets/img/interior-800w.jpg"
+  },
+  "/assets/img/room.jpg": {
+    "full": 1800,
+    "small": 900,
+    "smallSrc": "/assets/img/room-900w.jpg"
+  },
+  "/assets/img/service-massage-poster.jpg": {
+    "full": 1000,
+    "small": 500,
+    "smallSrc": "/assets/img/service-massage-poster-500w.jpg"
+  },
+  "/assets/img/service-body-poster.jpg": {
+    "full": 1000,
+    "small": 500,
+    "smallSrc": "/assets/img/service-body-poster-500w.jpg"
+  },
+  "/assets/img/service-beauty-poster.jpg": {
+    "full": 1000,
+    "small": 500,
+    "smallSrc": "/assets/img/service-beauty-poster-500w.jpg"
+  }
+}

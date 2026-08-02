@@ -123,9 +123,30 @@ for (const file of pages) {
     ...(html.match(/src="([^"]+)"/g) || []),
     ...(html.match(/\bposter="([^"]+)"/g) || []),
     // Video sources are attached by JS on demand, so they never appear in a
-    // src attribute — check them here or nothing does.
-    ...(html.match(/\bdata-(?:webm|mp4)="([^"]+)"/g) || []),
+    // src attribute — check them here or nothing does. The -sm pair is the one
+    // phones actually fetch, which makes it the one worth checking hardest.
+    ...(html.match(/\bdata-(?:webm|mp4)(?:-sm)?="([^"]+)"/g) || []),
   ].map((m) => m.slice(m.indexOf('"') + 1, -1));
+
+  /*
+    Every candidate in a srcset, too. A broken one does not break the page —
+    the browser quietly falls back — so nothing would ever surface it.
+  */
+  for (const attr of html.match(/\bsrcset="([^"]+)"/g) || []) {
+    const value = attr.slice(8, -1);
+    if (!value.trim()) {
+      fail(rel, 'empty srcset — the image has no variant, so drop the attribute');
+      continue;
+    }
+    for (const candidate of value.split(',')) {
+      const [path, descriptor] = candidate.trim().split(/\s+/);
+      if (!path) continue;
+      if (!/^\d+w$/.test(descriptor || '')) {
+        fail(rel, `srcset candidate has no width descriptor: ${candidate.trim()}`);
+      }
+      refs.push(path);
+    }
+  }
 
   // Also catch url(...) inside inline styles.
   for (const m of html.match(/url\('([^']+)'\)/g) || []) {
@@ -167,6 +188,49 @@ for (const file of pages) {
   for (const ref of refs) {
     if (!ref.startsWith('#') || ref === '#') continue;
     if (!ids.has(ref.slice(1))) fail(rel, `anchor points at missing id: ${ref}`);
+  }
+}
+
+/* --- hover styling must not reach touch devices ----------------------------
+   A touch browser applies :hover on tap and leaves it applied, so an unguarded
+   hover rule means a tapped card stays lifted, or a tapped button stays in its
+   pressed-looking state, until something else is tapped.
+
+   Checked here rather than in the browser suite on purpose: Chromium under
+   Playwright's touch emulation does not reproduce sticky hover, so a runtime
+   test passes whether or not the guards are present. The stylesheet is the
+   thing that can actually be verified.
+*/
+for (const sheet of ['identity.css', 'site.css']) {
+  const path = join(OUT, 'assets', 'css', sheet);
+  if (!existsSync(path)) continue;
+  const css = await readFile(path, 'utf8');
+
+  let depth = 0;
+  let selectorStart = 0;
+  const guards = [];
+
+  for (let i = 0; i < css.length; i += 1) {
+    if (css[i] === '{') {
+      const selector = css.slice(selectorStart, i).replace(/\/\*[\s\S]*?\*\//g, '').trim();
+      if (selector.startsWith('@')) guards.push(selector);
+      else if (selector.includes(':hover')) {
+        const guarded = guards.some((g) => g.includes('hover: hover'));
+        // The reduced-motion block exists to switch hover effects off; it is
+        // allowed to name :hover without a capability guard.
+        const neutralising = guards.some((g) => g.includes('prefers-reduced-motion'));
+        if (!guarded && !neutralising) {
+          const line = css.slice(0, i).split('\n').length;
+          fail(`assets/css/${sheet}`, `line ${line}: :hover outside @media (hover: hover) — ${selector.split('\n')[0].slice(0, 60)}`);
+        }
+      }
+      depth += 1;
+      selectorStart = i + 1;
+    } else if (css[i] === '}') {
+      depth -= 1;
+      if (guards.length > depth) guards.length = depth;
+      selectorStart = i + 1;
+    }
   }
 }
 
